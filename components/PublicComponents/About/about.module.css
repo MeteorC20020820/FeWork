@@ -1,0 +1,203 @@
+.about1{
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    background-image: url(/purple1.jpg);
+    background-size: cover;
+}
+.leftAbout{
+    width: 80%;
+    padding: 5% 0 5% 5%;
+}
+.titleLeft{
+    font-size: 60px;
+    font-weight: 600;
+}
+.textLeft{
+    font-size: 20px;
+    text-align: justify;
+}
+.slogan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+}
+.textSlogan{
+    font-size: 20px;
+    color: rgb(1, 22, 114);
+}
+.content1{
+    padding: 20px 50px;
+    background-image: url(/whiteimg.jpg);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.content2{
+    padding: 20px 50px;
+    background-image: url(/whiteimg2.jpg);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.titleCnt1{
+    color:  rgb(0, 15, 82);
+    font-size: 50px;
+    font-weight: 600;
+}
+.contentCnt1{
+    color: rgb(0, 15, 82);
+    text-align: justify;
+}
+.bodyImgCnt1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0 0 50px 0;
+}
+.imgCnt{
+    width: 32%;
+    height: 250px;
+}
+.search{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url(/purpleimg1.jpg);
+    background-size: cover;
+    padding: 5%;
+    gap: 30px;
+}
+.titleSrch{
+    font-size: 50px;
+    font-weight: 600;
+}
+.contentSrch{
+    font-size: 18px;
+}
+.btnSrch{
+    padding: 8px 25px;
+    border-radius: 20px;
+    border: 2px solid white;
+}
+.contact{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5% 3%;
+    background-image: url(/whiteContact.jpg);
+    background-size: cover;
+    gap: 40px;
+}
+.leftCtt{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 60%;
+    height: auto;
+}
+.titleContact{
+    font-size: 40px;
+    font-weight: 600;
+    color: rgb(0, 15, 82);
+}
+.contentContact{
+    font-size: 18px;
+    color: black
+}
+.titleAdd{
+    font-size: 18px;
+    color: rgb(0, 15, 82);
+    font-weight: 600;
+}
+.address{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+.addressL{
+    width: 40%;
+    padding: 0 20px;
+}
+.addressR{
+    width: 40%;
+}
+.contactLink{
+    display: flex;
+    align-items: center;
+    
+    gap: 20px;
+}
+.btnContact{
+    width: 45%;
+    background-color: rgb(1, 24, 127);
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.rightCtt{
+    width: 40%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+.imgRightCtt{
+    width: 80%;
+    border-radius: 20px;
+}
+.check{
+    background-image: url(/cc13103.jpg);
+    width: 400px;
+    height: 650px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px;
+}
+.tTop{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+.line{
+    border: 2px solid rgb(255, 221, 0);
+    border-radius: 10px;
+    height: 50px;
+}
+.tTime{
+    font-size: 50px;
+    height: 100%;
+}
+.tYear{
+    font-size: 18px;
+}
+.bodyTr{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-weight: 600;
+}
+.testTime{
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(255, 196, 0);
+}
+

@@ -1,0 +1,246 @@
+.home{
+    width: 100%;
+    height: auto;
+}
+.about{
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex: 1;
+    background-image: radial-gradient(rgba(177, 0, 254, 0.8),rgba(8, 53, 255, 0.95));
+}
+.leftAbout{
+    flex: 5;
+    padding: 5% 0 5% 5%;
+}
+.titleLeft{
+    font-size: 80px;
+    font-weight: 600;
+}
+.textLeft{
+    font-size: 20px;
+    text-align: justify;
+}
+.btnLeft{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    border: 1px solid white;
+    padding: 5px 25px;
+    border-radius: 15px;
+    margin-top: 50px;
+}
+:hover.btnLeft{
+    padding: 7px 27px;
+    background-color: blueviolet;
+}
+.rightAbout{
+    display: flex;
+    flex: 5;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+.imgRight{
+    width: 50%;
+    height: auto;
+}
+.content2{
+    background-color: rgb(235, 235, 235);
+    padding: 5% 3%;
+}
+.bodyCtn2{
+    text-align: center;
+}
+.titleCtn2{
+    font-size: 50px;
+    color: rgb(1, 22, 114);
+    font-weight: 600;
+    padding: 0 0 30px 0;
+}
+.bodyContentCtn2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contentCtn2{
+    color: rgba(1, 22, 114, 0.5 );
+    width: 60%;
+}
+.bodyCardCtn2{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 40px 0 0 0;
+}
+.cardCtn2{
+    border-radius: 20px;
+    width: 30%;
+    height: 55vh;
+}
+.iconCtn2{
+    padding: 20px 0 10px 20px;
+}
+.ctn2{
+    padding: 0 20px;
+}
+.titleCardCtn2{
+    font-size: 24px;
+    font-weight: 600;
+    color: rgb(1, 22, 114);
+}
+.textCardCtn2{
+    color: black;
+    text-align: justify;
+    font-size: 16px;
+}
+.btnCardCtn2{
+    display: flex;
+    color: rgb(1, 22, 114);
+    padding:  20px;
+    align-items: center;
+}
+.culture{
+    padding: 5% 3% 10% 3%;
+}
+.bodyTitleCulture{
+    text-align: center;
+    padding: 0 0 40px 0;
+}
+.titleCulture{
+    font-size: 50px;
+    color: rgb(0, 10, 53);
+    font-weight: 600;
+    padding: 0 0 30px 0;
+}
+.bodyContentCul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contentCul{
+    color: rgba(1, 22, 114, 0.5 );
+    width: 50%;   
+}
+.imgCulture{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+}
+.leftImgCul{
+    width: 65%;
+    height: 500px;
+}
+.imgL{
+    border-radius: 15px;
+}
+.rightImgCul{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 20px;
+    width: 25%;
+    height: 500px;
+}
+.topRightImgCul{
+    width: 100%;
+}
+.imgTr{
+    height: 240px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+}
+.btmRightImgCul{
+    width: 100%;
+}
+.imgBr{
+    height: 240px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 15px;
+}
+.btnCul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(1, 22, 114);
+    padding: 10px 20px;
+    border-radius: 15px;
+}
+.contact{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5% 3%;
+    background-image: url(/whiteContact.jpg);
+    background-size: cover;
+    gap: 40px;
+}
+.leftCtt{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 60%;
+    height: auto;
+}
+.titleContact{
+    font-size: 40px;
+    font-weight: 600;
+    color: rgb(0, 15, 82);
+}
+.contentContact{
+    font-size: 18px;
+    color: black
+}
+.titleAdd{
+    font-size: 18px;
+    color: rgb(0, 15, 82);
+    font-weight: 600;
+}
+.address{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+.addressL{
+    width: 40%;
+    padding: 0 20px;
+}
+.addressR{
+    width: 40%;
+}
+.contactLink{
+    display: flex;
+    align-items: center;
+    
+    gap: 20px;
+}
+.btnContact{
+    width: 45%;
+    background-color: rgb(1, 24, 127);
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.rightCtt{
+    width: 40%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+.imgRightCtt{
+    width: 80%;
+    border-radius: 20px;
+}
+
+
+

@@ -1,0 +1,119 @@
+.contact1{
+    background-image: url(/contactImg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 7%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.titleCtt1{
+    font-size: 60px;
+    font-weight: 600;
+}
+.contact2{
+    display: flex;
+    padding: 5%;
+    gap: 20%;
+}
+.leftCtt2{
+    font-size: 18px;
+    font-weight: 600;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.rightCtt2{
+    font-size: 18px;
+    color: rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.contactForm{
+    display: flex;
+    padding: 5%;
+    background-image: url(/whiteimg2.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.leftForm{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.titleForm{
+    color: rgb(0, 15, 82);
+    font-size: 50px;
+    font-weight: 600;
+}
+.form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.inputForm{
+    border: 1px solid rgb(0, 15, 82);
+    border-radius: 15px;
+    padding: 10px 20px;
+    color: black;
+    width: 80%;
+}
+.btnForm{
+    background-color: rgb(3, 40, 203);
+    padding: 10px;
+    border-radius: 15px;
+    width: 80%;
+    font-weight: 600;
+}
+:hover.btnForm{
+    background: linear-gradient(90deg, red, black);
+    box-shadow: 5px 5px 10px rgb(124, 8, 8);
+}
+.rightForm{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.imgForm{
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px rgb(8, 8, 8)
+}
+.contact3{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 5%;
+    background-image: url(/purpleimg.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.titleCtt3{
+    color: white;
+    font-size: 50px;
+    font-weight: 600;
+}
+.contentCtt3{
+    font-size: 18px;
+}
+.btnCtt3{
+    font-size: 18px;
+    border: 1px solid white;
+    border-radius: 15px;
+    padding: 8px 25px;
+}
+:hover.btnCtt3{
+    background:linear-gradient(90deg, red, black);
+    border: none;
+    box-shadow: 5px 5px 10px rgb(124, 8, 8);
+    padding: 9px 26px;
+}

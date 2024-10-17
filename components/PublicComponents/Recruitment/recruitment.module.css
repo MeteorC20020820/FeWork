@@ -1,0 +1,230 @@
+.content1{
+    padding: 5%;
+    background-image: url(/people-img.jpg);
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+.titleCnt1{
+    font-size: 60px;
+    font-weight: 600;
+}
+.contentCnt1{
+    font-size: 20px;
+    text-align: justify;
+    width: 50%;
+}
+
+.location{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    padding: 5%;
+}
+.titleLocation{
+    color: rgb(0, 15, 82);
+    font-size: 60px;
+    font-weight: 600;
+}
+.contentLocation{
+    color: black;
+    font-size: 18px;
+}
+.bodyLocation{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    flex: 1;
+    flex-wrap: nowrap;
+}
+.cardLocation{
+    flex: 3;
+    height: 200px;
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-color: rgba(0, 15, 82, 0.6);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5)
+}
+.lane{
+    font-size: 28px;
+    font-weight: 600;
+     -webkit-text-stroke: 1px black; /* Độ dày viền và màu viền */
+}
+
+.culture{
+    display: flex;
+    padding: 5%;
+    background-image: url(/gray.jpg);
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.leftCul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    padding: 20px;
+}
+.rightCul{
+    display: flex;
+    width: 60%;
+    flex-direction: column;
+    gap: 20px;
+}
+.titleCul{
+    color: rgb(0, 15, 82);
+    font-size: 60px;
+    font-weight: 600;
+}
+.contentCul{
+    color: black;
+    font-size: 18px;
+}
+.person{
+    background-image: url(/redblack1.jpg);
+    background-position: center; 
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 5%;
+    display: flex
+
+}
+.leftPerson{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 0 15px 0 0;
+}
+.titlePer{
+    font-size: 60px;
+    font-weight: 600;
+     -webkit-text-stroke: 1px black;
+}
+.contentPer{
+    font-size: 18px;
+    font-weight: 600;
+}
+.rightPerson{
+    width: 40%;
+    padding: 0 0 15px 0;
+}
+.imgPerson{
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px rgba(255, 255, 255, 0.5)
+}
+.btnRm2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px;
+    gap: 15px;   
+    background-color: rgb(3, 40, 203);
+    width: 30%;
+    border-radius: 20px;
+}
+:hover.btnRm2{
+    background: linear-gradient(90deg, red, black);
+    font-weight: 600;
+    box-shadow: 5px 5px 10px rgba(255, 255, 255, 1)
+}
+.btnRm1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 30px;
+    gap: 15px;   
+    background-color: rgb(3, 40, 203);
+    width: 30%;
+    border-radius: 20px;
+}
+:hover.btnRm1{
+    background: linear-gradient(90deg, red, white);
+    font-weight: 600;
+    box-shadow: 5px 5px 10px rgb(0, 0, 0)
+}
+.contact{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5% 3%;
+    background-image: url(/whiteContact.jpg);
+    background-size: cover;
+    gap: 40px;
+}
+.leftCtt{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 60%;
+    height: auto;
+}
+.titleContact{
+    font-size: 40px;
+    font-weight: 600;
+    color: rgb(0, 15, 82);
+}
+.contentContact{
+    font-size: 18px;
+    color: black
+}
+.titleAdd{
+    font-size: 18px;
+    color: rgb(0, 15, 82);
+    font-weight: 600;
+}
+.address{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+.addressL{
+    width: 40%;
+    padding: 0 20px;
+}
+.addressR{
+    width: 40%;
+}
+.contactLink{
+    display: flex;
+    align-items: center;
+    
+    gap: 20px;
+}
+.btnContact{
+    width: 45%;
+    background-color: rgb(1, 24, 127);
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.rightCtt{
+    width: 40%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}
+.imgRightCtt{
+    width: 80%;
+    border-radius: 20px;
+}
+
+
+

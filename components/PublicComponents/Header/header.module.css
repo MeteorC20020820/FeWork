@@ -1,0 +1,60 @@
+.bodyHeader{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    flex: 1;
+}
+.logo{
+    display: flex;
+    flex: 2;
+}
+.tabBar{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex: 6;
+}
+.login{
+    display: flex;
+    flex: 2;
+    justify-content: flex-end;
+}
+.textTab{
+    font-weight: 600;
+    font-size: 20px;
+    color: rgba(8, 53, 255, 0.6);
+    text-decoration: none;
+}
+:hover.textTab{
+    color: rgba(8, 53, 255, 0.95);
+    text-decoration: underline;
+}
+.btnLogin{
+    border: none;
+    background-color: rgba(8, 53, 255, 0.95);
+    padding: 10px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+:hover.btnLogin{
+    background-image: url(/logot1.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: rgba(0,0,0,0);
+}
+.textTab {
+    cursor: pointer;
+    padding: 10px;
+    margin: 0 15px;
+    font-size: 18px;
+
+}
+
+.activeTab {
+    text-decoration: underline; 
+    font-weight: bold; 
+    color: rgb(138, 0, 0);
+    font-size: 22pxs;
+}

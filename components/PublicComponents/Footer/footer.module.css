@@ -1,0 +1,60 @@
+.bodyFooter{
+    background-color: rgba(8, 53, 255, 0.95);
+    width: 100%;
+    padding: 20px;
+}
+.top{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+.left{
+    text-align: center;
+    flex: 3;
+}
+.titleLeft{
+    font-size: 20px;
+    font-weight: 600;
+}
+.iconLeft{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0 10px 0;
+}
+.imgLeft{
+    display: flex;
+    justify-content: center;
+}
+.center{
+    text-align: center;
+    flex: 4;
+}
+.titleCenter{
+    font-size: 20px;
+    font-weight: 600;
+}
+.contentCenter{
+    padding: 20px 0;
+}
+.textCenter{
+    padding: 2px 0;
+}
+:hover.textCenter{
+    color: black;
+    font-size: 18px;
+}
+.right{
+    text-align: center;
+    flex: 3;
+}
+.titleRight{
+    font-size: 20px;
+    font-weight: 600;
+}
+.bottom{
+    display: flex;
+    justify-content: center;
+}
