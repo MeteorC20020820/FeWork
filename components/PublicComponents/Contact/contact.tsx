@@ -41,7 +41,7 @@ export default function Contact(){
     }
 
     return (
-      <div>
+      <div className={styles.contact}>
         <div className={styles.contact1}>
           <h1 className={styles.titleCtt1}>Contact</h1>
         </div>

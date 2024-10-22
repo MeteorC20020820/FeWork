@@ -65,7 +65,7 @@ export default function Login(){
                   value={password}
                   onChange={sendPassword}
                 />
-                <p className={styles.forgetPw}>forget password?</p>
+                <p className={styles.forgetPw}>Forget password?</p>
                 <button className={styles.btnLogin}>Login</button>
               </div>
             </div>

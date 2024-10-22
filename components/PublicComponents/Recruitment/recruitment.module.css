@@ -1,3 +1,6 @@
+.content{
+    --primary-color: white; 
+}
 .content1{
     padding: 5%;
     background-image: url(/people-img.jpg);
@@ -9,11 +12,13 @@
 .titleCnt1{
     font-size: 60px;
     font-weight: 600;
+    color: var(--primary-color);
 }
 .contentCnt1{
     font-size: 20px;
     text-align: justify;
     width: 50%;
+     color: var(--primary-color);
 }
 
 .location{
@@ -111,10 +116,12 @@
     font-size: 60px;
     font-weight: 600;
      -webkit-text-stroke: 1px black;
+      color: var(--primary-color);
 }
 .contentPer{
     font-size: 18px;
     font-weight: 600;
+     color: var(--primary-color);
 }
 .rightPerson{
     width: 40%;
@@ -133,6 +140,7 @@
     background-color: rgb(3, 40, 203);
     width: 30%;
     border-radius: 20px;
+     color: var(--primary-color);
 }
 :hover.btnRm2{
     background: linear-gradient(90deg, red, black);
@@ -148,6 +156,7 @@
     background-color: rgb(3, 40, 203);
     width: 30%;
     border-radius: 20px;
+     color: var(--primary-color);
 }
 :hover.btnRm1{
     background: linear-gradient(90deg, red, white);
@@ -214,6 +223,7 @@
     justify-content: center;
     align-items: center;
     gap: 10px;
+     color: var(--primary-color);
 }
 .rightCtt{
     width: 40%;

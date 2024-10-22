@@ -1,4 +1,7 @@
+
 .bodyFooter{
+    --primary-color: white;
+    --hover-text-color: black;
     background-color: rgba(8, 53, 255, 0.95);
     width: 100%;
     padding: 20px;
@@ -16,6 +19,7 @@
 .titleLeft{
     font-size: 20px;
     font-weight: 600;
+    color: var(--text-color);
 }
 .iconLeft{
     display: flex;
@@ -35,12 +39,14 @@
 .titleCenter{
     font-size: 20px;
     font-weight: 600;
+    color: var(--text-color);
 }
 .contentCenter{
     padding: 20px 0;
 }
 .textCenter{
     padding: 2px 0;
+     color: var(--text-color);
 }
 :hover.textCenter{
     color: black;
@@ -53,6 +59,7 @@
 .titleRight{
     font-size: 20px;
     font-weight: 600;
+     color: var(--text-color);
 }
 .bottom{
     display: flex;

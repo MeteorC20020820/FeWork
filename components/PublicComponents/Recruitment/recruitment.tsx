@@ -55,7 +55,7 @@ const t1 = [
 export default function Recruitment(){
   const router = useRouter()
     return (
-      <div>
+      <div className={styles.content}>
         <div className={styles.content1}>
           <h1 className={styles.titleCnt1}>Recruitment</h1>
           <p className={styles.contentCnt1}>

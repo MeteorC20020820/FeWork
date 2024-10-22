@@ -36,6 +36,7 @@
     padding: 10px 30px;
     border-radius: 10px;
     font-weight: 600;
+    color: white;
 }
 :hover.btnLogin{
     background-image: url(/logot1.jpg);
