@@ -16,20 +16,25 @@ export default function SideBar() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const [modalLogout, setModalLogout] = useState(false)
+  const [modalLogout, setModalLogout] = useState(false);
 
   const getIconColor = (iconName: string) => {
-    console.log("check1"+pathname.toLowerCase());
-    console.log("check2"+`/employee/${iconName.toLowerCase()}`);
     if (pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`) {
       return "black";
     }
-    return hoveredIcon === iconName.toLowerCase() ? "black" : "white"; // Hover icon
+    return hoveredIcon === iconName.toLowerCase() ? "black" : "white";
   };
+
   const getFeatureClass = (iconName: string) => {
     return pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`
       ? `${styles.feature} ${styles.active}`
       : styles.feature;
+  };
+
+  const getTextFeatureClass = (iconName: string) => {
+    return pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`
+      ? `${styles.textFeature} ${styles.activeText}`
+      : `${styles.textFeature}`;
   };
 
   return (
@@ -48,6 +53,7 @@ export default function SideBar() {
           </div>
         </div>
         <div>
+          {/* Thẻ Forum */}
           <div
             className={getFeatureClass("Forum")}
             onMouseEnter={() => {
@@ -57,8 +63,10 @@ export default function SideBar() {
             onClick={() => router.push("/Employee/Forum")}
           >
             <Forum color={getIconColor("forum")} width="50px" height="50px" />
-            <p className={styles.textFeature}>Forum</p>
+            <p className={getTextFeatureClass("forum")}>Forum</p>
           </div>
+
+          {/* Thẻ OnLeave */}
           <div
             className={getFeatureClass("Onleave")}
             onMouseEnter={() => {
@@ -72,8 +80,10 @@ export default function SideBar() {
               width="50px"
               height="50px"
             />
-            <p className={styles.textFeature}>On leave</p>
+            <p className={getTextFeatureClass("onleave")}>On leave</p>
           </div>
+
+          {/* Thẻ WorkSchedules */}
           <div
             className={getFeatureClass("Workshedule")}
             onMouseEnter={() => {
@@ -88,8 +98,10 @@ export default function SideBar() {
               width="50px"
               height="50px"
             />
-            <p className={styles.textFeature}>Work schedule</p>
+            <p className={getTextFeatureClass("workshedule")}>Work schedule</p>
           </div>
+
+          {/* Thẻ Timekeeping */}
           <div
             className={getFeatureClass("Timekeeping")}
             onMouseEnter={() => {
@@ -104,10 +116,12 @@ export default function SideBar() {
               width="50px"
               height="50px"
             />
-            <p className={styles.textFeature}>Timekeeping</p>
+            <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
           </div>
         </div>
       </div>
+
+      {/* Thẻ Logout */}
       <div
         className={getFeatureClass("logout")}
         onMouseEnter={() => setHoveredIcon("logout")}
@@ -115,7 +129,7 @@ export default function SideBar() {
         onClick={() => setModalLogout(true)}
       >
         <Logout color={getIconColor("logout")} width="50px" height="50px" />
-        <p className={styles.textFeature}>LogOut</p>
+        <p className={getTextFeatureClass("logout")}>LogOut</p>
       </div>
       {LogOut(modalLogout, setModalLogout)}
     </div>

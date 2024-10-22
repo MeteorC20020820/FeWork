@@ -63,6 +63,7 @@
 .lane{
     font-size: 28px;
     font-weight: 600;
+    color: var(--primary-color);
      -webkit-text-stroke: 1px black; /* Độ dày viền và màu viền */
 }
 

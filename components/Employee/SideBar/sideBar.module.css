@@ -10,9 +10,6 @@
     background-size: cover;
     justify-content: space-between;
 }
-.textName{
-    color: white;
-}
 .bodyInfo{
     display: flex;
     align-items: center;
@@ -30,6 +27,9 @@
     background-color: aqua;
     border-radius: 50%;
 }
+.textName{
+    color: white;
+}
 .feature{
     display: flex;
     align-items: center;
@@ -42,11 +42,17 @@
     font-size: 20px;
     color: white;
 }
+.activeText {
+  color: black;
+}
 .feature:hover{
     background-color: white;
     color: black;
     font-size: 20px;
     border-radius: 20px;
+}
+.feature:hover .textFeature {
+  color: black;
 }
 .active{
     background-color: white;
