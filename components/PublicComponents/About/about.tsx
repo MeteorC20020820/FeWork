@@ -124,29 +124,6 @@ export default function About(){
             <img src="/01.jpg" alt="t1" className={styles.imgRightCtt} />
           </div>
         </div>
-        <div className={styles.check}>
-          <div className={styles.tl}>
-            <div className={styles.tTop}>
-              <div className={styles.tTime}>08:46</div>
-              <div className={styles.line}></div>
-              <div className={styles.tyear}>
-                <p>13 Tháng 10, 2024</p>
-                <p>Chủ nhật</p>
-              </div>
-            </div>
-            <div className={styles.tBottom}>
-              <p>Đường Tỉnh 379, X.Dân Tiến, H. Khoái</p>
-              <p>Châu, Hưng Yên</p>
-            </div>
-          </div>
-          <div className={styles.tr}>
-            <div className={styles.bodyTr}>
-              <p className={styles.testTime}>Time</p>
-              <p>mark</p>
-            </div>
-            <div style={{fontSize:'8px'}}>Ngày giờ chân thực thực</div>
-          </div>
-        </div>
       </div>
     );
 }

@@ -1,0 +1,48 @@
+.bodyLogout{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    padding: 4%;
+}
+.title{
+    font-size: 40px;
+    font-weight: 600;
+    color: red;
+}
+.text{
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+}
+.bodyBtn{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center;
+    gap: 25px;
+    padding: 20px 0 0 0;
+}
+.btnLogout{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 25px;
+    background-color: rgb(246, 118, 118);
+    color: red;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 20px;
+}
+.btnCancel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 25px;
+    background-color: rgb(99, 99, 99);
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 20px;
+}
