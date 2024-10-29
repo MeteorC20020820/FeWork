@@ -68,7 +68,7 @@ export default function SideBar() {
 
           {/* Thẻ OnLeave */}
           <div
-            className={getFeatureClass("Onleave")}
+            className={ ("Onleave")}
             onMouseEnter={() => {
               if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
             }}

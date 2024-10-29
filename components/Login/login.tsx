@@ -20,12 +20,17 @@ export default function Login(){
 
     useEffect(() =>{
       setSendInfo({
-
+        'email': email,
+        'password': password
       })
     },[email, password])
     const ApiSendForm = async() =>{
       try{
-        const res = await axios.post(``, sendInfo)
+        const res = await axios.post(
+          `http://localhost:5191/api/Account/Login`,
+          sendInfo
+        );
+        console.log(res)
       }
       catch(error){
         console.log(error)
@@ -66,7 +71,7 @@ export default function Login(){
                   onChange={sendPassword}
                 />
                 <p className={styles.forgetPw}>Forget password?</p>
-                <button className={styles.btnLogin}>Login</button>
+                <button className={styles.btnLogin} onClick={() => ApiSendForm()}>Login</button>
               </div>
             </div>
           </div>
