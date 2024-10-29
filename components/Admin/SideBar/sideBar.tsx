@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./sideBar.module.css";
 import {
   Setting,
@@ -10,31 +10,71 @@ import {
   Logout,
 } from "@/components/icon/icon";
 import { useRouter, usePathname } from "next/navigation";
+import axios from "axios";
+function getUserInfoFromToken() {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    return null;
+  }
+  const payloadBase64 = token.split(".")[1];
+  const decodedPayload = JSON.parse(atob(payloadBase64));
+
+  return decodedPayload;
+}
 export default function SideBar() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const [modalLogout, setModalLogout] = useState(false);
-
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [userRole, setUserRole] = useState<any>(null);
+  const [idUser, setIdUser] = useState<number | null>(null);
+  const [userI, setUserI] = useState<any>({});
+  useEffect(() => {
+    const user = getUserInfoFromToken();
+    if (user) {
+      setUserInfo(user);
+    } else {
+      router.push("/Login");
+    }
+  }, [router]);
+  useEffect(() => {
+    if (userInfo) {
+      setIdUser(userInfo.EmployeeId);
+      setUserRole(userInfo["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"])
+    }
+  }, [userInfo]);
+  useEffect(() => {
+    const apiGetUser = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:7295/api/Employee/${idUser}`
+        );
+        setUserI(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    apiGetUser();
+  }, [idUser]);
   const getIconColor = (iconName: string) => {
-    if (pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`) {
+    if (pathname.toLowerCase() === `/admin/${iconName.toLowerCase()}`) {
       return "black";
     }
     return hoveredIcon === iconName.toLowerCase() ? "black" : "white";
   };
 
   const getFeatureClass = (iconName: string) => {
-    return pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`
+    return pathname.toLowerCase() === `/admin/${iconName.toLowerCase()}`
       ? `${styles.feature} ${styles.active}`
       : styles.feature;
   };
 
   const getTextFeatureClass = (iconName: string) => {
-    return pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`
+    return pathname.toLowerCase() === `/admin/${iconName.toLowerCase()}`
       ? `${styles.textFeature} ${styles.activeText}`
       : `${styles.textFeature}`;
   };
-
   return (
     <div className={styles.bodySideBar}>
       <div>
@@ -42,11 +82,11 @@ export default function SideBar() {
           <div className={styles.info}>
             <img src="" alt="" className={styles.imgEmployee} />
             <div>
-              <p className={styles.textName}>Full name</p>
-              <p className={styles.textName}>ID: 38283</p>
+              <p className={styles.textName}>{userI.fullName}</p>
+              <p className={styles.textName}>{userI.position}</p>
             </div>
           </div>
-          <div onClick={() => router.push("/Employee/Info")}>
+          <div onClick={() => router.push("/Admin/Info")}>
             <Setting color="white" width="40px" height="40px" />
           </div>
         </div>
@@ -55,10 +95,10 @@ export default function SideBar() {
           <div
             className={getFeatureClass("Forum")}
             onMouseEnter={() => {
-              if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
+              if (pathname !== "/Admin/Forum") setHoveredIcon("forum");
             }}
             onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => router.push("/Employee/Forum")}
+            onClick={() => router.push("/Admin/Forum")}
           >
             <Forum color={getIconColor("forum")} width="50px" height="50px" />
             <p className={getTextFeatureClass("forum")}>Forum</p>
