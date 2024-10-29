@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./sideBar.module.css";
 import {
   Setting,
@@ -10,57 +10,11 @@ import {
   Logout,
 } from "@/components/icon/icon";
 import { useRouter, usePathname } from "next/navigation";
-import LogOut from "../Logout/logout";
-import axios from "axios";
-function getUserInfoFromToken(){
-  const token = localStorage.getItem("authToken")
-  if (!token) {
-        return null;
-    }
-    const payloadBase64 = token.split('.')[1];
-    const decodedPayload = JSON.parse(atob(payloadBase64));
-    
-    return decodedPayload; 
-}
-export default function SideBar({setUser}:any) {
+export default function SideBar() {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
   const [modalLogout, setModalLogout] = useState(false);
-  const [userInfo, setUserInfo] = useState<any>(null);
-  const [idUser, setIdUser] = useState<number | null>(null );
-  const [userI, setUserI] = useState<any>({})
-  useEffect(() =>{
-    const user = getUserInfoFromToken();
-    if(user){
-      setUserInfo(user)
-    }
-    else{
-      router.push("/Login")
-    }
-  },[router])
-  useEffect(() => {
-    if (userInfo) {
-      setIdUser(userInfo.EmployeeId);
-    }
-  }, [userInfo]);
-  console.log(userInfo?.EmployeeId)
-
-  useEffect(() =>{
-    const apiGetUser = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:7295/api/Employee/${idUser}`
-        );
-        setUserI(res.data.data)
-        setUser(res.data.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    apiGetUser() 
-  },[idUser])
-
 
   const getIconColor = (iconName: string) => {
     if (pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`) {
@@ -80,6 +34,7 @@ export default function SideBar({setUser}:any) {
       ? `${styles.textFeature} ${styles.activeText}`
       : `${styles.textFeature}`;
   };
+
   return (
     <div className={styles.bodySideBar}>
       <div>
@@ -87,8 +42,8 @@ export default function SideBar({setUser}:any) {
           <div className={styles.info}>
             <img src="" alt="" className={styles.imgEmployee} />
             <div>
-              <p className={styles.textName}>{userI.fullName}</p>
-              <p className={styles.textName}>ID: {userI.id}</p>
+              <p className={styles.textName}>Full name</p>
+              <p className={styles.textName}>ID: 38283</p>
             </div>
           </div>
           <div onClick={() => router.push("/Employee/Info")}>
@@ -174,7 +129,6 @@ export default function SideBar({setUser}:any) {
         <Logout color={getIconColor("logout")} width="50px" height="50px" />
         <p className={getTextFeatureClass("logout")}>LogOut</p>
       </div>
-      {LogOut(modalLogout, setModalLogout)}
     </div>
   );
 }

@@ -1,0 +1,75 @@
+.bodySideBar{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100vh;
+    position: absolute;
+    background-image: url(/backgroudSideBar.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: space-between;
+}
+.bodyInfo{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+}
+.info{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.imgEmployee{
+    width: 70px;
+    height: 70px;
+    background-color: aqua;
+    border-radius: 50%;
+}
+.textName{
+    color: white;
+}
+.feature{
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    gap: 15px;
+    transition: color 0.3s ease;
+}
+.textFeature{
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+}
+.activeText {
+  color: black;
+}
+.feature:hover{
+    background-color: white;
+    color: black;
+    font-size: 20px;
+    border-radius: 20px;
+}
+.feature:hover .textFeature {
+  color: black;
+}
+.active{
+    background-color: white;
+    color: black;
+    border-radius: 20px;
+}
+.bodyLogout{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.bodyLogout:hover{
+    background-color: white;
+    color: black;
+    font-size: 20px;
+     border-radius: 20px;
+}

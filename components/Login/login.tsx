@@ -27,10 +27,23 @@ export default function Login(){
     const ApiSendForm = async() =>{
       try{
         const res = await axios.post(
-          `http://localhost:5191/api/Account/Login`,
+          `http://localhost:7295/api/Account/Login`,
           sendInfo
         );
-        console.log(res)
+        const token:any = res.data.data
+        localStorage.setItem("authToken", token);
+
+        const payloadBase64 = token.split(".")[1];
+        const decodedPayload = JSON.parse(atob(payloadBase64));
+        console.log(decodedPayload.role)
+        const userRole =
+          decodedPayload[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+          ];
+        if(userRole === "3"){
+          router.push("/Employee/Info")
+        }
+
       }
       catch(error){
         console.log(error)
