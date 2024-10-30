@@ -22,7 +22,7 @@ function getUserInfoFromToken(){
     
     return decodedPayload; 
 }
-export default function SideBar({setUser}:any) {
+export default function SideBar({setUser, setUserRoleP}:any) {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
@@ -44,6 +44,9 @@ export default function SideBar({setUser}:any) {
     if (userInfo) {
       setIdUser(userInfo.EmployeeId);
       setUserRole(
+        userInfo["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
+      );
+      setUserRoleP(
         userInfo["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"]
       );
     }
@@ -172,6 +175,7 @@ export default function SideBar({setUser}:any) {
         )}
         {userRole === "2" && (
           <div>
+            {/* Thẻ Forum */}
             <div
               className={getFeatureClass("Forum")}
               onMouseEnter={() => {
@@ -182,6 +186,77 @@ export default function SideBar({setUser}:any) {
             >
               <Forum color={getIconColor("forum")} width="50px" height="50px" />
               <p className={getTextFeatureClass("forum")}>Forum</p>
+            </div>
+
+            {/* Thẻ OnLeave */}
+            <div
+              className={getFeatureClass("Onleave")}
+              onMouseEnter={() => {
+                if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
+              }}
+              onMouseLeave={() => setHoveredIcon(null)}
+              onClick={() => router.push("/Employee/Onleave")}
+            >
+              <OnLeave
+                color={getIconColor("onleave")}
+                width="50px"
+                height="50px"
+              />
+              <p className={getTextFeatureClass("onleave")}>On leave</p>
+            </div>
+
+            {/* Thẻ WorkSchedules */}
+            <div
+              className={getFeatureClass("Workshedule")}
+              onMouseEnter={() => {
+                if (pathname !== "/Employee/Workshedule")
+                  setHoveredIcon("workshedule");
+              }}
+              onMouseLeave={() => setHoveredIcon(null)}
+              onClick={() => router.push("/Employee/Workshedule")}
+            >
+              <WorkSchedules
+                color={getIconColor("workshedule")}
+                width="50px"
+                height="50px"
+              />
+              <p className={getTextFeatureClass("workshedule")}>
+                Work schedule
+              </p>
+            </div>
+
+            {/* Thẻ Timekeeping */}
+            <div
+              className={getFeatureClass("Timekeeping")}
+              onMouseEnter={() => {
+                if (pathname !== "/Employee/Timekeeping")
+                  setHoveredIcon("timekeeping");
+              }}
+              onMouseLeave={() => setHoveredIcon(null)}
+              onClick={() => router.push("/Employee/Timekeeping")}
+            >
+              <Timekeeping
+                color={getIconColor("timekeeping")}
+                width="50px"
+                height="50px"
+              />
+              <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
+            </div>
+            <div
+              className={getFeatureClass("Department")}
+              onMouseEnter={() => {
+                if (pathname !== "/Employee/Department")
+                  setHoveredIcon("department");
+              }}
+              onMouseLeave={() => setHoveredIcon(null)}
+              onClick={() => router.push("/Employee/Department")}
+            >
+              <Timekeeping
+                color={getIconColor("department")}
+                width="50px"
+                height="50px"
+              />
+              <p className={getTextFeatureClass("department")}>Department</p>
             </div>
           </div>
         )}

@@ -14,12 +14,14 @@
     "jwt-decode": "^4.0.0",
     "next": "14.2.14",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-highlight-words": "^0.20.0"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@types/react-highlight-words": "^0.20.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.14",
     "postcss": "^8",
