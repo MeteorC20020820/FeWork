@@ -5,6 +5,42 @@
     padding: 20px;
     width: 80%;
 }
+.titleDep{
+    font-weight: 600;
+    color: black;
+    font-size: 50px;
+}
+.bodyCreateDep{
+    padding: 10px;
+}
+.bodyBtnCreatDep{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 0
+}
+.bodyBtnCloseDep{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+}
+.bodyTitleCreate{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 10px 0;
+}
+.titleCreate{
+    font-size: 20px;
+    font-weight: 600;
+    color: black;
+}
+.bodyCreate{
+    border: 2px solid black;
+    border-radius: 15px;
+    padding: 20px 0;
+}
 .creatDepartment{
    width: 100%;
    display: flex;
@@ -19,12 +55,23 @@
     border-radius: 20px;
     width: 34%;
 }
+.btnClose{
+    padding: 5px 20px;
+    color: red;
+    border: solid 2px red;
+    border-radius: 15px;
+    font-weight: 600;
+}
 .btnCreate{
     padding: 5px 20px;
     color: green;
     border: solid 2px green;
     border-radius: 15px;
     font-weight: 600;
+}
+:hover.btnClose{
+    color: white;
+    background-color: red;
 }
 :hover.btnCreate{
     color: white;

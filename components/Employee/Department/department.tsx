@@ -8,6 +8,9 @@ import type { InputRef, TableColumnsType, TableColumnType } from "antd";
 import { Button, Input, Space, Table } from "antd";
 import Highlighter from "react-highlight-words";
 import type { FilterDropdownProps } from "antd/es/table/interface";
+import { useRouter } from "next/navigation";
+import Delete from "./Model/Delete/delete";
+import Edit from "./Model/Edit/edit";
 interface DataType {
   key: number;
   name: string;
@@ -16,13 +19,16 @@ interface DataType {
 }
 type DataIndex = keyof DataType;
 export default function Department() {
+  const router = useRouter()
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
   const [department, setDepartment] = useState<DataType[]>([]);
   const [nameDep, setNameDep] = useState("");
   const [desDep, setDesDep] = useState("");
   const [senDep, setSendDep] = useState<any>({});
-
+  const [dataDep, setDataDep] = useState<any>(null)
+  const [modalDelete, setModalDelete] = useState(false)
+  const [modalEdit, setModalEdit] = useState(false)
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -157,6 +163,22 @@ export default function Department() {
       sortDirections: ["descend", "ascend"],
     },
   ];
+  if (userRoleP === "1") {
+    columns.push({
+      title: "Actions",
+      key: "actions",
+      render: (text, record:any) => (
+        <Space size="middle">
+          <Button type="link" onClick={() => {setModalEdit(true), setDataDep(record)}}>
+            Edit
+          </Button>
+          <Button type="link" danger onClick={() => {setModalDelete(true), setDataDep(record)}}>
+            Delete
+          </Button>
+        </Space>
+      ),
+    });
+  }
   const changeNameDep = (e: any) => {
     setNameDep(e.target.value);
   };
@@ -174,9 +196,7 @@ export default function Department() {
    const ApiGetDepartment = async () => {
      try {
        const res = await axios.get("http://localhost:7295/api/Department");
-       console.log(res.data.data);
-
-       // Ensure res.data.data is an array before setting it to `department`
+       console.log(res.data.statusCode);
        if (Array.isArray(res.data.data)) {
          setDepartment(res.data.data);
        } else {
@@ -195,44 +215,80 @@ export default function Department() {
         "http://localhost:7295/api/Department",
         senDep
       );
-      console.log(res);
+      console.log(res.data)
+      if(res.data.statusCode == 201){
+        window.location.reload()
+      }
     } catch (error) {
       console.log(error);
     }
   };
+  const [create, setCreate] = useState(true)
+  const handalButtonCreate = () =>{
+    setCreate((prev) => !prev)
+  }
+
   return (
     <div className={styles.bodyDepartment}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div className={styles.department}>
-        {userRoleP === "2" && (
-          <div>
-            <div></div>
-            <div className={styles.creatDepartment}>
-              <input
-                type="text"
-                className={styles.inputCreate}
-                value={nameDep}
-                onChange={changeNameDep}
-                placeholder="Enter name department..."
-              />
-              <input
-                type="text"
-                className={styles.inputCreate}
-                value={desDep}
-                onChange={changeDesDep}
-                placeholder="Enter description department..."
-              />
+        <p className={styles.titleDep}>Department</p>
+        {userRoleP === "1" && (
+          <div className={styles.bodyCreateDep}>
+            <div
+              className={
+                create ? styles.bodyBtnCreatDep : styles.bodyBtnCloseDep
+              }
+            >
               <button
-                className={styles.btnCreate}
-                onClick={() => ApiPostDepartment()}
+                onClick={() => {
+                  handalButtonCreate();
+                }}
+                className={create ? styles.btnCreate : styles.btnClose}
               >
-                Create
+                {create ? "Create Department" : "Close"}
               </button>
             </div>
+            {!create && (
+              <div className={styles.bodyCreate}>
+                <div className={styles.bodyTitleCreate}>
+                  <p className={styles.titleCreate}>Creat Department</p>
+                </div>
+                <div className={styles.creatDepartment}>
+                  <input
+                    type="text"
+                    className={styles.inputCreate}
+                    value={nameDep}
+                    onChange={changeNameDep}
+                    placeholder="Enter name department..."
+                  />
+                  <input
+                    type="text"
+                    className={styles.inputCreate}
+                    value={desDep}
+                    onChange={changeDesDep}
+                    placeholder="Enter description department..."
+                  />
+                  <button
+                    className={styles.btnCreate}
+                    onClick={() => ApiPostDepartment()}
+                  >
+                    Create
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         )}
-        <Table<DataType> columns={columns} dataSource={data} />;
+        <Table<DataType>
+          columns={columns}
+          dataSource={data}
+          scroll={{ y: 400 }}
+        />
+        ;
       </div>
+      {Delete(modalDelete, setModalDelete, dataDep)}
+      {Edit(modalEdit, setModalEdit, dataDep)}
     </div>
   );
 }
