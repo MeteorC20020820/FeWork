@@ -1,74 +1,156 @@
-.bodySideBar{
-    display: flex;
-    flex-direction: column;
-    width: 20%;
-    min-height: 100vh;
-    background-image: url(/backgroudSideBar.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    justify-content: space-between;
+/* Tổng thể của sidebar */
+.bodySideBar {
+  width: 18%;
+  height: 100vh;
+  background-image: url(/bgsidebar.png);
+  background-position: center;
+  background-size: cover;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: fixed; 
+  top: 0;
+  left: 0;
+  z-index: 1000; 
 }
-.bodyInfo{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
+
+/* Thông tin người dùng ở trên cùng */
+.bodyInfo {
+  display: flex;
+  align-items: center;
+  padding:20px;
+  justify-content: space-between;
+  background-color: #1f1f1fcd;
 }
 .info{
     display: flex;
-    align-items: center;
-    gap: 10px;
 }
-.imgEmployee{
-    width: 70px;
-    height: 70px;
-    background-color: aqua;
-    border-radius: 50%;
+.imgEmployee {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #333; /* Placeholder màu xám nếu không có ảnh */
+  margin-right: 10px;
 }
-.textName{
-    color: white;
+
+.textName {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
 }
-.feature{
-    display: flex;
-    align-items: center;
-    padding: 20px;
-    gap: 15px;
-    transition: color 0.3s ease;
+
+.position {
+  font-size: 12px;
+  color: #b3b3b3;
+  margin: 0;
 }
-.textFeature{
-    font-weight: 600;
-    font-size: 20px;
-    color: white;
+
+/* Các tính năng trong sidebar */
+.feature {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 10px;
+  color: #ffffff; /* Màu chữ ban đầu */
 }
-.activeText {
+
+/* Hiệu ứng khi hover: nền trắng, chữ đen */
+.feature:hover {
+  background-color: #ffffff;
+  color: #1f1f1f;
+}
+
+/* Biểu tượng của tính năng, giữ nguyên màu đen khi hover */
+.feature svg {
+  margin-right: 15px;
+  transition: color 0.3s;
+}
+
+.feature:hover svg {
+  color: #1f1f1f; /* Đổi màu biểu tượng thành đen khi hover */
+}
+
+/* Màu nền cho mục đang active */
+.active {
+  background-color: #ffffff;
   color: black;
+  font-weight: 600;
 }
-.feature:hover{
-    background-color: white;
-    color: black;
-    font-size: 20px;
-    border-radius: 20px;
+
+.active:hover {
+  background-color: #ffffff;
+  color: #1f1f1f;
+  font-weight: 600;
 }
-.feature:hover .textFeature {
-  color: black;
+
+/* Văn bản mô tả tính năng */
+.textFeature {
+  font-size: 14px;
+  margin: 0;
+  transition: color 0.3s;
 }
-.active{
-    background-color: white;
-    color: black;
-    border-radius: 20px;
+.titleFeature{
+  padding: 0 10px;
+  background-color: #cdcdcd5c;
+  font-weight: 600;
 }
-.bodyLogout{
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 20px;
-    justify-content: center;
-    margin-bottom: 20px;
+/* Kiểu cho nút Logout ở dưới cùng */
+.logout {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin: 20px 0;
+  border-radius: 8px;
 }
-.bodyLogout:hover{
-    background-color: white;
-    color: black;
-    font-size: 20px;
-     border-radius: 20px;
+
+.logout:hover {
+  background-color: #ffffff;
+  color: #1f1f1f;
+}
+
+/* Kiểu cho chuyển đổi chế độ sáng/tối */
+.switchMode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #333333;
+  border-radius: 8px;
+  margin: 0 20px 20px 20px;
+}
+
+.switchMode p {
+  font-size: 14px;
+  color: #ffffff;
+  margin: 0;
+}
+
+.switchButton {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.switchButton::before {
+  content: "";
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: #1f1f1f;
+  border-radius: 50%;
+  top: 2px;
+  left: 2px;
+  transition: left 0.3s;
+}
+
+.switchButton.active::before {
+  left: 22px; /* Vị trí khi chế độ bật */
 }

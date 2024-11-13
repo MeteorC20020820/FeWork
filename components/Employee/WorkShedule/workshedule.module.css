@@ -1,0 +1,225 @@
+.bodyWorkshedule{
+    display: flex;
+}
+.content{
+  width: 80%;
+  padding: 20px;
+}
+.calendarContainer {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid gray;
+  background-color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.headerLeft{
+  display: flex;
+  gap: 20px;
+}
+.navButton {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  color: black;
+}
+.btnToday{
+  color: #5684AE;;
+  background-color: white;
+  border: 1px solid #5684AE;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+:hover.btnToday{
+  color: white;
+  background-color: #5684AE;
+}
+
+.headerTitle {
+  font-size: 24px;
+  color: #0F4C81;
+  font-weight: 700;
+}
+.headerMobile{
+  display: none;
+  
+}
+.yearSelect,.monthSelect{
+  color: white;
+  background-color: #0F4C81;
+  padding: 5px 10px;
+  border: 1px solid #0F4C81;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  
+}
+.monthSelect:hover,
+.yearSelect:hover {
+  appearance: none; 
+}
+.weekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+  color: grey;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #c0bebe;
+  background-color: #fff;
+  min-height: 50px;
+  color: rgb(91, 90, 90);
+  height: 100px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.currentMonthDay {
+  font-weight: bold;
+}
+
+.otherMonthDay {
+  color: #c2c1c1;
+}
+
+.today {
+  font-weight: bold;
+  color: white;
+  background-color: #0070f3;
+}
+.eventDay {
+  background-color: #FFE4C8; 
+  border: 1px solid #F9BE81; 
+}
+.today {
+  background-color: #0F4C81;; 
+  color: white;
+  border: 1px solid #0F4C81;;
+}
+.today strong{
+  color: black;
+}
+.eventList{
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 2px;
+}
+.event{
+  border: 1px solid rgb(154, 108, 2);
+  border-radius: 3px;
+  background-color: #FFE4C8;
+  width: 100%;
+  padding: 2px 5px;
+  margin-bottom: 3px;
+  text-overflow: ellipsis;
+}
+.eventDetails {
+  margin-top: 20px;
+}
+
+.eventDetails ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.eventDetails li {
+  margin-bottom: 10px;
+}
+.titleEvents{
+  color: #0F4C81;
+  font-weight: 800;
+  font-size: 25px;
+}
+.eventsOnDay{
+  border: none;
+  background-color: #FFE4C8;
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.titleEventDay{
+  font-size: 25px;
+  font-weight: 600;
+  color: #0F4C81;
+}
+.timeEventDay{
+  font-size: 18px;
+  font-weight: 500;
+  color: #0F4C81;
+}
+.noteEventDay{
+  font-size: 18px;
+  color: black;
+}
+@media (max-width: 768px) {
+  .calendarContainer {
+    padding: 10px;
+  }
+
+  .headerTitle {
+    font-size: 18px;
+  }
+
+  .navButton {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 700px) {
+  .yearSelect,.monthSelect{
+    display: none;
+  }
+  .btnToday{
+    display: none;
+  }
+  .headerLeft{
+    display: none;
+  }
+  .headerMobile{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  .header{
+    justify-content: center;
+  }
+  .eventList{
+    display: none;
+  }
+  .daysGrid{
+    gap: 5px;
+  }
+  .day{
+    padding: 5px;
+    border-radius: 50%;
+    min-height: 40px;
+    height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+}

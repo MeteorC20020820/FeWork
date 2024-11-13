@@ -1,127 +1,117 @@
-.login{
-    height: 100vh;
-    background-image: url(/backgroundt1.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.blogin{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    padding: 5% 5% 7% 5%;
-    gap: 25px;
-    backdrop-filter: blur(8px);
-}
-.backHome{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    border-radius: 20px;
-    border: none;
-    color: black;
-    padding: 8px 20px;
-    background-image: radial-gradient(rgb(255, 255, 255),rgb(140, 0, 0));
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url(/loginw2.jpg); 
+  background-size: cover;
+  background-position: center;
 }
 
-.bodyLogin{
-    display: flex;
-    border: none;
-    border-radius: 20px;
-    box-shadow: 2px 6px 8px 10px rgb(255, 255, 255);
-    width: 80%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.leftLogin{
-    padding: 5%;
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 20px 0 0 20px;
-}
-.bodyLogo{
-    width: 80%;
-    border-radius: 50%;
-    background-color: black;
-    filter: drop-shadow(2px 2px 10px rgb(189, 0, 0));
-}
-.imgLogin{
-    filter: drop-shadow(0 0 5px rgb(0, 0, 0));
-    width: 100%;
-    height: auto;
-}
-.rightLogin{
-    padding: 5% 30px;
-    width: 50%;
-    border-radius: 20px;
-    display: flex;
-    text-align: center;
-    flex-direction: column;
-    gap: 15px;
-}
-.titleLogin1{
-    font-size: 20px;   
-    color: rgba(0,0,0,0); 
-}
 .titleLogin2{
+    color: black;
     font-size: 40px;
     font-weight: 600;
-    filter: drop-shadow(2px 2px 10px rgb(248, 0, 0));
-    color: white;
 }
-.formLogin{
-    display: flex;
-    flex-direction: column;
-    gap: 25px; 
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+.bodyLogo{
+  width: 30%;
+  height: 55vh;
+  border-radius: 15px 0 0 15px;
+  background-image: url(/loginw3.jpg);
+  background-size: cover;
+  background-position: center;
+  background-color: #00b3b3;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
-.titleForm{
-    color: white;
-    font-size: 18px;
-    filter: drop-shadow(2px 2px 10px rgb(0, 0, 0));
+.blogin {
+  background: rgba(255, 255, 255, 0.1); 
+  backdrop-filter: blur(10px); 
+  padding: 40px 30px;
+  border-radius: 0 15px 15px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  height: 55vh;
+  text-align: center;
+  color: white;
 }
-.inputForm{
-    border-radius: 18px;
-    padding: 10px 20px;
-    color: black;
-    width: 80%;
+
+.titleForm {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #ffffff;
 }
-:hover.inputForm{
-    filter: drop-shadow(2px 2px 10px rgb(117, 0, 0));
+
+
+.inputForm {
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  color: black;
+  font-size: 16px;
 }
-.forgetPw{
-    color: white;
+
+.inputForm::placeholder {
+  color: #d3d3d3;
 }
-:hover.forgetPw{
+
+.btnLogin {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(89, 230, 255);
+  color: #333;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btnLogin:hover {
+  background-color: #2392e2;
+}
+
+/* Remember me and forget password styles */
+.forgetPw {
+  margin-top: 15px;
+  color: black;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.forgetPw:hover {
+  text-decoration: underline;
+  color: red;
+  font-weight: 600;
+}
+
+.backHome {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.backHome svg {
+  margin-right: 8px;
+}
+
+:hover.backHome{
     text-decoration: underline;
-    filter: drop-shadow(2px 2px 10px rgb(149, 1, 1));
-    color: rgb(0, 0, 0);
     font-weight: 600;
-    
-}
-.btnLogin{
-    background-image: radial-gradient(rgb(255, 255, 255),rgb(238, 0, 0));
-    width: 40%;
-    padding: 8px 20px;
-    border-radius: 20px;
     color: black;
-    font-weight: 700;
-    border: none;
 }
-:hover.btnLogin{
-    background-image: url(/logot1.jpg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: rgba(106, 0, 0,0);
-    filter: drop-shadow(2px 2px 10px rgb(255, 255, 255));
+.error {
+  color: #ff6666;
+  font-size: 14px;
 }

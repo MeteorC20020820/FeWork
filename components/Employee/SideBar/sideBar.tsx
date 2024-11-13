@@ -8,10 +8,13 @@ import {
   WorkSchedules,
   Timekeeping,
   Logout,
+  Department,
+  Employee
 } from "@/components/icon/icon";
 import { useRouter, usePathname } from "next/navigation";
 import LogOut from "../Logout/logout";
 import axios from "axios";
+const size = "30px"
 function getUserInfoFromToken(){
   const token = localStorage.getItem("authToken")
   if (!token) {
@@ -100,251 +103,115 @@ export default function SideBar({setUser, setUserRoleP}:any) {
             <Setting color="white" width="40px" height="40px" />
           </div>
         </div>
-        {userRole === "3" && (
-          <div>
-            {/* Thẻ Forum */}
-            <div
-              className={getFeatureClass("Forum")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Forum")}
-            >
-              <Forum color={getIconColor("forum")} width="50px" height="50px" />
-              <p className={getTextFeatureClass("forum")}>Forum</p>
-            </div>
-
-            {/* Thẻ OnLeave */}
-            <div
-              className={getFeatureClass("Onleave")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Onleave")}
-            >
-              <OnLeave
-                color={getIconColor("onleave")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("onleave")}>On leave</p>
-            </div>
-
-            {/* Thẻ WorkSchedules */}
-            <div
-              className={getFeatureClass("Workshedule")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Workshedule")
-                  setHoveredIcon("workshedule");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Workshedule")}
-            >
-              <WorkSchedules
-                color={getIconColor("workshedule")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("workshedule")}>
-                Work schedule
-              </p>
-            </div>
-
-            {/* Thẻ Timekeeping */}
-            <div
-              className={getFeatureClass("Timekeeping")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Timekeeping")
-                  setHoveredIcon("timekeeping");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Timekeeping")}
-            >
-              <Timekeeping
-                color={getIconColor("timekeeping")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
-            </div>
+        <div>
+          <p className={styles.titleFeature}>Feature</p>
+          {/* Thẻ Forum */}
+          <div
+            className={getFeatureClass("Forum")}
+            onMouseEnter={() => {
+              if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
+            }}
+            onMouseLeave={() => setHoveredIcon(null)}
+            onClick={() => router.push("/Employee/Forum")}
+          >
+            <Forum color={getIconColor("forum")} width="30px" height="30px" />
+            <p className={getTextFeatureClass("forum")}>Forum</p>
           </div>
-        )}
-        {userRole === "2" && (
-          <div>
-            {/* Thẻ Forum */}
-            <div
-              className={getFeatureClass("Forum")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Forum")}
-            >
-              <Forum color={getIconColor("forum")} width="50px" height="50px" />
-              <p className={getTextFeatureClass("forum")}>Forum</p>
-            </div>
 
-            {/* Thẻ OnLeave */}
-            <div
-              className={getFeatureClass("Onleave")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Onleave")}
-            >
-              <OnLeave
-                color={getIconColor("onleave")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("onleave")}>On leave</p>
-            </div>
-
-            {/* Thẻ WorkSchedules */}
-            <div
-              className={getFeatureClass("Workshedule")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Workshedule")
-                  setHoveredIcon("workshedule");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Workshedule")}
-            >
-              <WorkSchedules
-                color={getIconColor("workshedule")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("workshedule")}>
-                Work schedule
-              </p>
-            </div>
-
-            {/* Thẻ Timekeeping */}
-            <div
-              className={getFeatureClass("Timekeeping")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Timekeeping")
-                  setHoveredIcon("timekeeping");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Timekeeping")}
-            >
-              <Timekeeping
-                color={getIconColor("timekeeping")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
-            </div>
-            <div
-              className={getFeatureClass("Department")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Department")
-                  setHoveredIcon("department");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Department")}
-            >
-              <Timekeeping
-                color={getIconColor("department")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("department")}>Department</p>
-            </div>
+          {/* Thẻ OnLeave */}
+          <div
+            className={getFeatureClass("Onleave")}
+            onMouseEnter={() => {
+              if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
+            }}
+            onMouseLeave={() => setHoveredIcon(null)}
+            onClick={() => router.push("/Employee/Onleave")}
+          >
+            <OnLeave
+              color={getIconColor("onleave")}
+              width={size}
+              height={size}
+            />
+            <p className={getTextFeatureClass("onleave")}>On leave</p>
           </div>
-        )}
-        {userRole === "1" && (
-          <div>
-            {/* Thẻ Forum */}
-            <div
-              className={getFeatureClass("Forum")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Forum")}
-            >
-              <Forum color={getIconColor("forum")} width="50px" height="50px" />
-              <p className={getTextFeatureClass("forum")}>Forum</p>
-            </div>
 
-            {/* Thẻ OnLeave */}
-            <div
-              className={getFeatureClass("Onleave")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Onleave")}
-            >
-              <OnLeave
-                color={getIconColor("onleave")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("onleave")}>On leave</p>
-            </div>
-
-            {/* Thẻ WorkSchedules */}
-            <div
-              className={getFeatureClass("Workshedule")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Workshedule")
-                  setHoveredIcon("workshedule");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Workshedule")}
-            >
-              <WorkSchedules
-                color={getIconColor("workshedule")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("workshedule")}>
-                Work schedule
-              </p>
-            </div>
-
-            {/* Thẻ Timekeeping */}
-            <div
-              className={getFeatureClass("Timekeeping")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Timekeeping")
-                  setHoveredIcon("timekeeping");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Timekeeping")}
-            >
-              <Timekeeping
-                color={getIconColor("timekeeping")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
-            </div>
-            <div
-              className={getFeatureClass("Department")}
-              onMouseEnter={() => {
-                if (pathname !== "/Employee/Department")
-                  setHoveredIcon("department");
-              }}
-              onMouseLeave={() => setHoveredIcon(null)}
-              onClick={() => router.push("/Employee/Department")}
-            >
-              <Timekeeping
-                color={getIconColor("department")}
-                width="50px"
-                height="50px"
-              />
-              <p className={getTextFeatureClass("department")}>Department</p>
-            </div>
+          {/* Thẻ WorkSchedules */}
+          <div
+            className={getFeatureClass("Workshedule")}
+            onMouseEnter={() => {
+              if (pathname !== "/Employee/Workshedule")
+                setHoveredIcon("workshedule");
+            }}
+            onMouseLeave={() => setHoveredIcon(null)}
+            onClick={() => router.push("/Employee/Workshedule")}
+          >
+            <WorkSchedules
+              color={getIconColor("workshedule")}
+              width={size}
+              height={size}
+            />
+            <p className={getTextFeatureClass("workshedule")}>Work schedule</p>
           </div>
-        )}
+
+          {/* Thẻ Timekeeping */}
+          <div
+            className={getFeatureClass("Timekeeping")}
+            onMouseEnter={() => {
+              if (pathname !== "/Employee/Timekeeping")
+                setHoveredIcon("timekeeping");
+            }}
+            onMouseLeave={() => setHoveredIcon(null)}
+            onClick={() => router.push("/Employee/Timekeeping")}
+          >
+            <Timekeeping
+              color={getIconColor("timekeeping")}
+              width={size}
+              height={size}
+            />
+            <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
+          </div>
+          {(userRole === "1" || userRole === "2") && (
+            <div>
+              <p className={styles.titleFeature}>Manage</p>
+              <div>
+                <div
+                  className={getFeatureClass("Department")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Department")
+                      setHoveredIcon("department");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => router.push("/Employee/Department")}
+                >
+                  <Department
+                    color={getIconColor("department")}
+                    width={size}
+                    height={size}
+                  />
+                  <p className={getTextFeatureClass("department")}>
+                    Department
+                  </p>
+                </div>
+                <div
+                  className={getFeatureClass("Employee")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Employee")
+                      setHoveredIcon("employee");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => router.push("/Employee/Employee")}
+                >
+                  <Employee
+                    color={getIconColor("employee")}
+                    width={size}
+                    height={size}
+                  />
+                  <p className={getTextFeatureClass("employee")}>Employee</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Thẻ Logout */}
@@ -354,7 +221,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
         onMouseLeave={() => setHoveredIcon(null)}
         onClick={() => setModalLogout(true)}
       >
-        <Logout color={getIconColor("logout")} width="50px" height="50px" />
+        <Logout color={getIconColor("logout")} width={size} height={size} />
         <p className={getTextFeatureClass("logout")}>LogOut</p>
       </div>
       {LogOut(modalLogout, setModalLogout)}

@@ -196,9 +196,12 @@ export default function Department() {
    const ApiGetDepartment = async () => {
      try {
        const res = await axios.get("http://localhost:7295/api/Department");
-       console.log(res.data.statusCode);
        if (Array.isArray(res.data.data)) {
-         setDepartment(res.data.data);
+        const formattedData = res.data.data.map((item:any) => ({
+          ...item,
+          createdAt: new Date(item.createdAt).toLocaleDateString("en-GB"), 
+        }));
+         setDepartment(formattedData);
        } else {
          console.error("Expected array but received:", res.data.data);
        }
@@ -231,6 +234,7 @@ export default function Department() {
   return (
     <div className={styles.bodyDepartment}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
+      <div style={{ width: "18%" }}></div>
       <div className={styles.department}>
         <p className={styles.titleDep}>Department</p>
         {userRoleP === "1" && (
@@ -285,7 +289,6 @@ export default function Department() {
           dataSource={data}
           scroll={{ y: 400 }}
         />
-        ;
       </div>
       {Delete(modalDelete, setModalDelete, dataDep)}
       {Edit(modalEdit, setModalEdit, dataDep)}
