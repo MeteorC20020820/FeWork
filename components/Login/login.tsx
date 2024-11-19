@@ -13,7 +13,12 @@ export default function Login() {
 
   const sendEmail = (e:any) => setEmail(e.target.value);
   const sendPassword = (e:any) => setPassword(e.target.value);
-
+  const [loading, setLoading] = useState(false); 
+  const handleNavigation = (path: string) => {
+    setLoading(true); 
+    router.push(path);
+    setTimeout(() => setLoading(false), 1000); 
+  };
   const ApiSendForm = async () => {
     if (!email || !password) {
       setError("Please enter both email and password.");
@@ -33,7 +38,7 @@ export default function Login() {
       const decodedPayload = JSON.parse(atob(payloadBase64));
       console.log(decodedPayload);
 
-      router.push("/Employee/Info");
+      handleNavigation("/Employee/Info");
     } catch (error) {
       console.log(error);
       setError("An error occurred.");
@@ -42,13 +47,11 @@ export default function Login() {
 
   return (
     <div className={styles.login}>
-      <div className={styles.bodyLogo}>
-        
-      </div>
+      <div className={styles.bodyLogo}></div>
       <div className={styles.blogin}>
         <button
           className={styles.backHome}
-          onClick={() => router.push("/Home")}
+          onClick={() => handleNavigation("/Home")}
         >
           <ArrowCirleLeft width="25px" height="25px" color="white" />
           Back Home
@@ -69,7 +72,7 @@ export default function Login() {
             value={password}
             onChange={sendPassword}
           />
-          
+
           {error && <p className={styles.error}>{error}</p>}
           <p className={styles.forgetPw}>Forgot password?</p>
           <button className={styles.btnLogin} onClick={ApiSendForm}>
@@ -77,6 +80,20 @@ export default function Login() {
           </button>
         </div>
       </div>
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loader}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

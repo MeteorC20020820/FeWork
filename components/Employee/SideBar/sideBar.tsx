@@ -34,6 +34,15 @@ export default function SideBar({setUser, setUserRoleP}:any) {
   const [userInfo, setUserInfo] = useState<any>(null);
   const [idUser, setIdUser] = useState<number | null>(null );
   const [userI, setUserI] = useState<any>({})
+  const [loading, setLoading] = useState(false); // Thêm state loading
+
+
+  // Hàm điều hướng với loading
+  const handleNavigation = (path: string) => {
+    setLoading(true); // Bật loading khi bắt đầu điều hướng
+    router.push(path);
+    setTimeout(() => setLoading(false), 1000); // Tắt loading sau khi điều hướng (hoặc xử lý tại sự kiện onRouteChangeComplete)
+  };
   useEffect(() =>{
     const user = getUserInfoFromToken();
     if(user){
@@ -99,7 +108,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
               <p className={styles.textName}>{userI.position}</p>
             </div>
           </div>
-          <div onClick={() => router.push("/Employee/Info")}>
+          <div onClick={() => handleNavigation("/Employee/Info")}>
             <Setting color="white" width="40px" height="40px" />
           </div>
         </div>
@@ -112,7 +121,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
               if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
             }}
             onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => router.push("/Employee/Forum")}
+            onClick={() => handleNavigation("/Employee/Forum")}
           >
             <Forum color={getIconColor("forum")} width="30px" height="30px" />
             <p className={getTextFeatureClass("forum")}>Forum</p>
@@ -125,7 +134,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
               if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
             }}
             onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => router.push("/Employee/Onleave")}
+            onClick={() => handleNavigation("/Employee/Onleave")}
           >
             <OnLeave
               color={getIconColor("onleave")}
@@ -143,7 +152,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
                 setHoveredIcon("workshedule");
             }}
             onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => router.push("/Employee/Workshedule")}
+            onClick={() => handleNavigation("/Employee/Workshedule")}
           >
             <WorkSchedules
               color={getIconColor("workshedule")}
@@ -161,7 +170,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
                 setHoveredIcon("timekeeping");
             }}
             onMouseLeave={() => setHoveredIcon(null)}
-            onClick={() => router.push("/Employee/Timekeeping")}
+            onClick={() => handleNavigation("/Employee/Timekeeping")}
           >
             <Timekeeping
               color={getIconColor("timekeeping")}
@@ -181,7 +190,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
                       setHoveredIcon("department");
                   }}
                   onMouseLeave={() => setHoveredIcon(null)}
-                  onClick={() => router.push("/Employee/Department")}
+                  onClick={() => handleNavigation("/Employee/Department")}
                 >
                   <Department
                     color={getIconColor("department")}
@@ -199,7 +208,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
                       setHoveredIcon("employee");
                   }}
                   onMouseLeave={() => setHoveredIcon(null)}
-                  onClick={() => router.push("/Employee/Employee")}
+                  onClick={() => handleNavigation("/Employee/Employee")}
                 >
                   <Employee
                     color={getIconColor("employee")}
@@ -225,6 +234,20 @@ export default function SideBar({setUser, setUserRoleP}:any) {
         <p className={getTextFeatureClass("logout")}>LogOut</p>
       </div>
       {LogOut(modalLogout, setModalLogout)}
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loader}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

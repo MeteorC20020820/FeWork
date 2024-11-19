@@ -2,11 +2,19 @@
 import { useRouter } from "next/navigation";
 import styles from "./header.module.css";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
+  const [loading, setLoading] = useState(false); // Thêm state loading
 
+  // Hàm điều hướng với loading
+  const handleNavigation = (path: string) => {
+    setLoading(true); // Bật loading khi bắt đầu điều hướng
+    router.push(path);
+    setTimeout(() => setLoading(false), 1000); // Tắt loading sau khi điều hướng (hoặc xử lý tại sự kiện onRouteChangeComplete)
+  };
   return (
     <div className={styles.bodyHeader}>
       <div className={styles.logo}>
@@ -17,7 +25,7 @@ export default function Header() {
           className={`${styles.textTab} ${
             pathname === "/Home" ? styles.activeTab : ""
           }`}
-          onClick={() => router.push("/Home")}
+          onClick={() => handleNavigation("/Home")}
         >
           Home
         </p>
@@ -25,7 +33,7 @@ export default function Header() {
           className={`${styles.textTab} ${
             pathname === "/About" ? styles.activeTab : ""
           }`}
-          onClick={() => router.push("/About")}
+          onClick={() => handleNavigation("/About")}
         >
           About
         </p>
@@ -33,7 +41,7 @@ export default function Header() {
           className={`${styles.textTab} ${
             pathname === "/Recruitment" ? styles.activeTab : ""
           }`}
-          onClick={() => router.push("/Recruitment")}
+          onClick={() => handleNavigation("/Recruitment")}
         >
           Recruitment
         </p>
@@ -41,7 +49,7 @@ export default function Header() {
           className={`${styles.textTab} ${
             pathname === "/Contact" ? styles.activeTab : ""
           }`}
-          onClick={() => router.push("/Contact")}
+          onClick={() => handleNavigation("/Contact")}
         >
           Contact
         </p>
@@ -49,11 +57,25 @@ export default function Header() {
       <div className={styles.login}>
         <button
           className={styles.btnLogin}
-          onClick={() => router.push("/Login")}
+          onClick={() => handleNavigation("/Login")}
         >
           LogIn
         </button>
       </div>
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loader}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
