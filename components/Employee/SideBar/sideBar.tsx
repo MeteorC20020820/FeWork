@@ -63,6 +63,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
       );
     }
   }, [userInfo]);
+  console.log(userInfo?.EmployeeId)
   useEffect(() =>{
     const apiGetUser = async () => {
       try {

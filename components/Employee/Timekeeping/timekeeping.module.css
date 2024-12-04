@@ -1,0 +1,109 @@
+.bodyTimekeep {
+  display: flex;
+  flex-direction: row;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.right {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+.imagePreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.previewImg {
+  max-width: 250px;
+  max-height: 250px;
+  border-radius: 10px;
+  border: 2px solid #007bff;
+  object-fit: cover;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.iconTimekeeping {
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.videoPreview {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  border: 2px solid #007bff;
+  object-fit: cover;
+}
+
+.captureButton {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.captureButton:hover {
+  background-color: #0056b3;
+}
+
+.okButton {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.okButton:hover {
+  background-color: #218838;
+}
+
+.uploadContainer {
+  margin-top: 20px;
+}
+
+.uploadButton {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.uploadButton:hover {
+  background-color: #0056b3;
+}
+
+.hiddenCanvas {
+  display: none;
+}

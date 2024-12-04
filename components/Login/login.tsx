@@ -74,7 +74,6 @@ export default function Login() {
           />
 
           {error && <p className={styles.error}>{error}</p>}
-          <p className={styles.forgetPw}>Forgot password?</p>
           <button className={styles.btnLogin} onClick={ApiSendForm}>
             Login
           </button>

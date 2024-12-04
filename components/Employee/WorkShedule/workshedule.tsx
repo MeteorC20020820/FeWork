@@ -3,6 +3,7 @@ import SideBar from "../SideBar/sideBar";
 import { useState, useRef, useEffect } from "react";
 import styles from './workshedule.module.css'
 import { IconNextMonth, IconPrevMonth } from "@/components/icon/icon";
+import axios from "axios";
 
 const events = [
   {
@@ -38,6 +39,83 @@ const events = [
 ];
 export default function Workshedule(){
 const [user, setUser] = useState<any>({});
+const token = localStorage?.getItem("authToken");
+const [idAcc, setIDAcc] = useState<any>(null)
+const [data, setData] = useState<any>({})
+
+useEffect(() =>{
+  const ApiGetAccID = async() =>{
+    try {
+      const res = await axios.get(
+        `http://localhost:7295/api/Account/${user?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setIDAcc(res?.data?.data?.id)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  ApiGetAccID()
+},[user])
+useEffect(() => {
+  const ApiGetAttendance = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:7295/api/Attendance/${idAcc}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      // Kiểm tra nếu res.data.data là mảng
+      if (Array.isArray(res.data.data)) {
+        const formattedData = res.data.data.map((item:any) => {
+          const checkInDate = new Date(item.checkIn);
+          const checkOutDate = new Date(item.checkOut);
+
+          return {
+            id: item.id,
+            name: item.status === "present" ? "Attendance" : "Absent",
+            timeStart: checkInDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            timeEnd: checkOutDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            }),
+            day: checkInDate.getDate(),
+            month: checkInDate.toLocaleString("default", { month: "long" }),
+            year: checkInDate.getFullYear(),
+            note: `Check-In: ${checkInDate.toLocaleTimeString()} | Check-Out: ${checkOutDate.toLocaleTimeString()} | Late: ${
+              item.late === 1 ? "Yes" : "No"
+            }`,
+            late: item.late,
+            status: item.status,
+          };
+        });
+
+        setData(formattedData);
+      } else {
+        console.error("Data received from API is not an array:", res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  if (idAcc) {
+    ApiGetAttendance();
+  }
+}, [idAcc]);
+
+
+console.log(data)
 const [userRoleP, setUserRoleP] = useState<any>(null);
 const [currentDate, setCurrentDate] = useState(new Date());
 const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -121,18 +199,37 @@ for (let i = startingDay - 1; i >= 0; i--) {
 }
 
 for (let i = 1; i <= daysInMonth; i++) {
-  const eventsForDay = events.filter(
-    (event) =>
-      event.day === i &&
-      parseInt(event.year) === selectedYear &&
-      new Date(`${event.month} 1, ${event.year}`).getMonth() === selectedMonth
-  );
+  const eventsForDay = Array.isArray(data)
+    ? data.filter(
+        (event) =>
+          event.day === i &&
+          parseInt(event.year) === selectedYear &&
+          new Date(`${event.month} 1, ${event.year}`).getMonth() ===
+            selectedMonth
+      )
+    : [];
+
+  let status = "hoàn thành"; // Mặc định là hoàn thành
+  if (eventsForDay.some((event) => event.late === 1)) {
+    status = "muộn";
+  } else if (eventsForDay.some((event) => event.status === 0)) {
+    status = "đang làm việc";
+  }
+
+  // Nếu không có sự kiện nào, gán status mặc định là "unknown"
+  if (eventsForDay.length === 0) {
+    status = "unknown";
+  }
+
   days.push({
     day: i,
     isCurrentMonth: true,
     events: eventsForDay,
+    status, // Trạng thái ngày
   });
 }
+
+
 
 const totalCells = 42;
 const remainingCells = totalCells - days.length;
@@ -152,18 +249,19 @@ const displayDays = allNextMonth ? fullDays.slice(0, -7) : fullDays;
 
 const handleDayClick = (day: number) => {
   setSelectedDay(day);
-  const eventsForDay = events.filter(
-    (event) =>
+  const eventsForDay = data.filter(
+    (event:any) =>
       event.day === day &&
       parseInt(event.year) === selectedYear &&
       new Date(`${event.month} 1, ${event.year}`).getMonth() === selectedMonth
   );
   setSelectedEvents(eventsForDay);
 };
+
     return (
       <div className={styles.bodyWorkshedule}>
         <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
-        <div style={{width:"18%"}}></div>
+        <div style={{ width: "18%" }}></div>
         <div className={styles.content}>
           <div className={styles.calendarContainer}>
             <div className={styles.header}>
@@ -238,12 +336,10 @@ const handleDayClick = (day: number) => {
                   key={index}
                   className={`${styles.day} ${
                     dayObj.isCurrentMonth
-                      ? styles.currentMonthDay
+                      ? `${styles.currentMonthDay} ${
+                          styles[dayObj.status?.replace(/ /g, "-") || "unknown"]
+                        }`
                       : styles.otherMonthDay
-                  } ${
-                    dayObj.isCurrentMonth && dayObj.events.length > 0
-                      ? styles.eventDay
-                      : ""
                   } ${
                     dayObj.isCurrentMonth &&
                     dayObj.day === currentDay &&
@@ -256,14 +352,18 @@ const handleDayClick = (day: number) => {
                     dayObj.isCurrentMonth && handleDayClick(dayObj.day)
                   }
                 >
-                  {dayObj.day}
-                  {dayObj.events.length > 0 && (
+                  <div className={styles.dayNumber}>{dayObj.day}</div>
+                  {dayObj.isCurrentMonth && dayObj.events.length > 0 && (
                     <div className={styles.eventList}>
-                      {dayObj.events.map((event) => (
-                        <div key={event.id} className={styles.event}>
-                          <strong>{event.name}</strong>
-                        </div>
-                      ))}
+                      <div className={styles.eventStatus}>
+                        {dayObj.status === "muộn"
+                          ? "Muộn"
+                          : dayObj.status === "đang làm việc"
+                          ? "Đang làm việc"
+                          : dayObj.status === "hoàn thành"
+                          ? "Hoàn thành"
+                          : "Không có sự kiện"}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -272,7 +372,7 @@ const handleDayClick = (day: number) => {
 
             {selectedDay !== null && selectedEvents.length > 0 && (
               <div className={styles.eventDetails}>
-                <h1 className={styles.titleEvents}>Upcoming Events</h1>
+                <h1 className={styles.titleEvents}>Details for Selected Day</h1>
                 <ul>
                   {selectedEvents.map((event) => (
                     <div key={event.id} className={styles.eventsOnDay}>
@@ -280,13 +380,10 @@ const handleDayClick = (day: number) => {
                       <p className={styles.timeEventDay}>
                         {event.timeStart} - {event.timeEnd}
                       </p>
-                      <p
-                        className={styles.noteEventDay}
-                        style={{ fontWeight: "600" }}
-                      >
-                        Note:
+                      <p className={styles.noteEventDay}>Note: {event.note}</p>
+                      <p className={styles.dateEventDay}>
+                        Date: {event.day} {event.month} {event.year}
                       </p>
-                      <p className={styles.noteEventDay}>{event.note}</p>
                     </div>
                   ))}
                 </ul>

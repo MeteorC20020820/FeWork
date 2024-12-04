@@ -1,0 +1,62 @@
+.commentSection {
+  margin-top: 15px;
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+}
+
+.comment {
+  margin-bottom: 10px;
+}
+
+.author {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.content {
+  margin: 0;
+}
+
+.timestamp {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.commentList {
+  max-height: 150px; /* Giới hạn chiều cao (tương ứng với 2 comment) */
+  overflow-y: auto; /* Hiển thị thanh cuộn nếu có nhiều hơn 2 comment */
+}
+
+.addComment {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.postAcc {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.commentInput {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.commentButton {
+  padding: 8px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.commentButton:hover {
+  background-color: #0056b3;
+}

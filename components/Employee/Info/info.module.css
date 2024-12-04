@@ -1,0 +1,171 @@
+/* Tổng thể giao diện */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 50px;
+  background-color: #f9f9f9;
+  font-family: Arial, sans-serif;
+}
+
+/* Hộp thông tin */
+.profileCard {
+  display: flex;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 800px;
+  padding: 20px;
+}
+
+/* Phần bên trái */
+.profileLeft {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 20px;
+  border-right: 1px solid #ddd;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #eee;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.editPicture {
+  color: #555;
+  font-size: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.editPicture:hover {
+  color: #007bff;
+}
+
+/* Phần bên phải */
+.profileRight {
+  flex: 2;
+  padding-left: 20px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.detailRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.detailLabel {
+  flex: 1;
+  font-size: 14px;
+  color: #666;
+}
+
+.detailInput {
+  flex: 2;
+  font-size: 14px;
+  color: #333;
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+}
+
+.detailInput:focus {
+  border-color: #007bff;
+  background-color: #fff;
+  outline: none;
+}
+
+.datePicker {
+  cursor: pointer;
+}
+
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.saveButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveButton:hover {
+  background-color: #0056b3;
+}
+.changePw{
+  padding: 20px 0;
+}
+.btnPw{
+  padding: 5px 20px;
+  background-color: #007bff;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+  color: white;
+}
+:hover.btnPw{
+  background-color: white;
+  color: #007bff;
+  font-weight: 600;
+}
+.backButton {
+  margin-left: 10px;
+  padding: 10px 20px;
+  border: 1px solid #007bff;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #007bff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.backButton:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+/* Container cho input password và icon mắt */
+.passwordInputContainer {
+  position: relative;
+  width: 100%;
+}
+
+.detailInput {
+  width: calc(100% - 40px); /* Trừ khoảng trống cho icon */
+  padding-right: 40px; /* Đảm bảo không bị che bởi icon */
+}
+
+.passwordToggle {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  color: #aaa;
+}
+
+.passwordToggle:hover {
+  color: #007bff;
+}
+

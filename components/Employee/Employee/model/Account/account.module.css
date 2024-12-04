@@ -1,49 +1,78 @@
-.bodyLogout{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    align-items: center;
-    padding: 4%;
-    text-align: center;
+.account {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  padding: 20px;
 }
-.title{
-    font-size: 40px;
-    font-weight: 600;
-    color: red;
+
+.profileCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
-.text{
-    font-size: 20px;
-    font-weight: 600;
-    color: black;
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  background-color: #2c3e50;
 }
-.bodyBtn{
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0 0 0;
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #2c3e50;
 }
-.btnLogout{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 25px;
-    background-color: rgb(246, 118, 118);
-    color: red;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
+
+.email {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin-bottom: 8px;
 }
-.btnCancel{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 25px;
-    background-color: rgb(99, 99, 99);
-    color: rgb(0, 0, 0);
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
+
+.role {
+  font-size: 14px;
+  font-weight: bold;
+  color: #4a90e2;
+  margin-bottom: 16px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.button.follow {
+  background-color: #4a90e2;
+  color: #fff;
+}
+
+.button.follow:hover {
+  background-color: #357abd;
+}
+
+.button.reset {
+  background-color: #fff;
+  border: 2px solid #4a90e2;
+  color: #4a90e2;
+}
+
+.button.reset:hover {
+  background-color: #4a90e2;
+  color: white;
 }
