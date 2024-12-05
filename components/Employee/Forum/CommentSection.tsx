@@ -17,7 +17,6 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log(res.data)
         setComments(res.data.data); // Lưu danh sách comment vào state
       } catch (error) {
         console.error("Error fetching comments:", error);
@@ -53,7 +52,6 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
       console.error("Error adding comment:", error);
     }
   };
-  console.log(comments)
   return (
     <div className={styles.commentSection}>
       {/* Hiển thị danh sách comment */}

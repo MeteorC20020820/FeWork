@@ -11,16 +11,16 @@ export default function Forum() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [postContent, setPostContent] = useState("");
   const [image, setImage] = useState<File | null>(null);
-  const [posts, setPosts] = useState<any>({})
+  const [posts, setPosts] = useState<any[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const token = localStorage?.getItem("authToken");
-  const [acc, setAcc] = useState<any>({})
-  console.log(acc)
-  console.log(user)
-  console.log(token)
-  useEffect(() =>{
-    const getApiAcc = async() =>{
-      try{
+  const [acc, setAcc] = useState<any>({});
+  const [editPost, setEditPost] = useState<any>(null);
+
+  // Fetch user account
+  useEffect(() => {
+    const getApiAcc = async () => {
+      try {
         const res = await axios.get(
           `http://localhost:7295/api/Account/${user.id}`,
           {
@@ -29,21 +29,39 @@ export default function Forum() {
             },
           }
         );
-        console.log(res.data.data)
-        setAcc(res.data.data)
+        setAcc(res.data.data);
+      } catch (error) {
+        console.error(error);
       }
-      catch(error){
-        console.log(error)
-      }
-    }
-    getApiAcc()
-  }, [user])
+    };
+    getApiAcc();
+  }, [user, token]);
 
-  useEffect(() =>{
-  })
-  // Xử lý khi nhấn nút đăng bài
-  const handlePost = async() => {
-    try{
+  // Fetch all posts
+  useEffect(() => {
+    const ApiGetPost = async () => {
+      try {
+        const res = await axios.get("http://localhost:7295/api/Post", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setPosts(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    ApiGetPost();
+  }, [token]);
+
+  // Handle post creation
+  const handlePost = async () => {
+    if (postContent.trim() === "" && !image) {
+      alert("Please write something or upload an image before posting!");
+      return;
+    }
+
+    try {
       const res = await axios.post(
         `http://localhost:7295/api/Post`,
         {
@@ -55,48 +73,91 @@ export default function Forum() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
-      console.log(res)
-      if(res.status ==200){
-         window.location.reload();
-      }
-    }
-    catch(error){
 
+      if (res.status === 200) {
+        setPosts([...posts, res.data.data]);
+        alert("Post created successfully!");
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      resetModal();
     }
-    if (postContent.trim() === "" && !image) {
-      alert("Please write something or upload an image before posting!");
+  };
+
+  // Handle post update
+  const handleUpdatePost = async () => {
+    if (!editPost) {
+      alert("No post selected for editing!");
       return;
     }
 
-    console.log("Post content:", postContent);
-    if (image) {
-      console.log("Image file:", image);
+    try {
+      const updatedData = {
+        content: postContent,
+        imageUrl: image?.name || editPost.imageUrl,
+      };
+
+      const res = await axios.put(
+        `http://localhost:7295/api/Post/${editPost.id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setPosts(
+          posts.map((post) =>
+            post.id === editPost.id ? { ...post, ...updatedData } : post
+          )
+        );
+        alert("Post updated successfully!");
+      }
+    } catch (error) {
+      console.error("Error updating post:", error);
+      alert("Failed to update post!");
+    } finally {
+      resetModal();
     }
+  };
+
+  // Handle post deletion
+  const handleDelete = async (postId: number) => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:7295/api/Post/${postId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        setPosts(posts.filter((post) => post.id !== postId));
+        alert("Post deleted successfully!");
+      }
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert("Failed to delete post!");
+    }
+  };
+
+  // Reset modal state
+  const resetModal = () => {
     setPostContent("");
     setImage(null);
     setPreview(null);
     setIsModalOpen(false);
+    setEditPost(null);
   };
 
-  useEffect(() =>{
-    const ApiGetPost = async() =>{
-      try{
-        const res = await axios.get("http://localhost:7295/api/Post", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(res)
-        setPosts(res.data.data)
-      }
-      catch(error){
-        console.log(error)
-      }
-    }
-    ApiGetPost()
-  },[])
+  // Handle image preview
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -105,13 +166,19 @@ export default function Forum() {
     }
   };
 
+  // Handle edit
+  const handleEdit = (post: any) => {
+    setEditPost(post);
+    setPostContent(post.content);
+    setPreview(post.imageUrl ? `/${post.imageUrl}` : null);
+    setIsModalOpen(true);
+  };
+
   return (
     <div className={styles.bodyForum}>
-      {/* Sidebar */}
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div style={{ width: "18%" }}></div>
 
-      {/* Giao diện đăng bài */}
       <div className={styles.right}>
         <div
           className={styles.inputContainer}
@@ -137,19 +204,14 @@ export default function Forum() {
             placeholder="What's on your mind?"
             readOnly
           />
-          <div className={styles.actions}>
-            <div className={styles.actionButton}>📸 Photo/Video</div>
-            <div className={styles.actionButton}>😊 Feeling/Activity</div>
-          </div>
         </div>
         <div
           style={{ display: "flex", justifyContent: "center", width: "100%" }}
         >
           <div className={styles.postList}>
             {posts.length > 0 ? (
-              [...posts].reverse().map((post: any, index: number) => (
-                <div key={index} className={styles.post}>
-                  {/* Header */}
+              [...posts].reverse().map((post) => (
+                <div className={styles.post} key={post.id}>
                   <div className={styles.postHeader}>
                     <img
                       src={`/${post.avatarUrl}`}
@@ -162,9 +224,26 @@ export default function Forum() {
                         {new Date(post.createdAt).toLocaleString()}
                       </span>
                     </div>
+                    {post.accountId === acc.id && (
+                      <div className={styles.options}>
+                        <button className={styles.optionButton}>⋮</button>
+                        <div className={styles.dropdown}>
+                          <button
+                            className={styles.dropdownItem}
+                            onClick={() => handleEdit(post)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className={styles.dropdownItem}
+                            onClick={() => handleDelete(post.id)}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
-
-                  {/* Content */}
                   <div className={styles.postContent}>
                     <p>{post.content}</p>
                     {post.imageUrl && (
@@ -175,9 +254,7 @@ export default function Forum() {
                       />
                     )}
                   </div>
-
-                  {/* Comment Section */}
-                  <CommentSection postId={post.id} acc={post}  acc2 = {acc}/>
+                  <CommentSection postId={post.id} acc={post} acc2={acc} />
                 </div>
               ))
             ) : (
@@ -186,35 +263,17 @@ export default function Forum() {
           </div>
         </div>
       </div>
-      {/* Modal */}
+
       {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
             <div className={styles.modalHeader}>
-              <h2>Create Post</h2>
-              <button
-                className={styles.closeButton}
-                onClick={() => setIsModalOpen(false)}
-              >
+              <h2>{editPost ? "Edit Post" : "Create Post"}</h2>
+              <button className={styles.closeButton} onClick={resetModal}>
                 ✖
               </button>
             </div>
             <div className={styles.modalBody}>
-              <div className={styles.userInfo}>
-                <img
-                  src="https://via.placeholder.com/40"
-                  alt="Avatar"
-                  className={styles.avatar}
-                />
-                <div>
-                  <p className={styles.userName}>Your Name</p>
-                  <select className={styles.privacyDropdown}>
-                    <option value="public">🌐 Public</option>
-                    <option value="friends">👥 Friends</option>
-                    <option value="onlyme">🔒 Only Me</option>
-                  </select>
-                </div>
-              </div>
               <textarea
                 className={styles.textArea}
                 rows={4}
@@ -222,7 +281,6 @@ export default function Forum() {
                 value={postContent}
                 onChange={(e) => setPostContent(e.target.value)}
               />
-              {/* Hiển thị ảnh đã chọn */}
               {preview && (
                 <div className={styles.imagePreview}>
                   <img
@@ -245,8 +303,11 @@ export default function Forum() {
                     onChange={handleImageChange}
                   />
                 </div>
-                <button className={styles.postButton} onClick={handlePost}>
-                  Post
+                <button
+                  className={styles.postButton}
+                  onClick={editPost ? handleUpdatePost : handlePost}
+                >
+                  {editPost ? "Update Post" : "Post"}
                 </button>
               </div>
             </div>
