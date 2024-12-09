@@ -3,6 +3,7 @@ import styles from "./timekeeping.module.css";
 import SideBar from "../SideBar/sideBar";
 import React, { useState, useRef, useEffect } from "react";
 import { Timekeeping } from "@/components/icon/icon";
+import axios from "axios";
 
 export default function TimeKeeping() {
   const [user, setUser] = useState<any>({});
@@ -10,7 +11,7 @@ export default function TimeKeeping() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isCameraActive, setIsCameraActive] = useState(false);
   const [isLoadingCamera, setIsLoadingCamera] = useState(false);
-
+  const token = localStorage?.getItem("authToken");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   console.log(previewImage);
@@ -58,6 +59,35 @@ export default function TimeKeeping() {
     setStream(null);
   };
 
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState<any>(null)
+  useEffect(() => {
+    if (imageFile) {
+      apiUrlImage();
+    }
+  }, [imageFile]);
+  console.log(imageUrl);
+  const apiUrlImage = async() =>{
+    if(!imageFile) return;
+    const formData = new FormData();
+    formData.append("file", imageFile)
+    try {
+      const res = await axios.post(
+        "http://localhost:7295/api/FileUpload/upload",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data", // Đảm bảo định dạng đúng
+          },
+        }
+      );
+      setImageUrl(res.data.url)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  console.log(imageFile)
   const handleCapture = () => {
     if (videoRef.current && canvasRef.current) {
       const context = canvasRef.current.getContext("2d");
@@ -73,10 +103,27 @@ export default function TimeKeeping() {
         );
         const imageData = canvasRef.current.toDataURL("image/png");
         setPreviewImage(imageData);
-        handleCloseModal();
+
+        // Convert base64 to Blob
+        const byteString = atob(imageData.split(",")[1]); // Decode base64
+        const mimeString = imageData.split(",")[0].split(":")[1].split(";")[0]; // Get MIME type
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeString });
+
+        // Convert Blob to File
+        const file = new File([blob], "captured_image.png", {
+          type: mimeString,
+        });
+        setImageFile(file);
       }
     }
+    apiUrlImage();
   };
+
 
   const handleOkClick = () => {
     if (previewImage) {
@@ -93,25 +140,12 @@ export default function TimeKeeping() {
       <div className={styles.right}>
         <h2 className={styles.title}>Face Recognition Timekeeping</h2>
         <div className={styles.imagePreview}>
-          {previewImage ? (
-            <>
-              <img
-                src={previewImage}
-                alt="Captured"
-                className={styles.previewImg}
-              />
-              <button className={styles.okButton} onClick={handleOkClick}>
-                OK
-              </button>
-            </>
-          ) : (
-            <Timekeeping
-              className={styles.iconTimekeeping}
-              color="black"
-              width="250px"
-              height="250px"
-            />
-          )}
+          <Timekeeping
+            className={styles.iconTimekeeping}
+            color="black"
+            width="250px"
+            height="250px"
+          />
         </div>
 
         {!isCameraActive && !previewImage && (

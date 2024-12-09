@@ -74,8 +74,8 @@ export default function Create(open: boolean, setOpen: Function) {
           },
         }
       );
-
-      if (res.data.statusCode === 200) {
+      console.log(res)
+      if (res.status === 200) {
         window.location.reload();
       } else {
         setError("Failed to update employee.");
@@ -98,7 +98,7 @@ export default function Create(open: boolean, setOpen: Function) {
       okButtonProps={{ style: { display: "none" } }}
     >
       <div className={styles.bodyLogout}>
-        <p className={styles.title}>Edit Employee</p>
+        <p className={styles.title}>Create Employee</p>
         <div className={styles.bodyEdit}>
           <input
             type="text"
@@ -172,7 +172,7 @@ export default function Create(open: boolean, setOpen: Function) {
             className={styles.btnLogout}
             onClick={() => apiEditDepartment()}
           >
-            Edit
+            Create
           </button>
           <button className={styles.btnCancel} onClick={() => setOpen(false)}>
             Cancel

@@ -38,6 +38,7 @@
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+  object-fit: cover;
 }
 
 .commentInput {
@@ -59,4 +60,17 @@
 
 .commentButton:hover {
   background-color: #0056b3;
+}
+
+.deleteButton {
+  background-color: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.deleteButton:hover {
+  color: darkred;
 }

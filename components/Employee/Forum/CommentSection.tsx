@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./commentSection.module.css";
 
-const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:any }) => {
+const CommentSection = ({
+  postId,
+  acc,
+  acc2,
+}: {
+  postId: number;
+  acc: any;
+  acc2: any;
+}) => {
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState("");
   const token = localStorage.getItem("authToken");
 
   useEffect(() => {
-    // Gọi API để lấy comment
     const fetchComments = async () => {
       try {
         const res = await axios.get(
@@ -17,7 +24,7 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        setComments(res.data.data); // Lưu danh sách comment vào state
+        setComments(res.data.data);
       } catch (error) {
         console.error("Error fetching comments:", error);
       }
@@ -26,7 +33,6 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
     fetchComments();
   }, [postId, token]);
 
-  // Xử lý thêm comment
   const handleAddComment = async () => {
     if (newComment.trim() === "") return;
 
@@ -34,17 +40,16 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
       const res = await axios.post(
         "http://localhost:7295/api/Comment",
         {
-          "postId": postId,
-          "content": newComment,
+          postId: postId,
+          content: newComment,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      // Thêm comment mới vào danh sách hiện tại
-      if(res.status == 200){
-         window.location.reload();
+      if (res.status === 200) {
+        window.location.reload();
       }
       setComments((prevComments) => [...prevComments, res.data]);
       setNewComment("");
@@ -52,16 +57,32 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
       console.error("Error adding comment:", error);
     }
   };
+
+  const handleDeleteComment = async (commentId: number) => {
+    try {
+      await axios.delete(`http://localhost:7295/api/Comment/${commentId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setComments((prevComments) =>
+        prevComments.filter((comment) => comment.id !== commentId)
+      );
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
+  };
+  console.log(acc)
+  console.log(comments)
   return (
     <div className={styles.commentSection}>
-      {/* Hiển thị danh sách comment */}
       <div className={styles.commentList}>
         {comments.length > 0 ? (
           comments.map((comment) => (
             <div key={comment.id} className={styles.comment}>
-              <div style={{ display: "flex", gap: "5px" }}>
+              <div
+                style={{ display: "flex", gap: "5px", alignItems: "center" }}
+              >
                 <img
-                  src={`/${comment.avatarUrl}`}
+                  src={comment.avatarUrl}
                   alt=""
                   className={styles.postAcc}
                 />
@@ -76,6 +97,14 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
                   <p className={styles.author}>{comment.fullName}</p>
                   <p className={styles.content}>{comment.content}</p>
                 </div>
+                {acc2.id === comment.accountId && ( // Chỉ hiện nút xóa nếu acc hiện tại là người tạo comment
+                  <button
+                    className={styles.deleteButton}
+                    onClick={() => handleDeleteComment(comment.id)}
+                  >
+                    X
+                  </button>
+                )}
               </div>
               <span className={styles.timestamp}>
                 {new Date(comment.createdAt).toLocaleString()}
@@ -87,9 +116,8 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
         )}
       </div>
 
-      {/* Ô nhập comment mới */}
       <div className={styles.addComment}>
-        <img src={`/${acc2.avatarUrl}`} alt="" className={styles.postAcc} />
+        <img src={`${acc2.avatarUrl}`} alt="" className={styles.postAcc} />
         <input
           type="text"
           placeholder="Write a comment..."
@@ -103,7 +131,6 @@ const CommentSection = ({ postId, acc,acc2 }: { postId: number; acc: any, acc2:a
       </div>
     </div>
   );
-
 };
 
 export default CommentSection;

@@ -55,14 +55,11 @@
   cursor: pointer;
   border: none;
   transition: background-color 0.3s ease;
-}
-
-.button.follow {
-  background-color: #4a90e2;
+   background-color: #4a90e2;
   color: #fff;
 }
 
-.button.follow:hover {
+.button:hover {
   background-color: #357abd;
 }
 
@@ -75,4 +72,48 @@
 .button.reset:hover {
   background-color: #4a90e2;
   color: white;
+}
+.createAccountForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.inputField label,
+.selectContainer label,
+.fileInputContainer label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.inputField input,
+.selectContainer select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.inputField input:focus,
+.selectContainer select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 3px #007bff;
+}
+
+.selectContainer select {
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.fileInputContainer input {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.fileInputContainer input:hover {
+  border-color: #007bff;
 }

@@ -29,14 +29,14 @@ export default function SideBar({setUser, setUserRoleP}:any) {
   const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const token = localStorage.getItem("authToken");
   const [modalLogout, setModalLogout] = useState(false);
    const [userRole, setUserRole] = useState<any>(null);
   const [userInfo, setUserInfo] = useState<any>(null);
   const [idUser, setIdUser] = useState<number | null>(null );
   const [userI, setUserI] = useState<any>({})
   const [loading, setLoading] = useState(false); // Thêm state loading
-
-
+  const [acc, setAcc] = useState<any>({})
   // Hàm điều hướng với loading
   const handleNavigation = (path: string) => {
     setLoading(true); // Bật loading khi bắt đầu điều hướng
@@ -63,7 +63,6 @@ export default function SideBar({setUser, setUserRoleP}:any) {
       );
     }
   }, [userInfo]);
-  console.log(userInfo?.EmployeeId)
   useEffect(() =>{
     const apiGetUser = async () => {
       try {
@@ -79,7 +78,25 @@ export default function SideBar({setUser, setUserRoleP}:any) {
     apiGetUser() 
   },[idUser])
 
-
+  useEffect(() =>{
+    const apiGetAcc = async() =>{
+      try{
+        const res = await axios.get(
+          `http://localhost:7295/api/Account/GetAccountByEmployeeId/${userI?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAcc(res.data.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    apiGetAcc()
+  },[userI])
   const getIconColor = (iconName: string) => {
     if (pathname.toLowerCase() === `/employee/${iconName.toLowerCase()}`) {
       return "black";
@@ -103,14 +120,19 @@ export default function SideBar({setUser, setUserRoleP}:any) {
       <div>
         <div className={styles.bodyInfo}>
           <div className={styles.info}>
-            <img src="" alt="" className={styles.imgEmployee} />
+            <img
+              src={`${acc.avatarUrl}`}
+              alt=""
+              className={styles.imgEmployee}
+            />
             <div>
               <p className={styles.textName}>{userI.fullName}</p>
               <p className={styles.textName}>{userI.position}</p>
             </div>
           </div>
-          <div onClick={() => handleNavigation("/Employee/Info")}>
+          <div onClick={() => handleNavigation("/Employee/Info")} style={{display:'flex', alignItems:'center'}}>
             <Setting color="white" width="40px" height="40px" />
+            <p className={styles.textName}>Setting</p>
           </div>
         </div>
         <div>

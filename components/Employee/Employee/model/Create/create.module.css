@@ -9,7 +9,7 @@
 .title{
     font-size: 40px;
     font-weight: 600;
-    color: blue;
+    color: green;
 }
 .bodyEdit{
     display: flex;
@@ -44,9 +44,9 @@
     justify-content: center;
     align-items: center;
     padding: 10px 35px;
-    background-color: rgb(0, 124, 212);
-    border: 1px solid blue;
-    color: Blue;
+    background-color: rgb(53, 212, 0);
+    border: 1px solid green;
+    color: green;
     font-size: 18px;
     font-weight: 600;
     border-radius: 20px;

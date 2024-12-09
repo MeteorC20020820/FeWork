@@ -16,7 +16,8 @@ export default function Forum() {
   const token = localStorage?.getItem("authToken");
   const [acc, setAcc] = useState<any>({});
   const [editPost, setEditPost] = useState<any>(null);
-
+  console.log(editPost)
+  const [imageLink, setImageLink] = useState<any>(null)
   // Fetch user account
   useEffect(() => {
     const getApiAcc = async () => {
@@ -39,7 +40,7 @@ export default function Forum() {
 
   // Fetch all posts
   useEffect(() => {
-    const ApiGetPost = async () => {
+    const ApiGetPost = async () => {  
       try {
         const res = await axios.get("http://localhost:7295/api/Post", {
           headers: {
@@ -53,6 +54,32 @@ export default function Forum() {
     };
     ApiGetPost();
   }, [token]);
+  useEffect(() => {
+    const handleFile = async () => {
+      if (!image) return; // Nếu không có file, không thực hiện gì
+      const formData = new FormData();
+      formData.append("file", image);
+
+      try {
+        const res = await axios.post(
+          "http://localhost:7295/api/FileUpload/upload",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data", // Đảm bảo định dạng đúng
+            },
+          }
+        );
+        console.log(res.data.url);
+        setImageLink(res.data.url)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    handleFile();
+  }, [image]);
 
   // Handle post creation
   const handlePost = async () => {
@@ -66,7 +93,7 @@ export default function Forum() {
         `http://localhost:7295/api/Post`,
         {
           content: postContent,
-          imageUrl: image?.name,
+          imageUrl: imageLink,
           status: 0,
         },
         {
@@ -78,7 +105,7 @@ export default function Forum() {
 
       if (res.status === 200) {
         setPosts([...posts, res.data.data]);
-        alert("Post created successfully!");
+        window.location.reload()
       }
     } catch (error) {
       console.error(error);
@@ -93,13 +120,13 @@ export default function Forum() {
       alert("No post selected for editing!");
       return;
     }
-
+    console.log(editPost)
     try {
       const updatedData = {
         content: postContent,
-        imageUrl: image?.name || editPost.imageUrl,
+        imageUrl: imageLink,
       };
-
+      console.log(updatedData)
       const res = await axios.put(
         `http://localhost:7295/api/Post/${editPost.id}`,
         updatedData,
@@ -170,10 +197,10 @@ export default function Forum() {
   const handleEdit = (post: any) => {
     setEditPost(post);
     setPostContent(post.content);
-    setPreview(post.imageUrl ? `/${post.imageUrl}` : null);
+    setPreview(post.imageUrl ? `${post.imageUrl}` : null);
     setIsModalOpen(true);
   };
-
+  console.log(imageLink)
   return (
     <div className={styles.bodyForum}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -193,7 +220,7 @@ export default function Forum() {
             }}
           >
             <img
-              src={`/${acc.avatarUrl}`}
+              src={`${acc.avatarUrl}`}
               alt="Avatar"
               className={styles.avatar}
             />
@@ -211,20 +238,20 @@ export default function Forum() {
           <div className={styles.postList}>
             {posts.length > 0 ? (
               [...posts].reverse().map((post) => (
-                <div className={styles.post} key={post.id}>
+                <div className={styles.post} key={post?.id}>
                   <div className={styles.postHeader}>
                     <img
-                      src={`/${post.avatarUrl}`}
+                      src={`${post?.avatarUrl}`}
                       alt="Avatar"
                       className={styles.avatar}
                     />
                     <div className={styles.postInfo}>
-                      <p className={styles.userName}>{post.fullName}</p>
+                      <p className={styles.userName}>{post?.fullName}</p>
                       <span className={styles.timestamp}>
-                        {new Date(post.createdAt).toLocaleString()}
+                        {new Date(post?.createdAt).toLocaleString()}
                       </span>
                     </div>
-                    {post.accountId === acc.id && (
+                    {post?.accountId === acc?.id && (
                       <div className={styles.options}>
                         <button className={styles.optionButton}>⋮</button>
                         <div className={styles.dropdown}>
@@ -236,7 +263,7 @@ export default function Forum() {
                           </button>
                           <button
                             className={styles.dropdownItem}
-                            onClick={() => handleDelete(post.id)}
+                            onClick={() => handleDelete(post?.id)}
                           >
                             Delete
                           </button>
@@ -245,16 +272,16 @@ export default function Forum() {
                     )}
                   </div>
                   <div className={styles.postContent}>
-                    <p>{post.content}</p>
-                    {post.imageUrl && (
+                    <p>{post?.content}</p>
+                    {post?.imageUrl && (
                       <img
-                        src={`/${post.imageUrl}`}
+                        src={`${post?.imageUrl}`}
                         alt="Post"
                         className={styles.postImage}
                       />
                     )}
                   </div>
-                  <CommentSection postId={post.id} acc={post} acc2={acc} />
+                  <CommentSection postId={post?.id} acc={post} acc2={acc} />
                 </div>
               ))
             ) : (

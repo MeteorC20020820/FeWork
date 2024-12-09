@@ -18,20 +18,24 @@
 /* Thông tin người dùng ở trên cùng */
 .bodyInfo {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
   align-items: center;
-  padding:20px;
+  padding:10px;
   justify-content: space-between;
   background-color: #1f1f1fcd;
 }
 .info{
     display: flex;
+    align-items: center;
 }
 .imgEmployee {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background-color: #333; /* Placeholder màu xám nếu không có ảnh */
   margin-right: 10px;
+  object-fit: cover;
 }
 
 .textName {

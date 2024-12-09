@@ -42,7 +42,7 @@ export default function Info() {
     const ApiGetAcc = async() =>{
       try{
           const res = await axios.get(
-            `http://localhost:7295/api/Account/${user.id}`,
+            `http://localhost:7295/api/Account/GetAccountByEmployeeId/${user.id}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -90,7 +90,81 @@ export default function Info() {
       alert("Failed to change password. Please try again.");
     }
   };
+  const [image, setImage] = useState<File | null>(null);
+  const [preview, setPreview] = useState<string | null>(null);
+  const [imageLink, setImageLink] = useState<any>(acc.avatarUrl);
+  const [putAcc, setPutAcc] = useState<any>({})
+  // useEffect(() => {
+  //   if (acc?.avatarUrl) {
+  //     setImageLink(acc.avatarUrl);
+  //   }
+  // }, [acc]);
+  useEffect(() => {
+    setPutAcc({
+      avatarUrl: imageLink,
+    });
+  }, [acc, imageLink]);
+  console.log(putAcc)
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file); 
+      setPreview(URL.createObjectURL(file)); 
 
+      // Upload ảnh và cập nhật imageLink
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const res = await axios.post(
+          "http://localhost:7295/api/FileUpload/upload",
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data", 
+            },
+          }
+        );
+        setImageLink(res.data.url); 
+      } catch (error) {
+        console.error("Failed to upload image:", error);
+      }
+      // apiChangeImage()
+    }
+  };
+
+  const apiChangeImage = async() =>{
+    try{
+      const res = await axios.put(`http://localhost:7295/api/Account/${acc?.id}`,putAcc,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if(res.status == 200){
+        window.location.reload()
+      }
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    const handleFile = async () => {
+      if (!image) return; // Nếu không có file, không thực hiện gì
+      
+    };
+
+    handleFile();
+  }, [image]);
+  const handleCancelImage = () => {
+    setPreview(null); // Xóa ảnh tạm thời
+    setImage(null); // Xóa file ảnh
+  };
+  console.log(imageLink)
+  console.log(token)
   return (
     <div>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -98,12 +172,35 @@ export default function Info() {
         <div className={styles.profileCard}>
           {/* Phần bên trái */}
           <div className={styles.profileLeft}>
-            <img
-              src="https://via.placeholder.com/100"
-              alt="Avatar"
-              className={styles.avatar}
-            />
-            <div className={styles.editPicture}>Edit Picture</div>
+            <img src={preview? preview: acc?.avatarUrl} alt="Avatar" className={styles.avatar} />
+            <div className={styles.editPicture}>
+              <label htmlFor="uploadPicture" className={styles.uploadLabel}>
+                Edit Picture
+              </label>
+              <input
+                type="file"
+                id="uploadPicture"
+                accept="image/*"
+                className={styles.fileInput}
+                onChange={(e) => handleFileChange(e)}
+              />
+            </div>
+            {preview && (
+              <div className={styles.imageActions}>
+                <button
+                  className={styles.okButton}
+                  onClick={() => apiChangeImage()}
+                >
+                  OK
+                </button>
+                <button
+                  className={styles.cancelButton}
+                  onClick={handleCancelImage}
+                >
+                  Cancel
+                </button>
+              </div>
+            )}
             <div className={styles.changePw}>
               <button
                 className={styles.btnPw}
@@ -145,9 +242,9 @@ export default function Info() {
                         }
                       >
                         {showPasswords.oldPassword ? (
-                          <EyeOutlined style={{color:'black'}} />
+                          <EyeOutlined style={{ color: "black" }} />
                         ) : (
-                          <EyeInvisibleOutlined style={{color:'black'}} />
+                          <EyeInvisibleOutlined style={{ color: "black" }} />
                         )}
                       </span>
                     </div>
@@ -176,9 +273,9 @@ export default function Info() {
                         }
                       >
                         {showPasswords.newPassword ? (
-                          <EyeOutlined style={{color:'black'}} />
+                          <EyeOutlined style={{ color: "black" }} />
                         ) : (
-                          <EyeInvisibleOutlined style={{color:'black'}} />
+                          <EyeInvisibleOutlined style={{ color: "black" }} />
                         )}
                       </span>
                     </div>
@@ -211,9 +308,9 @@ export default function Info() {
                         }
                       >
                         {showPasswords.confirmPassword ? (
-                          <EyeOutlined style={{color:'black'}} />
+                          <EyeOutlined style={{ color: "black" }} />
                         ) : (
-                          <EyeInvisibleOutlined style={{color:'black'}} />
+                          <EyeInvisibleOutlined style={{ color: "black" }} />
                         )}
                       </span>
                     </div>
