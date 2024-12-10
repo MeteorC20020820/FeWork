@@ -72,7 +72,6 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       return null;
     }
   };
-  console.log(token)
   const ApiChangePw = async() =>{
     if (!token) {
       console.error("Token is missing. Please log in.");

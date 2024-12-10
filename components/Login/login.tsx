@@ -41,7 +41,7 @@ export default function Login() {
       handleNavigation("/Employee/Info");
     } catch (error) {
       console.log(error);
-      setError("An error occurred.");
+      setError("Error Email or Password.");
     }
   };
 
@@ -61,14 +61,14 @@ export default function Login() {
           <input
             type="text"
             className={styles.inputForm}
-            placeholder="Username"
+            placeholder="Enter your Email..."
             value={email}
             onChange={sendEmail}
           />
           <input
             type="password"
             className={styles.inputForm}
-            placeholder="Password"
+            placeholder="Enter your Password..."
             value={password}
             onChange={sendPassword}
           />

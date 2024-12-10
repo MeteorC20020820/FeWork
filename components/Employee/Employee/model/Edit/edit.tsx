@@ -5,56 +5,81 @@ import { useEffect, useState } from "react";
 
 export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
-  console.log(token);
-  const [name, setName] = useState<any>(dataEm?.fullName);
-  const [phone, setPhone] = useState<any>(dataEm?.phone);
-  const [position, setPosition] = useState<any>(dataEm?.position)
-  const [address, setAddess] = useState<any>(dataEm?.address)
-  const [baseSalary, setBaseSalary] = useState<any>(dataEm?.baseSalary)
-  const [error, setError] = useState("");
-  const [changeDep, setChangeDep] = useState<any>({});
+  const [name, setName] = useState<string>(dataEm?.fullName || "");
+  const [phone, setPhone] = useState<string>(dataEm?.phone || "");
+  const [position, setPosition] = useState<string>(dataEm?.position || "");
+  const [address, setAddress] = useState<string>(dataEm?.address || "");
+  const [baseSalary, setBaseSalary] = useState<string>(
+    dataEm?.baseSalary?.toString() || ""
+  );
+  const [identificationId, setIdentificationId] = useState<any>(
+    dataEm?.identificationId
+  );
+  const [error, setError] = useState<string>("");
+  const [changeEm, setChangeEm] = useState<any>({});
   const [formattedBirthday, setFormattedBirthday] = useState<string>("");
+  const [departmentId, setDepartmentId] = useState<number | "">(
+    dataEm?.departmentId || ""
+  );
+  const [dep, setDep] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (dataEm?.departmentId) {
+      setDepartmentId(dataEm.departmentId);
+    }
+    setIdentificationId(dataEm?.identificationId || "");
+  }, [dataEm]);
+
   useEffect(() => {
     if (dataEm?.birthday) {
-      const [day, month, year] = dataEm.birthday.split("/"); 
+      const [day, month, year] = dataEm.birthday.split("/");
       setFormattedBirthday(`${year}-${month}-${day}`);
     }
-    setName(dataEm?.fullName);
-    setPhone(dataEm?.phone);
-    setPosition(dataEm?.position)
-    setAddess(dataEm?.address)
-    setBaseSalary(String(dataEm?.baseSalary));
+    setName(dataEm?.fullName || "");
+    setPhone(dataEm?.phone || "");
+    setPosition(dataEm?.position || "");
+    setAddress(dataEm?.address || "");
+    setBaseSalary(String(dataEm?.baseSalary || ""));
   }, [dataEm]);
-  const changeName = (e: any) => {
-    setName(e.target.value);
+
+  const changeDepartment = (e: any) => {
+    setDepartmentId(parseInt(e.target.value));
   };
-  const changeDescrip = (e: any) => {
-    setPhone(e.target.value);
-  };
-  const changePos = (e:any) =>{
-    setPosition(e.target.value)
-  }
-  const changeAddress = (e:any) =>{
-    setPhone(e.target.value)
-  }
-  const changeBase = (e:any) =>{
-    setBaseSalary(e.target.value);
-  }
   useEffect(() => {
-    setChangeDep({
-      "fullName": "Nguyễn văn A",
-      "phone": "01234",
-      "position": "position",
-      "address": "address",
-      "baseSalary": parseInt(baseSalary),
-      "status": 0,
-      "birthday": "dataEm?.birthday",
-      "departmentId": 8,
-      "identificationId": "dataEm?.identificationId",
+    const apiGetDep = async () => {
+      try {
+        const res = await axios.get(`http://localhost:7295/api/Department`);
+        setDep(res.data.data || []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    apiGetDep();
+  }, []);
+
+  useEffect(() => {
+    setChangeEm({
+      fullName: name,
+      phone: phone,
+      position: position,
+      address: address,
+      identificationId: identificationId,
+      baseSalary: parseInt(baseSalary),
+      status: 0,
+      birthday: formattedBirthday,
+      departmentId: departmentId,
     });
-  }, [name, phone, position, address, baseSalary, dataEm]);
+  }, [name, phone, position,identificationId, address, baseSalary, departmentId, dataEm, formattedBirthday]);
+
   const apiEditDepartment = async () => {
-    if (!name || !phone||!position||!address||!baseSalary) {
+    if (
+      !name ||
+      !phone ||
+      !position ||
+      !address ||
+      !baseSalary ||
+      !departmentId
+    ) {
       setError("Please fill in all fields!");
       return;
     }
@@ -63,10 +88,11 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       setError("Unauthorized! Please log in again.");
       return;
     }
+
     try {
       const res = await axios.put(
         `http://localhost:7295/api/Employee/${dataEm?.id}`,
-        changeDep,
+        changeEm,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -79,14 +105,13 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       } else {
         setError("Failed to update employee.");
       }
-
-      console.log(res);
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred while updating the department.");
     }
   };
-
+  console.log(changeEm)
+  console.log(dataEm)
   return (
     <Modal
       open={open}
@@ -99,60 +124,145 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       <div className={styles.bodyLogout}>
         <p className={styles.title}>Edit Employee</p>
         <div className={styles.bodyEdit}>
-          <input type="text" disabled value={dataEm?.departmentId} required className={styles.inputDep}/>
-          <input
-            type="text"
-            value={name}
-            className={styles.inputDep}
-            onChange={changeName}
-            required
-            placeholder="Enter employee name..."
-          />
-          <input
-            type="text"
-            value={phone}
-            className={styles.inputDep}
-            onChange={changeDescrip}
-            required
-            placeholder="Enter employee phone..."
-          />
-          <input
-            type="date"
-            value={formattedBirthday}
-            className={styles.inputDep}
-            disabled
-            required
-          />
-          <input
-            type="text"
-            value={dataEm?.identificationId}
-            disabled
-            required
-            className={styles.inputDep}
-          />
-          <input
-            type="text"
-            value={address}
-            onChange={changeAddress}
-            required
-            className={styles.inputDep}
-          />
-          <input
-            type="text"
-            value={position}
-            onChange={changePos}
-            required
-            className={styles.inputDep}
-          />
-          <input
-            type="text"
-            value={baseSalary}
-            onChange={changeBase}
-            required
-            className={styles.inputDep}
-          />
+          <div className={styles.inputWrapper}>
+            <label htmlFor="departmentId" className={styles.label}>
+              ID Employee
+            </label>
+            <input
+              type="text"
+              disabled
+              value={dataEm?.id}
+              required
+              id="departmentId"
+              className={styles.inputDep}
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="name" className={styles.label}>
+              Employee Name
+            </label>
+            <input
+              type="text"
+              value={name}
+              id="name"
+              className={styles.inputDep}
+              onChange={(e) => setName(e.target.value)}
+              required
+              placeholder="Enter employee name..."
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="phone" className={styles.label}>
+              Phone Number
+            </label>
+            <input
+              type="text"
+              value={phone}
+              id="phone"
+              className={styles.inputDep}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              placeholder="Enter employee phone..."
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="birthday" className={styles.label}>
+              Birthday
+            </label>
+            <input
+              type="date"
+              value={formattedBirthday}
+              id="birthday"
+              className={styles.inputDep}
+              onChange={(e) => setFormattedBirthday(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="identificationId" className={styles.label}>
+              Identification ID
+            </label>
+            <input
+              type="text"
+              value={identificationId}
+              id="identificationId"
+              onChange={(e) => setIdentificationId(e.target.value)}
+              required
+              className={styles.inputDep}
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="address" className={styles.label}>
+              Address
+            </label>
+            <input
+              type="text"
+              value={address}
+              id="address"
+              onChange={(e) => setAddress(e.target.value)}
+              required
+              className={styles.inputDep}
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="position" className={styles.label}>
+              Position
+            </label>
+            <input
+              type="text"
+              value={position}
+              id="position"
+              onChange={(e) => setPosition(e.target.value)}
+              required
+              className={styles.inputDep}
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="baseSalary" className={styles.label}>
+              Base Salary
+            </label>
+            <input
+              type="text"
+              value={baseSalary}
+              id="baseSalary"
+              onChange={(e) => setBaseSalary(e.target.value)}
+              required
+              className={styles.inputDep}
+            />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="department" className={styles.label}>
+              Department
+            </label>
+            <select
+              value={departmentId}
+              id="department"
+              onChange={changeDepartment}
+              className={styles.inputDep}
+              required
+            >
+              <option value="" disabled>
+                Select Department
+              </option>
+              {dep.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
+
         {error && <p className={styles.error}>{error}</p>}
+
         <div className={styles.bodyBtn}>
           <button
             className={styles.btnLogout}

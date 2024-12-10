@@ -1,64 +1,97 @@
-.bodyLogout{
+/* styles/edit.module.css */
+
+.bodyLogout {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 20px;
     align-items: center;
-    padding: 4%;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.title{
-    font-size: 40px;
-    font-weight: 600;
-    color: blue;
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
 }
-.bodyEdit{
-    display: flex;
+
+.bodyEdit {
     width: 100%;
+    display: flex;
     flex-direction: column;
     gap: 15px;
 }
-.inputDep{
-    color: black;
-    padding: 5px 15px;
-    border: 1px solid black;
-    border-radius: 15px;
-}
-.error{
-    color: red;
-}
-.text{
-    font-size: 20px;
-    font-weight: 600;
-    color: black;
-}
-.bodyBtn{
-    display: flex;
-    justify-content: space-around;
+
+.inputDep {
     width: 100%;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0 0 0;
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    transition: border 0.3s, box-shadow 0.3s;
 }
-.btnLogout{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 35px;
-    background-color: rgb(0, 124, 212);
-    border: 1px solid blue;
-    color: Blue;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
+
+.inputDep:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
 }
-.btnCancel{
+
+select.inputDep {
+    appearance: none;
+    cursor: pointer;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23444444' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 15px center;
+    background-size: 12px;
+}
+
+.error {
+    color: #d9534f;
+    font-size: 14px;
+    margin-top: -10px;
+}
+
+.bodyBtn {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 25px;
-    background-color: rgb(99, 99, 99);
-    color: rgb(0, 0, 0);
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.btnLogout {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btnLogout:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+.btnCancel {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #d9534f;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btnCancel:hover {
+    background-color: #c9302c;
+    transform: translateY(-2px);
 }
