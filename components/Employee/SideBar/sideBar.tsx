@@ -9,7 +9,7 @@ import {
   Timekeeping,
   Logout,
   Department,
-  Employee
+  Employee,Asset
 } from "@/components/icon/icon";
 import { useRouter, usePathname } from "next/navigation";
 import LogOut from "../Logout/logout";
@@ -130,7 +130,10 @@ export default function SideBar({setUser, setUserRoleP}:any) {
               <p className={styles.textName}>{userI.position}</p>
             </div>
           </div>
-          <div onClick={() => handleNavigation("/Employee/Info")} style={{display:'flex', alignItems:'center'}}>
+          <div
+            onClick={() => handleNavigation("/Employee/Info")}
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <Setting color="white" width="40px" height="40px" />
             <p className={styles.textName}>Setting</p>
           </div>
@@ -240,6 +243,22 @@ export default function SideBar({setUser, setUserRoleP}:any) {
                   />
                   <p className={getTextFeatureClass("employee")}>Employee</p>
                 </div>
+              </div>
+              <div
+                className={getFeatureClass("Asset")}
+                onMouseEnter={() => {
+                  if (pathname !== "/Employee/Asset")
+                    setHoveredIcon("asset");
+                }}
+                onMouseLeave={() => setHoveredIcon(null)}
+                onClick={() => handleNavigation("/Employee/Asset")}
+              >
+                <Asset
+                  color={getIconColor("asset")}
+                  width={size}
+                  height={size}
+                />
+                <p className={getTextFeatureClass("asset")}>Asset</p>
               </div>
             </div>
           )}

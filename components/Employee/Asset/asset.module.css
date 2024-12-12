@@ -1,0 +1,34 @@
+.bodyAsset{
+    display: flex;
+}
+.asset{
+    padding: 20px;
+    width: 80%;
+}
+.titleEm{
+    font-weight: 600;
+    color: black;
+    font-size: 50px;
+}
+.creatAss button {
+  background-color: #4CAF50; /* Màu nền xanh lá cây */
+  color: white; /* Màu chữ trắng */
+  font-size: 1rem; /* Kích thước chữ */
+  padding: 10px 20px; /* Khoảng cách trong nút */
+  border: none; /* Không có viền */
+  border-radius: 5px; /* Bo tròn các góc */
+  cursor: pointer; /* Thay đổi con trỏ khi hover */
+  transition: background-color 0.3s ease; /* Hiệu ứng chuyển màu khi hover */
+}
+
+.creatAss button:hover {
+  background-color: #45a049; /* Màu nền khi hover (màu xanh đậm hơn) */
+}
+
+.creatAss button:active {
+  background-color: #388e3c; /* Màu nền khi nhấn */
+}
+
+.creatAss button:focus {
+  outline: none; /* Bỏ viền focus */
+}

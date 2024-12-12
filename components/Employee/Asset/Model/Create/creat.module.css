@@ -1,0 +1,122 @@
+.modalBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 550px;
+  max-height: 80vh; /* Chiều cao tối đa của modal */
+  overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung vượt quá chiều cao */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+}
+/* Thanh cuộn của modal */
+.modalContent::-webkit-scrollbar {
+  width: 8px; /* Độ rộng thanh cuộn */
+  height: 8px; /* Độ cao thanh cuộn ngang (nếu có) */
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Màu nền của thanh cuộn */
+  border-radius: 0 10px 10px 0; /* Làm tròn nền */
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: #888; /* Màu của thanh cuộn */
+  border-radius: 10px; /* Làm tròn thanh cuộn */
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Màu khi hover vào thanh cuộn */
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333333;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #555555;
+}
+
+.formGroup input,
+.formGroup textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: #333333;
+}
+
+.textarea {
+  resize: none;
+}
+
+.formGroup input[type="file"] {
+  padding: 5px;
+}
+
+.imagePreview {
+  margin-top: 10px;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.actions button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.actions button:first-child {
+  background-color: #4caf50;
+  color: white;
+}
+
+.actions button:last-child {
+  background-color: #f44336;
+  color: white;
+}

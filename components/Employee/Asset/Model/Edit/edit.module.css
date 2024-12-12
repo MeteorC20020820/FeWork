@@ -1,0 +1,217 @@
+/* Container overlay */
+.modalContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+
+}
+
+/* Modal content */
+.modalContent {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  padding: 24px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  animation: slideIn 0.3s ease-in-out;
+  max-height: 80vh; /* Chiều cao tối đa của modal */
+  overflow-y: auto; /* Kích hoạt cuộn dọc nếu nội dung vượt quá chiều cao */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out;
+  
+}
+.modalContent::-webkit-scrollbar {
+  width: 8px; /* Độ rộng thanh cuộn */
+  height: 8px; /* Độ cao thanh cuộn ngang (nếu có) */
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Màu nền của thanh cuộn */
+  border-radius: 0 10px 10px 0; /* Làm tròn nền */
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: #888; /* Màu của thanh cuộn */
+  border-radius: 10px; /* Làm tròn thanh cuộn */
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Màu khi hover vào thanh cuộn */
+}
+
+/* Close button */
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.closeButton:hover {
+  color: #333;
+}
+
+/* Modal title */
+.modalTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form styles */
+.modalForm label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.modalForm input[type="text"],
+.modalForm input[type="number"],
+.modalForm textarea,
+.modalForm input[type="file"] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.modalForm input:focus,
+.modalForm textarea:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 6px rgba(22, 119, 255, 0.4);
+}
+
+.modalForm textarea {
+  resize: none;
+  height: 100px;
+}
+
+/* Actions button styles */
+.modalActions {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.cancelButton {
+  background: #f5f5f5;
+  color: #000000;
+  font-weight: bold;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.cancelButton:hover {
+  background: #e0e0e0;
+  color: #555;
+}
+
+/* Input styles */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+  color: #000000;
+}
+
+
+.input:focus {
+  border-color: #1677ff;
+  box-shadow: 0 0 6px rgba(22, 119, 255, 0.4);
+}
+
+/* File input */
+.fileInput {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+}
+
+/* Textarea */
+.textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+  resize: none;
+  height: 100px;
+  color: #000000;
+}
+
+/* Button styles */
+.cancelButton {
+  background: #f5f5f5;
+  color: #888;
+  font-weight: bold;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.cancelButton:hover {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.submitButton {
+  background: #1677ff;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.submitButton:hover {
+  background: #0e5cd1;
+}
+
+
+/* Animation for modal */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
