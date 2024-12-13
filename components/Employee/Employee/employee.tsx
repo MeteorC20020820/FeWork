@@ -13,6 +13,7 @@ import Edit from './model/Edit/edit';
 import Delete from './model/Delete/delete';
 import Create from './model/Create/create';
 import Account from './model/Account/account';
+import Salary from './model/Salary/salary';
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
 const localApi = "http://localhost:7295/api";
@@ -41,6 +42,7 @@ export default function Employee(){
     const [modalEdit, setModalEdit] = useState(false);
     const [modalCreate, setModalCreate] = useState(false)
     const [modalAccout, setModalAccount] = useState(false)
+    const [modalSalary, setModalSalary] = useState(false)
     const [dataEm, setDataEm] = useState<any>(null)
     const handleSearch = (
       selectedKeys: string[],
@@ -232,6 +234,15 @@ export default function Employee(){
              >
                Account
              </Menu.Item>
+             <Menu.Item
+               key="salary"
+               onClick={() => {
+                 setModalSalary(true);
+                 setDataEm(record);
+               }}
+             >
+               Salary
+             </Menu.Item>
            </Menu>
          );
          return (
@@ -293,6 +304,7 @@ export default function Employee(){
         {Delete(modalDelete, setModalDelete, dataEm)}
         {Create(modalCreate, setModalCreate)}
         {Account(modalAccout, setModalAccount, dataEm)}
+        {Salary(modalSalary, setModalSalary, dataEm)}
       </div>
     );
 }

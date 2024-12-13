@@ -1,11 +1,13 @@
 /* Tổng thể giao diện */
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   padding: 50px;
   background-color: #f9f9f9;
   font-family: Arial, sans-serif;
+  width: 80%;
 }
 
 /* Hộp thông tin */
@@ -13,6 +15,7 @@
   display: flex;
   background-color: #fff;
   border-radius: 10px;
+  justify-content: center;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   width: 800px;
   padding: 20px;
@@ -204,4 +207,8 @@
 .cancelButton:hover{
   border: 1px solid red;
   color: red;
+}
+.bodyTable{
+  width: 100%;
+  margin-top: 20px;
 }

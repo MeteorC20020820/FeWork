@@ -4,7 +4,7 @@ import SideBar from "../SideBar/sideBar";
 import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
-
+import App from "./table/table";
 export default function Info() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>({});
@@ -166,8 +166,9 @@ export default function Info() {
   console.log(imageLink)
   console.log(token)
   return (
-    <div>
+    <div style={{display:'flex'}}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
+      <div style={{width:'18%'}}></div>
       <div className={styles.container}>
         <div className={styles.profileCard}>
           {/* Phần bên trái */}
@@ -210,7 +211,6 @@ export default function Info() {
               </button>
             </div>
           </div>
-
           {/* Phần bên phải */}
           <div className={styles.profileRight}>
             {isChangePassword ? (
@@ -423,6 +423,10 @@ export default function Info() {
               </div>
             )}
           </div>
+        </div>
+        <div className={styles.bodyTable}>
+          <p className={styles.title}>Salary</p>
+          <App user={user}/>
         </div>
       </div>
     </div>

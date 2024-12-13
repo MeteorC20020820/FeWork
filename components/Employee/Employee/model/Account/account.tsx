@@ -87,6 +87,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           },
         }
       );
+      console.log(res.data.data)
       if(res.status == 200){
         alert("Password is: " + res.data.data)
       }
