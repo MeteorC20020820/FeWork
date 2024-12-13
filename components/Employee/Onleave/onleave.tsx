@@ -2,35 +2,47 @@
 import { useEffect, useState } from "react";
 import SideBar from "../SideBar/sideBar";
 import styles from "./onleave.module.css";
-
+import axios from "axios";
+import Delete from "./Delete/delete";
 export default function Onleave() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
-  const [activeTab, setActiveTab] = useState<"create" | "view">("create"); // State để quản lý tab
-  const [leaveRequests, setLeaveRequests] = useState<any[]>([]); // State để lưu danh sách đơn xin nghỉ
-    console.log(leaveRequests);
+  const [activeTab, setActiveTab] = useState<"create" | "view">("create"); 
+  const [leaveRequests, setLeaveRequests] = useState<any[]>([]);
+  const [modelDelete, setModalDelete] = useState(false)
+  const [idLeave, setIdLeave] = useState<any>(null)
     console.log(user)
+    const token = localStorage.getItem("authToken");
   // Xử lý gửi đơn xin nghỉ
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
     const newRequest = {
-      fullName: user.fullName,
-      position: user.position,
-      phone: user.phone,
-      department: formData.get("department"),
-      leaveReason: formData.get("leaveReason"),
-      startDate: formData.get("startDate"),
-      endDate: formData.get("endDate"),
-      status: 0,
+      reason: formData.get("leaveReason"),
+      date: formData.get("startDate"),
     };
-
-    setLeaveRequests([...leaveRequests, newRequest]);
-    e.currentTarget.reset(); // Reset form sau khi gửi
-    alert("Đơn xin nghỉ đã được gửi!");
+   console.log(newRequest)
+    try{
+      const res = await axios.post(
+        "http://localhost:7295/api/LeaveReq",
+        newRequest,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if(res.status == 200){
+        alert("Create successfully")
+        window.location.reload()
+      }
+    } 
+    catch(error){
+      console.log(error)
+    }  
   };
-
+  console.log(user)
   // Giao diện cho phần Tạo đơn xin nghỉ
   const CreateLeaveForm = () => (
     <div className={styles.formContainer}>
@@ -75,17 +87,6 @@ export default function Onleave() {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="department">Department:</label>
-          <input
-            type="text"
-            id="department"
-            name="department"
-            placeholder="Enter department..."
-            className={styles.inputField}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
           <label htmlFor="leaveReason">Reason for leave:</label>
           <textarea
             rows={4}
@@ -97,21 +98,11 @@ export default function Onleave() {
           />
         </div>
         <div className={styles.formGroup}>
-          <label htmlFor="startDate">Start date:</label>
+          <label htmlFor="startDate">Date:</label>
           <input
             type="date"
             id="startDate"
             name="startDate"
-            className={styles.inputField}
-            required
-          />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="endDate">End date:</label>
-          <input
-            type="date"
-            id="endDate"
-            name="endDate"
             className={styles.inputField}
             required
           />
@@ -135,8 +126,30 @@ export default function Onleave() {
     }
   };
 
-
-  // Giao diện cho phần Xem đơn xin nghỉ
+  useEffect(()=>{
+    const apiGetLeave = async()=>{
+      try{
+        const res = await axios.get(
+          "http://localhost:7295/api/LeaveReq/GetRequestByEmployee",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log(res)
+        setLeaveRequests(res.data.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    apiGetLeave()
+  },[token])
+  const changeDate = (text:any) =>{
+    const date = new Date(text);
+    return date.toLocaleDateString("vi-VN")
+  }
   const ViewLeaveRequests = () => (
     <div className={styles.requestList}>
       <div style={{ width: "100%", textAlign: "center" }}>
@@ -146,27 +159,31 @@ export default function Onleave() {
       {leaveRequests.map((request, index) => (
         <li key={index} className={styles.requestItem}>
           <div className={styles.infoContainer}>
+            <div className={styles.header}>
+              <button
+                className={styles.closeButton}
+                onClick={() => {
+                 setModalDelete(true), setIdLeave(request.id)
+                }}
+              >
+                &times;
+              </button>
+            </div>
             <div className={styles.leftInfo}>
               <p>
-                <strong>Fullname:</strong> {request.fullName}
+                <strong>Fullname:</strong> {user.fullName}
               </p>
               <p>
-                <strong>Position:</strong> {request.position}
+                <strong>Position:</strong> {user.position}
               </p>
               <p>
-                <strong>Department:</strong> {request.department}
+                <strong>Phone number:</strong> {user.phone}
               </p>
               <p>
-                <strong>Phone number:</strong> {request.phone}
+                <strong>Reason for leave:</strong> {request.reason}
               </p>
               <p>
-                <strong>Reason for leave:</strong> {request.leaveReason}
-              </p>
-              <p>
-                <strong>Start date:</strong> {request.startDate}
-              </p>
-              <p>
-                <strong>End date:</strong> {request.endDate}
+                <strong>Date:</strong> {changeDate(request.date)}
               </p>
             </div>
             <div className={styles.statusCircle}>
@@ -185,6 +202,7 @@ export default function Onleave() {
           </div>
         </li>
       ))}
+      {Delete(modelDelete, setModalDelete, idLeave)}
     </div>
   );
 

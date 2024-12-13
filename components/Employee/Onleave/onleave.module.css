@@ -111,6 +111,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-left: 4px solid #007bff;
   color: black;
+  position: relative;
 }
 
 .status {
@@ -171,7 +172,6 @@
   align-items: center;
   justify-content: center;
   width: 20%;
-  border-radius: 50%;
   font-weight: bold;
   font-size: 14px;
   color: #fff;
@@ -180,27 +180,33 @@
   background-color: orange;
   width: 50%;
   height: 50%;
-  border-radius: 50%;
   font-weight: bold;
   padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .statusApproved {
   background-color: green;
    width: 50%;
   height: 50%;
-  border-radius: 50%;
   font-weight: bold;
   padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .statusRejected {
   background-color: red;
    width: 50%;
   height: 50%;
-  border-radius: 50%;
   font-weight: bold;
   padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .formGroup label {
   font-weight: bold;
@@ -209,4 +215,20 @@
   display: block;
   color: #333;
 }
+.closeButton {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  color: darkred;
+}
+
 

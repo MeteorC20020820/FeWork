@@ -9,7 +9,7 @@ import {
   Timekeeping,
   Logout,
   Department,
-  Employee,Asset
+  Employee,Asset,LeaveApplication
 } from "@/components/icon/icon";
 import { useRouter, usePathname } from "next/navigation";
 import LogOut from "../Logout/logout";
@@ -247,8 +247,7 @@ export default function SideBar({setUser, setUserRoleP}:any) {
               <div
                 className={getFeatureClass("Asset")}
                 onMouseEnter={() => {
-                  if (pathname !== "/Employee/Asset")
-                    setHoveredIcon("asset");
+                  if (pathname !== "/Employee/Asset") setHoveredIcon("asset");
                 }}
                 onMouseLeave={() => setHoveredIcon(null)}
                 onClick={() => handleNavigation("/Employee/Asset")}
@@ -259,6 +258,24 @@ export default function SideBar({setUser, setUserRoleP}:any) {
                   height={size}
                 />
                 <p className={getTextFeatureClass("asset")}>Asset</p>
+              </div>
+              <div
+                className={getFeatureClass("LeaveApplication")}
+                onMouseEnter={() => {
+                  if (pathname !== "/Employee/LeaveApplication")
+                    setHoveredIcon("LeaveApplication");
+                }}
+                onMouseLeave={() => setHoveredIcon(null)}
+                onClick={() => handleNavigation("/Employee/LeaveApplication")}
+              >
+                <LeaveApplication
+                  color={getIconColor("LeaveApplication")}
+                  width={size}
+                  height={size}
+                />
+                <p className={getTextFeatureClass("LeaveApplication")}>
+                  LeaveApplication
+                </p>
               </div>
             </div>
           )}
