@@ -6,8 +6,18 @@ export default function Delete(open: boolean, setOpen: Function, idLeave: any) {
   const token = localStorage?.getItem("authToken");
   const apiDeleteDepartment = async () => {
     try {
-      
-      
+      const res = await axios.delete(
+        `http://localhost:7295/api/LeaveReq/${idLeave}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status == 200) {
+        alert("Delele leaveapplication success");
+        window.location.reload();
+      }   
     } catch (error) {
       console.log(error);
     }

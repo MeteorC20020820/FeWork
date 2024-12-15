@@ -89,12 +89,16 @@ const [idLeave, setIdLeave] = useState<any>(null)
             .map((leave) => (
               <li key={leave.id} className={styles.listItem}>
                 <div className={styles.header}>
-                  <button
-                    className={styles.closeButton}
-                    onClick={() => {setModalDelete(true), setIdLeave(leave.id)}}
-                  >
-                    &times;
-                  </button>
+                  {leave.status === 0 && (
+                    <button
+                      className={styles.closeButton}
+                      onClick={() => {
+                        setModalDelete(true), setIdLeave(leave.id);
+                      }}
+                    >
+                      &times;
+                    </button>
+                  )}
                 </div>
                 <div className={styles.leftContent}>
                   <p>

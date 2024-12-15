@@ -156,18 +156,20 @@ export default function Onleave() {
         <h2 className={styles.titleCreate}>List of leave applications</h2>
       </div>
 
-      {leaveRequests.map((request, index) => (
+      {leaveRequests.slice().reverse().map((request, index) => (
         <li key={index} className={styles.requestItem}>
           <div className={styles.infoContainer}>
             <div className={styles.header}>
-              <button
-                className={styles.closeButton}
-                onClick={() => {
-                 setModalDelete(true), setIdLeave(request.id)
-                }}
-              >
-                &times;
-              </button>
+              {request.status === 0 && (
+                <button
+                  className={styles.closeButton}
+                  onClick={() => {
+                    setModalDelete(true), setIdLeave(request.id);
+                  }}
+                >
+                  &times;
+                </button>
+              )}
             </div>
             <div className={styles.leftInfo}>
               <p>
