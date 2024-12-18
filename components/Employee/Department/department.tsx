@@ -11,6 +11,9 @@ import type { FilterDropdownProps } from "antd/es/table/interface";
 import { useRouter } from "next/navigation";
 import Delete from "./Model/Delete/delete";
 import Edit from "./Model/Edit/edit";
+import ModalEmployee from "./Model/Employee/employee";
+import { MoreOutlined } from "@ant-design/icons";
+import { Dropdown, Menu } from "antd";
 interface DataType {
   key: number;
   name: string;
@@ -29,6 +32,7 @@ export default function Department() {
   const [dataDep, setDataDep] = useState<any>(null)
   const [modalDelete, setModalDelete] = useState(false)
   const [modalEdit, setModalEdit] = useState(false)
+  const [modalEmployee, setModalEmployee] = useState(false)
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -144,14 +148,13 @@ export default function Department() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "30%",
+      width: "25%",
       ...getColumnSearchProps("name"),
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      width: "20%",
       ...getColumnSearchProps("description"),
     },
     {
@@ -167,16 +170,46 @@ export default function Department() {
     columns.push({
       title: "Actions",
       key: "actions",
-      render: (text, record:any) => (
-        <Space size="middle">
-          <Button type="link" onClick={() => {setModalEdit(true), setDataDep(record)}}>
-            Edit
-          </Button>
-          <Button type="link" danger onClick={() => {setModalDelete(true), setDataDep(record)}}>
-            Delete
-          </Button>
-        </Space>
-      ),
+      width:'10%',
+      render: (text: any, record: DataType) => {
+        const menu = (
+          <Menu>
+            <Menu.Item
+              key="edit"
+              onClick={() => {
+                setModalEdit(true);
+                setDataDep(record);
+              }}
+            >
+              Edit
+            </Menu.Item>
+            <Menu.Item
+              key="delete"
+              onClick={() => {
+                setModalDelete(true);
+                setDataDep(record);
+              }}
+              danger
+            >
+              Delete
+            </Menu.Item>
+            <Menu.Item
+              key="employee"
+              onClick={() => {
+                setModalEmployee(true);
+                setDataDep(record);
+              }}
+            >
+              Employee
+            </Menu.Item>
+          </Menu>
+        );
+        return (
+          <Dropdown overlay={menu} trigger={["hover"]}>
+            <Button type="link" icon={<MoreOutlined />} />
+          </Dropdown>
+        );
+      },
     });
   }
   const changeNameDep = (e: any) => {
@@ -292,6 +325,7 @@ export default function Department() {
       </div>
       {Delete(modalDelete, setModalDelete, dataDep)}
       {Edit(modalEdit, setModalEdit, dataDep)}
+      {ModalEmployee(modalEmployee, setModalEmployee, dataDep)}
     </div>
   );
 }

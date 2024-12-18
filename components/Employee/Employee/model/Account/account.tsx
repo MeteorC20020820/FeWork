@@ -129,6 +129,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
 
       if (res.status === 200) {
         alert("Account created successfully!");
+        window.location.reload();
         setIsCreateModalOpen(false);
         setNewAccount({
           email: "",
@@ -142,7 +143,9 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       }
     } catch (error) {
       console.error("Error creating account:", error);
-      alert("Failed to create account.");
+      alert(
+        "Failed to create account. The password must include uppercase letters, lowercase letters, numbers, and special characters."
+      );
     }
   };
 

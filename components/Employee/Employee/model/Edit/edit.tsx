@@ -9,9 +9,8 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
   const [phone, setPhone] = useState<string>(dataEm?.phone || "");
   const [position, setPosition] = useState<string>(dataEm?.position || "");
   const [address, setAddress] = useState<string>(dataEm?.address || "");
-  const [baseSalary, setBaseSalary] = useState<string>(
-    dataEm?.baseSalary?.toString() || ""
-  );
+  const [baseSalary, setBaseSalary] = useState<any>(dataEm?.baseSalary);
+  const changeBase = (e: any) => setBaseSalary(e.target.value);
   const [identificationId, setIdentificationId] = useState<any>(
     dataEm?.identificationId
   );
@@ -39,7 +38,7 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
     setPhone(dataEm?.phone || "");
     setPosition(dataEm?.position || "");
     setAddress(dataEm?.address || "");
-    setBaseSalary(String(dataEm?.baseSalary || ""));
+    setBaseSalary(dataEm?.baseSalary);
   }, [dataEm]);
 
   const changeDepartment = (e: any) => {
@@ -64,7 +63,7 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       position: position,
       address: address,
       identificationId: identificationId,
-      baseSalary: parseInt(baseSalary),
+      baseSalary: baseSalary,
       status: 0,
       birthday: formattedBirthday,
       departmentId: departmentId,
@@ -229,10 +228,10 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
               Base Salary
             </label>
             <input
-              type="text"
+              type="number"
               value={baseSalary}
               id="baseSalary"
-              onChange={(e) => setBaseSalary(e.target.value)}
+              onChange={changeBase}
               required
               className={styles.inputDep}
             />
