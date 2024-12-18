@@ -102,6 +102,12 @@ const [idLeave, setIdLeave] = useState<any>(null)
                 </div>
                 <div className={styles.leftContent}>
                   <p>
+                    <strong>Name:</strong> {leave.employee.fullName}
+                  </p>
+                  <p>
+                    <strong>Position:</strong> {leave.employee.position}
+                  </p>
+                  <p>
                     <strong>Date:</strong>{" "}
                     {new Date(leave.date).toLocaleDateString()}
                   </p>
