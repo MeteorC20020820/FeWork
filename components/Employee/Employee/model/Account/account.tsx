@@ -2,16 +2,21 @@ import axios from "axios";
 import styles from "./account.module.css";
 import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
-
+const apiAi = "https://5081-42-114-249-209.ngrok-free.app/api/v1/";
 export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [avatar, setAvatar] = useState<any>(null)
+  const [face, setFace] = useState<any>(null)
+  const [imgFaceChange, setImgFaceChange] = useState<File | null>(null);
+  const [changeFace, setChangeFace] = useState(false)
   const [newAccount, setNewAccount] = useState({
     email: "",
     password: "",
     avatarFile: null as File | null,
     faceFile: null as File | null,
+    faceId:"",
     status: 1,
     employeeId: dataEm?.id || "",
     roleId: 3,
@@ -72,12 +77,12 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       return null;
     }
   };
-  const ApiChangePw = async() =>{
+  const ApiChangePw = async () => {
     if (!token) {
       console.error("Token is missing. Please log in.");
       return;
     }
-    try{
+    try {
       const res = await axios.post(
         `http://localhost:7295/api/Account/reset-password/${accUser?.id}`,
         {},
@@ -87,20 +92,35 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           },
         }
       );
-      console.log(res.data.data)
-      if(res.status == 200){
-        alert("Password is: " + res.data.data)
+      console.log(res.data.data);
+      if (res.status == 200) {
+        alert("Password is: " + res.data.data);
       }
+    } catch (error) {
+      console.log(error);
     }
-    catch(error){
-      console.log(error)
-    }
-  }
+  };
+  // useEffect(() =>{
+  //   const image = async()=>{
+  //     const avatarUrl = await apiChangeImage(newAccount.avatarFile);
+  //     const faceUrl = await apiChangeImage(newAccount.faceFile);
+  //     setAvatar(avatarUrl);
+  //     setFace(faceUrl);
+  //   }
+  //   image()
+  // },[avatar, face,newAccount])
   const ApiCreateAccount = async () => {
+    if (!newAccount.faceFile) return null;
+    const formData = new FormData();
+    formData.append("file", newAccount.faceFile);
     try {
       const avatarUrl = await apiChangeImage(newAccount.avatarFile);
       const faceUrl = await apiChangeImage(newAccount.faceFile);
-
+      const res2 = await axios.post(`${apiAi}enroll`,formData);
+      console.log(res2);
+      if(res2.data.statusCode == 400){
+        alert(res2.data.message)
+      }
       if (!avatarUrl || !faceUrl) {
         alert("Failed to upload files. Please try again.");
         return;
@@ -111,6 +131,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
         password: newAccount.password,
         avatarUrl: avatarUrl,
         faceUrl: faceUrl,
+        faceId: res2.data.data.face_id,
         status: newAccount.status,
         employeeId: newAccount.employeeId,
         roleId: newAccount.roleId,
@@ -136,6 +157,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           password: "",
           avatarFile: null,
           faceFile: null,
+          faceId:'',
           status: 1,
           employeeId: dataEm?.id || "",
           roleId: 3,
@@ -148,14 +170,48 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       );
     }
   };
-
   const role = (e: any) => {
     if (e === 1) return "Manager";
     if (e === 2) return "Admin";
     if (e === 3) return "User Employee";
     return "Unknown";
   };
-  console.log(accUser)
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        setImgFaceChange(file);
+        // setPreview(URL.createObjectURL(file));
+      }
+    };
+  const updateFace = async() =>{
+    if(!imgFaceChange) return;
+    const formData = new FormData();
+    formData.append("file", imgFaceChange);
+    formData.append("face_id", accUser?.face_id);
+    try{
+      const res = await axios.put(`${apiAi}update`,formData)
+      console.log(res.data.data.face_id);
+      if(res.data.statusCode == 200){
+        const resFace = await axios.put(
+          `http://localhost:7295/api/Account/UpdateFaceId?accountId=${accUser?.id}`,
+          {
+            faceId: res.data.data.face_id,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(resFace)
+      }
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+  
   return (
     <>
       {/* Modal to view or create account */}
@@ -182,6 +238,37 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
               <button className={styles.button} onClick={() => ApiChangePw()}>
                 Reset Password
               </button>
+              <button
+                className={styles.button}
+                onClick={() => setChangeFace(true)}
+              >
+                Change Face
+              </button>
+              {changeFace && (
+                <div className={styles.fileInputContainer}>
+                  <label htmlFor="changeFace">Face Employee</label>
+                  <input
+                    id="changeFace"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                  <div>
+                    <button
+                      className={styles.button}
+                      onClick={() => updateFace()}
+                    >
+                      Change
+                    </button>
+                    <button
+                      className={styles.button}
+                      onClick={() => setChangeFace(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           ) : (
             <div className={styles.noAccount}>
@@ -241,6 +328,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
                 })
               }
             />
+            {avatar && <img src={avatar} alt="" className={styles.imageA} />}
           </div>
           <div className={styles.fileInputContainer}>
             <label htmlFor="faceFile">Face Image</label>
@@ -255,6 +343,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
                 })
               }
             />
+            {face && <img src={face} alt="" className={styles.imageA} />}
           </div>
           <div className={styles.selectContainer}>
             <label>Role</label>

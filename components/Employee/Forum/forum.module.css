@@ -1,6 +1,7 @@
 .bodyForum{
     color: black;
     display: flex;
+    background-color: #ccc;
 }
 .right{
     padding: 10px 15px;

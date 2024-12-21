@@ -6,6 +6,7 @@ import type { FilterDropdownProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
 import styles from './table.module.css'
 import axios from "axios";
+import './table.css'
 interface DataType {
   key: string;
   id: number;
@@ -170,37 +171,44 @@ export default function App ({user}:any) {
       title: "Id",
       dataIndex: "id",
       key: "id",
+      align: "center",
     },
     {
       title: "BaseSalary",
       dataIndex: "baseSalary",
       key: "baseSalary",
+      align: "center",
     },
     {
       title: "Bonus",
       dataIndex: "bonus",
       key: "bonus",
+      align: "center",
     },
     {
       title: "Deduction",
       dataIndex: "deduction",
       key: "deduction",
+      align: "center",
     },
     {
       title: "Total",
       dataIndex: "total",
       key: "total",
+      align: "center",
     },
     {
       title: "Month",
       dataIndex: "month",
       key: "month",
+      align:'center',
       ...getColumnSearchProps("month"),
     },
     {
       title: "Year",
       dataIndex: "year",
       key: "year",
+      align:'center',
       ...getColumnSearchProps("year"),
     },
     {
@@ -215,6 +223,12 @@ export default function App ({user}:any) {
     },
   ];
   const data: DataType[] = dataSalary
-  return <Table<DataType> className={styles.row} columns={columns} dataSource={data} />;
+  return (
+    <Table<DataType>
+      className="custom-table"
+      columns={columns}
+      dataSource={data}
+    />
+  );
 };
 

@@ -117,3 +117,7 @@
 .fileInputContainer input:hover {
   border-color: #007bff;
 }
+.imageA{
+  width: 100px;
+  height: 100px;
+}
