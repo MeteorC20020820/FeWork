@@ -4,7 +4,7 @@ import SideBar from "../SideBar/sideBar";
 import React, { useState, useRef, useEffect } from "react";
 import { Timekeeping } from "@/components/icon/icon";
 import axios from "axios";
-
+const apiAi = "https://b20dccn460.serveo.net/api/v1/";
 export default function TimeKeeping() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
@@ -72,17 +72,8 @@ export default function TimeKeeping() {
     const formData = new FormData();
     formData.append("file", imageFile)
     try {
-      const res = await axios.post(
-        "http://localhost:7295/api/FileUpload/upload",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data", // Đảm bảo định dạng đúng
-          },
-        }
-      );
-      setImageUrl(res.data.url)
+      const res = await axios.post(`${apiAi}check-in`,formData);
+      console.log(res)
     } catch (error) {
       console.log(error);
     }

@@ -2,7 +2,7 @@ import axios from "axios";
 import styles from "./account.module.css";
 import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
-const apiAi = "https://5081-42-114-249-209.ngrok-free.app/api/v1/";
+const apiAi = "https://b20dccn460.serveo.net/api/v1/";
 export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
@@ -204,6 +204,12 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
             },
           }
         );
+        if(resFace.status ==200){
+          alert('ok')
+        }
+        else{
+          alert('erorr')
+        }
         console.log(resFace)
       }
     }
