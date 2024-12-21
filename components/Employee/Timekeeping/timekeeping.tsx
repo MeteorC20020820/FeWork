@@ -14,9 +14,24 @@ export default function TimeKeeping() {
   const token = localStorage?.getItem("authToken");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  console.log(previewImage);
   const [stream, setStream] = useState<MediaStream | null>(null);
-
+  const [acc, setAcc] = useState<any>(null)
+  useEffect(()=>{
+    const apiGetAcc = async() =>{
+      try{
+        const res = await axios.get(`http://localhost:7295/api/Account/${user?.id}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setAcc(res.data.data)
+      }
+      catch(error){
+        console.log(error)
+      }
+    }
+    apiGetAcc()
+  },[user])
   // Khi isCameraActive thay đổi, nếu true và stream tồn tại, gán vào videoRef
   useEffect(() => {
     if (isCameraActive && videoRef.current && stream) {
@@ -66,7 +81,7 @@ export default function TimeKeeping() {
       apiUrlImage();
     }
   }, [imageFile]);
-  console.log(imageUrl);
+  console.log(acc)
   const apiUrlImage = async() =>{
     if(!imageFile) return;
     const formData = new FormData();
@@ -74,11 +89,17 @@ export default function TimeKeeping() {
     try {
       const res = await axios.post(`${apiAi}check-in`,formData);
       console.log(res)
+      if(res.data.statusCode == 200){
+        const checkIn = await axios.post(`http://localhost:7295/api/Attendance/check-in/${acc?.id}`)
+        if(checkIn.data.statusCode == 200){
+          alert('ok')
+        }
+      }
     } catch (error) {
       console.log(error);
     }
   }
-  console.log(imageFile)
+
   const handleCapture = () => {
     if (videoRef.current && canvasRef.current) {
       const context = canvasRef.current.getContext("2d");

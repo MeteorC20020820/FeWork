@@ -195,7 +195,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
         const resFace = await axios.put(
           `http://localhost:7295/api/Account/UpdateFaceId?accountId=${accUser?.id}`,
           {
-            faceId: res.data.data.face_id,
+            face_id: res.data.data.face_id,
           },
           {
             headers: {
