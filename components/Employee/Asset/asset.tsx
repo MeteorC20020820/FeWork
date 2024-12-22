@@ -189,6 +189,12 @@ export default function Asset(){
         dataIndex: "price",
         key: "price",
         align: "center",
+        render: (text: number) => {
+          return text.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
       },
       {
         title: "CreateDate",
@@ -217,8 +223,8 @@ export default function Asset(){
               <Menu.Item
                 key="edit"
                 onClick={() => {
-                  setModelEdit(true)
-                  setAsset(record)
+                  setModelEdit(true);
+                  setAsset(record);
                 }}
               >
                 Edit
@@ -226,8 +232,7 @@ export default function Asset(){
               <Menu.Item
                 key="delete"
                 onClick={() => {
-                  setIsDeleteModalOpen(true),
-                  setAsset(record)
+                  setIsDeleteModalOpen(true), setAsset(record);
                 }}
                 danger
               >

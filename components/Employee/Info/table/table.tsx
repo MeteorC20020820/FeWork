@@ -178,6 +178,12 @@ export default function App ({user}:any) {
       dataIndex: "baseSalary",
       key: "baseSalary",
       align: "center",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Bonus",
@@ -201,14 +207,14 @@ export default function App ({user}:any) {
       title: "Month",
       dataIndex: "month",
       key: "month",
-      align:'center',
+      align: "center",
       ...getColumnSearchProps("month"),
     },
     {
       title: "Year",
       dataIndex: "year",
       key: "year",
-      align:'center',
+      align: "center",
       ...getColumnSearchProps("year"),
     },
     {

@@ -155,7 +155,7 @@ export default function Employee(){
         dataIndex: "id",
         key: "id",
         align: "center",
-        width:"70px",
+        width: "70px",
       },
       {
         title: "fullName",
@@ -196,7 +196,12 @@ export default function Employee(){
         dataIndex: "baseSalary",
         key: "baseSalary",
         align: "center",
-        ...getColumnSearchProps("baseSalary"),
+        render: (text: number) => {
+          return text.toLocaleString("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          });
+        },
       },
     ];
    if (userRoleP === "1") {
