@@ -253,10 +253,15 @@ export default function Employee(){
        },
      });
    }
+   const token = localStorage?.getItem("authToken");
     useEffect(() =>{
         const ApiGetEmployee = async() =>{
             try{
-                const res = await axios.get(`${localApi}/Employee`)
+                const res = await axios.get(`${localApi}/Employee`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
                 if (Array.isArray(res.data.data)) {
                   const formattedData = res.data.data.map((item: any) => ({
                     ...item,

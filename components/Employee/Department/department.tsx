@@ -225,10 +225,15 @@ export default function Department() {
       status: 0,
     });
   }, [nameDep, desDep]);
+  const token = localStorage?.getItem("authToken");
  useEffect(() => {
    const ApiGetDepartment = async () => {
      try {
-       const res = await axios.get("http://localhost:7295/api/Department");
+       const res = await axios.get("http://localhost:7295/api/Department", {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       });
        if (Array.isArray(res.data.data)) {
         const formattedData = res.data.data.map((item:any) => ({
           ...item,
