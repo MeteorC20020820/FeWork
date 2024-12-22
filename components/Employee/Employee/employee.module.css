@@ -27,3 +27,88 @@
     background-color: green;
     color: white;
 }
+.bodyEmployee {
+    display: flex;
+    background-color: #f0f2f5; /* Màu nền nhẹ */
+    height: 100vh;
+  }
+  
+  .employee {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff; /* Nền trắng */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin: 20px;
+  }
+  
+  .titleEm {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .bodyCreateEm {
+    text-align: right;
+    margin-bottom: 20px;
+  }
+  
+  .btnCreateEm {
+    background-color: #1890ff; /* Màu xanh Ant Design */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btnCreateEm:hover {
+    background-color: #40a9ff; /* Màu xanh sáng hơn khi hover */
+  }
+  .bodyImg{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 50px 0;
+    width: 100%;
+  }
+  .imgEm{
+    background-color: #40a9ff;
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  .searchInput {
+    width: 100%;
+    max-width: 400px; /* Đặt giới hạn chiều rộng */
+    padding: 8px 12px;
+    border: 1px solid #ccc; /* Viền nhạt */
+    border-radius: 5px; /* Bo góc */
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); /* Tạo chiều sâu */
+  }
+  
+  /* Hiệu ứng khi hover vào thanh tìm kiếm */
+  .searchInput:hover {
+    border-color: #40a9ff; /* Đổi màu viền khi hover */
+  }
+  
+  /* Hiệu ứng khi tập trung vào thanh tìm kiếm */
+  .searchInput:focus {
+    border-color: #1890ff; /* Đổi màu viền */
+    box-shadow: 0 0 5px rgba(24, 144, 255, 0.6); /* Tạo hiệu ứng ánh sáng */
+    outline: none; /* Xóa đường viền mặc định */
+  }
+  
+  /* Container bọc thanh tìm kiếm */
+  .searchContainer {
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    margin-bottom: 20px; /* Khoảng cách dưới */
+  }
+  
+  

@@ -1,25 +1,22 @@
-'use client'
-import styles from './employee.module.css'
-import SideBar from '../SideBar/sideBar'
-import { useState, useRef, useEffect } from "react";
-import { SearchOutlined } from "@ant-design/icons";
-import type { InputRef, TableColumnsType, TableColumnType } from "antd";
-import { ColumnsType } from "antd/es/table";
-import { Button, Input, Space, Table } from "antd";
-import Highlighter from "react-highlight-words";
-import type { FilterDropdownProps } from "antd/es/table/interface";
+'use client';
+import styles from './employee.module.css';
+import SideBar from '../SideBar/sideBar';
+import { useState, useEffect } from 'react';
+import { Card, Button, Space, Dropdown, Menu, Input } from 'antd';
+import { MoreOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import Edit from './model/Edit/edit';
 import Delete from './model/Delete/delete';
 import Create from './model/Create/create';
 import Account from './model/Account/account';
 import Salary from './model/Salary/salary';
-import { MoreOutlined } from "@ant-design/icons";
-import { Dropdown, Menu } from "antd";
+import ModalWorkshedule from './model/Workshedule/workshedule';
+import './employee.css';
+
 const localApi = "http://localhost:7295/api";
+
 interface DataType {
-  key: number;
-  id:number;
+  id: number;
   fullName: string;
   position: string;
   identificationId: string;
@@ -28,293 +25,192 @@ interface DataType {
   address: string;
   baseSalary: string;
   status: number;
-  departmentId:number;
+  departmentId: number;
 }
-type DataIndex = keyof DataType;
-export default function Employee(){
-    const [user, setUser] = useState<any>({});
-    const [employee, setEmployee] = useState<DataType[]>([]);
-    const [userRoleP, setUserRoleP] = useState<any>(null);
-    const [searchText, setSearchText] = useState("");
-    const [searchedColumn, setSearchedColumn] = useState("");
-    const searchInput = useRef<InputRef>(null);
-    const [modalDelete, setModalDelete] = useState(false);
-    const [modalEdit, setModalEdit] = useState(false);
-    const [modalCreate, setModalCreate] = useState(false)
-    const [modalAccout, setModalAccount] = useState(false)
-    const [modalSalary, setModalSalary] = useState(false)
-    const [dataEm, setDataEm] = useState<any>(null)
-    const handleSearch = (
-      selectedKeys: string[],
-      confirm: FilterDropdownProps["confirm"],
-      dataIndex: DataIndex
-    ) => {
-      confirm();
-      setSearchText(selectedKeys[0]);
-      setSearchedColumn(dataIndex);
+
+export default function Employee() {
+  const [user, setUser] = useState<any>({});
+  const [employee, setEmployee] = useState<DataType[]>([]);
+  const [filteredEmployee, setFilteredEmployee] = useState<DataType[]>([]); // Danh sách nhân viên đã lọc
+  const [searchValue, setSearchValue] = useState<string>(''); // Giá trị tìm kiếm
+  const [userRoleP, setUserRoleP] = useState<string | null>(null);
+  const [modalDelete, setModalDelete] = useState(false);
+  const [modalEdit, setModalEdit] = useState(false);
+  const [modalCreate, setModalCreate] = useState(false);
+  const [modalAccount, setModalAccount] = useState(false);
+  const [modalSalary, setModalSalary] = useState(false);
+  const [modalWorkshedule, setModalWorkshedule] = useState(false);
+  const [dataEm, setDataEm] = useState<DataType | null>(null);
+
+  const token = localStorage?.getItem("authToken");
+
+  // Fetch data từ API
+  useEffect(() => {
+    const ApiGetEmployee = async () => {
+      try {
+        const res = await axios.get(`${localApi}/Employee`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (Array.isArray(res.data.data)) {
+          const formattedData = res.data.data.map((item: any) => ({
+            ...item,
+            birthday: new Date(item.birthday).toLocaleDateString('en-GB'),
+          }));
+          setEmployee(formattedData);
+          setFilteredEmployee(formattedData); // Khởi tạo danh sách nhân viên mặc định
+        } else {
+          console.error("Expected array but received:", res.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     };
 
-    const handleReset = (clearFilters: () => void) => {
-      clearFilters();
-      setSearchText("");
-    };
+    ApiGetEmployee();
+  }, [token]);
 
-    const getColumnSearchProps = (
-      dataIndex: DataIndex
-    ): TableColumnType<DataType> => ({
-      filterDropdown: ({
-        setSelectedKeys,
-        selectedKeys,
-        confirm,
-        clearFilters,
-        close,
-      }) => (
-        <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-          <Input
-            ref={searchInput}
-            placeholder={`Search ${dataIndex}`}
-            value={selectedKeys[0]}
-            onChange={(e) =>
-              setSelectedKeys(e.target.value ? [e.target.value] : [])
-            }
-            onPressEnter={() =>
-              handleSearch(selectedKeys as string[], confirm, dataIndex)
-            }
-            style={{ marginBottom: 8, display: "block" }}
-          />
-          <Space>
-            <Button
-              type="primary"
-              onClick={() =>
-                handleSearch(selectedKeys as string[], confirm, dataIndex)
-              }
-              icon={<SearchOutlined />}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Search
-            </Button>
-            <Button
-              onClick={() => clearFilters && handleReset(clearFilters)}
-              size="small"
-              style={{ width: 90 }}
-            >
-              Reset
-            </Button>
-            <Button
-              type="link"
-              size="small"
-              onClick={() => {
-                confirm({ closeDropdown: false });
-                setSearchText((selectedKeys as string[])[0]);
-                setSearchedColumn(dataIndex);
-              }}
-            >
-              Filter
-            </Button>
-            <Button
-              type="link"
-              size="small"
-              onClick={() => {
-                close();
-              }}
-            >
-              close
-            </Button>
-          </Space>
-        </div>
-      ),
-      filterIcon: (filtered: boolean) => (
-        <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
-      ),
-      onFilter: (value, record) =>
-        record[dataIndex]
-          .toString()
-          .toLowerCase()
-          .includes((value as string).toLowerCase()),
-      onFilterDropdownOpenChange: (visible) => {
-        if (visible) {
-          setTimeout(() => searchInput.current?.select(), 100);
-        }
-      },
-      render: (text) =>
-        searchedColumn === dataIndex ? (
-          <Highlighter
-            highlightStyle={{ backgroundColor: "#ffc069", padding: 0 }}
-            searchWords={[searchText]}
-            autoEscape
-            textToHighlight={text ? text.toString() : ""}
-          />
-        ) : (
-          text
-        ),
-    });
-    const columns: ColumnsType<DataType> = [
-      {
-        title: "ID",
-        dataIndex: "id",
-        key: "id",
-        align: "center",
-        width: "70px",
-      },
-      {
-        title: "fullName",
-        dataIndex: "fullName",
-        key: "fullName",
-        align: "center",
-        ...getColumnSearchProps("fullName"),
-      },
-      {
-        title: "Position",
-        dataIndex: "position",
-        key: "position",
-        align: "center",
-        ...getColumnSearchProps("position"),
-      },
-      {
-        title: "IdentificationId",
-        dataIndex: "identificationId",
-        key: "identificationId",
-        align: "center",
-        ...getColumnSearchProps("identificationId"),
-      },
-      {
-        title: "Birthday",
-        dataIndex: "birthday",
-        key: "birthday",
-        align: "center",
-        ...getColumnSearchProps("birthday"),
-      },
-      {
-        title: "Address",
-        dataIndex: "address",
-        key: "address",
-        ...getColumnSearchProps("address"),
-      },
-      {
-        title: "BaseSalary",
-        dataIndex: "baseSalary",
-        key: "baseSalary",
-        align: "center",
-        render: (text: number) => {
-          return text.toLocaleString("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          });
-        },
-      },
-    ];
-   if (userRoleP === "1") {
-     columns.push({
-       title: "Actions",
-       key: "actions",
-       render: (text: any, record: DataType) => {
-         const menu = (
-           <Menu>
-             <Menu.Item
-               key="edit"
-               onClick={() => {
-                 setModalEdit(true);
-                 setDataEm(record);
-               }}
-             >
-               Edit
-             </Menu.Item>
-             <Menu.Item
-               key="delete"
-               onClick={() => {
-                 setModalDelete(true);
-                 setDataEm(record);
-               }}
-               danger
-             >
-               Delete
-             </Menu.Item>
-             <Menu.Item
-               key="account"
-               onClick={() => {
-                 setModalAccount(true);
-                 setDataEm(record);
-               }}
-             >
-               Account
-             </Menu.Item>
-             <Menu.Item
-               key="salary"
-               onClick={() => {
-                 setModalSalary(true);
-                 setDataEm(record);
-               }}
-             >
-               Salary
-             </Menu.Item>
-           </Menu>
-         );
-         return (
-           <Dropdown overlay={menu} trigger={["hover"]}>
-             <Button type="link" icon={<MoreOutlined />} />
-           </Dropdown>
-         );
-       },
-     });
-   }
-   const token = localStorage?.getItem("authToken");
-    useEffect(() =>{
-        const ApiGetEmployee = async() =>{
-            try{
-                const res = await axios.get(`${localApi}/Employee`, {
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                });
-                if (Array.isArray(res.data.data)) {
-                  const formattedData = res.data.data.map((item: any) => ({
-                    ...item,
-                    birthday: new Date(item.birthday).toLocaleDateString(
-                      "en-GB"
-                    ),
-                    
-                  }));
-                  setEmployee(formattedData);
-                } else {
-                  console.error("Expected array but received:", res.data.data);
-                }
-            }
-            catch(error){
-                console.log(error)
-            }
-        }
-        ApiGetEmployee()
-    },[])
-    const data: DataType[] = employee;
-    return (
-      <div className={styles.bodyEmployee}>
-        <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
-        <div style={{ width: "18%" }}></div>
-        <div className={styles.employee}>
-          <p className={styles.titleEm}>Employee</p>
-          {userRoleP === "1" && (
-            <div className={styles.bodyCreateEm}>
-              <button
-                className={styles.btnCreateEm}
-                onClick={() => setModalCreate(true)}
-              >
-                Create Employee
-              </button>
-            </div>
-          )}
-          <Table<DataType>
-            columns={columns}
-            dataSource={data}
-            scroll={{ x: 1000, y: 400 }}
-          />
-        </div>
-
-        {Edit(modalEdit, setModalEdit, dataEm)}
-        {Delete(modalDelete, setModalDelete, dataEm)}
-        {Create(modalCreate, setModalCreate)}
-        {Account(modalAccout, setModalAccount, dataEm)}
-        {Salary(modalSalary, setModalSalary, dataEm)}
-      </div>
+  // Lọc nhân viên dựa trên giá trị tìm kiếm
+  useEffect(() => {
+    const filtered = employee.filter((emp) =>
+      emp.fullName.toLowerCase().includes(searchValue.toLowerCase())
     );
+    setFilteredEmployee(filtered);
+  }, [searchValue, employee]);
+
+  // Xử lý thay đổi giá trị tìm kiếm
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value); // Cập nhật giá trị tìm kiếm
+  };
+
+  // Render menu hành động
+  const renderCardActions = (record: DataType) => {
+    const menu = (
+      <Menu>
+        <Menu.Item
+          key="edit"
+          onClick={() => {
+            setModalEdit(true);
+            setDataEm(record);
+          }}
+        >
+          Edit
+        </Menu.Item>
+        <Menu.Item
+          key="delete"
+          onClick={() => {
+            setModalDelete(true);
+            setDataEm(record);
+          }}
+          danger
+        >
+          Delete
+        </Menu.Item>
+        <Menu.Item
+          key="account"
+          onClick={() => {
+            setModalAccount(true);
+            setDataEm(record);
+          }}
+        >
+          Account
+        </Menu.Item>
+        <Menu.Item
+          key="salary"
+          onClick={() => {
+            setModalSalary(true);
+            setDataEm(record);
+          }}
+        >
+          Salary
+        </Menu.Item>
+        <Menu.Item
+          key="workshedule"
+          onClick={() => {
+            setModalWorkshedule(true);
+            setDataEm(record);
+          }}
+        >
+          Workshedule
+        </Menu.Item>
+      </Menu>
+    );
+
+    return (
+      <Dropdown overlay={menu} trigger={['click']}>
+        <Button type="link" icon={<MoreOutlined />} />
+      </Dropdown>
+    );
+  };
+
+  return (
+    <div className={styles.bodyEmployee}>
+      <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
+      <div style={{ width: '18%' }}></div>
+      <div className={styles.employee}>
+        <p className={styles.titleEm}>Employee</p>
+        {userRoleP === "1" && (
+          <div className={styles.bodyCreateEm}>
+            <button
+              className={styles.btnCreateEm}
+              onClick={() => setModalCreate(true)}
+            >
+              Create Employee
+            </button>
+          </div>
+        )}
+        <div className={styles.searchContainer}>
+          <Input
+            className={styles.searchInputs}
+            placeholder="Search by name"
+            value={searchValue}
+            onChange={handleSearch}
+            allowClear
+          />
+        </div>
+        <div className="cardContainer">
+          {filteredEmployee.map((record) => (
+            <Card
+              key={record.id}
+              title={record.fullName}
+              extra={userRoleP === "1" && renderCardActions(record)}
+            >
+              <div className={styles.bodyImg}>
+                <img src="" alt="" className={styles.imgEm} />
+              </div>
+              <p>
+                <strong>Position:</strong> {record.position}
+              </p>
+              <p>
+                <strong>Identification ID:</strong> {record.identificationId}
+              </p>
+              <p>
+                <strong>Birthday:</strong> {record.birthday}
+              </p>
+              <p>
+                <strong>Address:</strong> {record.address}
+              </p>
+              <p>
+                <strong>Base Salary:</strong>{" "}
+                {Number(record.baseSalary).toLocaleString('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND',
+                })}
+              </p>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {/* Các modal */}
+      {Edit(modalEdit, setModalEdit, dataEm)}
+      {Delete(modalDelete, setModalDelete, dataEm)}
+      {Create(modalCreate, setModalCreate)}
+      {Account(modalAccount, setModalAccount, dataEm)}
+      {Salary(modalSalary, setModalSalary, dataEm)}
+      {ModalWorkshedule(modalWorkshedule, setModalWorkshedule, dataEm)}
+    </div>
+  );
 }

@@ -11,6 +11,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const [face, setFace] = useState<any>(null)
   const [imgFaceChange, setImgFaceChange] = useState<File | null>(null);
   const [changeFace, setChangeFace] = useState(false)
+  const [preview, setPreview] = useState<string | null>(null);
   const [newAccount, setNewAccount] = useState({
     email: "",
     password: "",
@@ -100,15 +101,6 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       console.log(error);
     }
   };
-  // useEffect(() =>{
-  //   const image = async()=>{
-  //     const avatarUrl = await apiChangeImage(newAccount.avatarFile);
-  //     const faceUrl = await apiChangeImage(newAccount.faceFile);
-  //     setAvatar(avatarUrl);
-  //     setFace(faceUrl);
-  //   }
-  //   image()
-  // },[avatar, face,newAccount])
   const ApiCreateAccount = async () => {
     if (!newAccount.faceFile) return null;
     const formData = new FormData();
@@ -129,7 +121,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       const payload = {
         email: newAccount.email,
         password: newAccount.password,
-        avatarUrl: avatarUrl,
+        avatarUrl: "string",
         faceUrl: faceUrl,
         faceId: res2.data.data.face_id,
         status: newAccount.status,
@@ -180,7 +172,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       const file = e.target.files?.[0];
       if (file) {
         setImgFaceChange(file);
-        // setPreview(URL.createObjectURL(file));
+        setPreview(URL.createObjectURL(file));
       }
     };
   const updateFace = async() =>{
@@ -217,7 +209,25 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       console.log(error)
     }
   }
-  
+  const deleteAcc = async() =>{
+    const formData = new FormData();
+    formData.append("face_id", accUser.face_id);
+    try{
+      const res = await axios.delete(`http://localhost:7295/api/Account/${accUser?.id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if(res.status == 200){
+        const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
+        console.log(deleteFace)
+        alert('Delete account success')
+      }
+    }
+    catch(erorr){
+      console.log(erorr)
+    }
+  }
   return (
     <>
       {/* Modal to view or create account */}
@@ -241,15 +251,23 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
                 {accUser?.email || "No Email Available"}
               </p>
               <p className={styles.role}>{role(accUser?.roleId)}</p>
-              <button className={styles.button} onClick={() => ApiChangePw()}>
-                Reset Password
-              </button>
-              <button
-                className={styles.button}
-                onClick={() => setChangeFace(true)}
-              >
-                Change Face
-              </button>
+              <div className={styles.bodybtn}>
+                <button className={styles.button} onClick={() => ApiChangePw()}>
+                  Reset Password
+                </button>
+                <button
+                  className={styles.buttonchange}
+                  onClick={() => setChangeFace(true)}
+                >
+                  Change Face
+                </button>
+                <button
+                  className={styles.buttondelete}
+                  onClick={() =>deleteAcc()}
+                >
+                  Delete Account
+                </button>
+              </div>
               {changeFace && (
                 <div className={styles.fileInputContainer}>
                   <label htmlFor="changeFace">Face Employee</label>
@@ -259,7 +277,16 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
                     accept="image/*"
                     onChange={handleImageChange}
                   />
-                  <div>
+                  {preview && (
+                    <div className={styles.imagePreview}>
+                      <img
+                        src={preview}
+                        alt="Preview"
+                        className={styles.previewImg}
+                      />
+                    </div>
+                  )}
+                  <div style={{display:'flex', gap:'15px'}}>
                     <button
                       className={styles.button}
                       onClick={() => updateFace()}
@@ -320,21 +347,6 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
                 setNewAccount({ ...newAccount, password: e.target.value })
               }
             />
-          </div>
-          <div className={styles.fileInputContainer}>
-            <label htmlFor="avatarFile">Avatar</label>
-            <input
-              id="avatarFile"
-              type="file"
-              accept="image/*"
-              onChange={(e) =>
-                setNewAccount({
-                  ...newAccount,
-                  avatarFile: e.target.files?.[0] || null,
-                })
-              }
-            />
-            {avatar && <img src={avatar} alt="" className={styles.imageA} />}
           </div>
           <div className={styles.fileInputContainer}>
             <label htmlFor="faceFile">Face Image</label>

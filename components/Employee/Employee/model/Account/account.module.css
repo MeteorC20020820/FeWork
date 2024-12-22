@@ -46,11 +46,16 @@
   display: flex;
   gap: 10px;
 }
-
+.bodybtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
 .button {
   padding: 10px 20px;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   cursor: pointer;
   border: none;
@@ -58,7 +63,28 @@
    background-color: #4a90e2;
   color: #fff;
 }
-
+.buttonchange {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+   background-color: #4ce24a;
+  color: #fff;
+}
+.buttondelete {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+   background-color: #e24a4a;
+  color: #fff;
+}
 .button:hover {
   background-color: #357abd;
 }
@@ -78,7 +104,12 @@
   flex-direction: column;
   gap: 15px;
 }
-
+.fileInputContainer{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
 .inputField label,
 .selectContainer label,
 .fileInputContainer label {
@@ -120,4 +151,10 @@
 .imageA{
   width: 100px;
   height: 100px;
+}
+.previewImg {
+  max-width: 100%;
+  max-height: 200px;
+  border-radius: 10px;
+  object-fit: cover;
 }

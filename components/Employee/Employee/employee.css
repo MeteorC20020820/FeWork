@@ -1,0 +1,46 @@
+.cardContainer {
+    display: flex;
+    flex-wrap: wrap; /* Cho phép xuống dòng */
+    gap: 30px; /* Khoảng cách giữa các thẻ */
+    justify-content: space-around; /* Căn chỉnh theo chiều ngang */
+  }
+  
+  .cardContainer .ant-card {
+    flex: 1 1 calc(30% - 16px); /* Định nghĩa chiều rộng và khoảng cách */
+    max-width: calc(30% - 16px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .cardContainer .ant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    background-color: antiquewhite;
+    border: 2px solid rgb(241, 192, 128);
+  }
+  .cardContainer .ant-card-head {
+    text-align: center; /* Căn giữa toàn bộ phần head */
+  }
+  
+  .cardContainer .ant-card-head-title {
+    display: flex;
+    justify-content: center; /* Căn giữa ngang */
+    font-size: 18px; /* Kích thước chữ */
+    font-weight: bold; /* Đậm chữ */
+  }
+  
+  /* Responsive cho màn hình nhỏ */
+  @media (max-width: 768px) {
+    .cardContainer .ant-card {
+      flex: 1 1 calc(50% - 16px); /* 2 card mỗi hàng */
+      max-width: calc(50% - 16px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .cardContainer .ant-card {
+      flex: 1 1 100%; /* 1 card mỗi hàng */
+      max-width: 100%;
+    }
+  }
+/* Thanh tìm kiếm */

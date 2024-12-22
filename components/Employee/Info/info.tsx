@@ -27,7 +27,11 @@ export default function Info() {
     const ApiGetDep = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:7295/api/Department/${user.departmentId}`
+          `http://localhost:7295/api/Department/${user.departmentId}`,{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (res.status === 200) {
           setDep(res.data.data.name);

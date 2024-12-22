@@ -1,0 +1,421 @@
+.bodyWorkshedule{
+    display: flex;
+}
+.content{
+  width: 100%;
+  padding: 20px;
+}
+.calendarContainer {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 2px solid gray;
+  background-color: white;
+  font-size: 14px; 
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.headerLeft{
+  display: flex;
+  gap: 20px;
+}
+.navButton {
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  color: black;
+}
+.btnToday{
+  color: #5684AE;;
+  background-color: white;
+  border: 1px solid #5684AE;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+:hover.btnToday{
+  color: white;
+  background-color: #5684AE;
+}
+
+.headerTitle {
+  font-size: 24px;
+  color: #0F4C81;
+  font-weight: 700;
+}
+.headerMobile{
+  display: none;
+  
+}
+.yearSelect,.monthSelect{
+  color: white;
+  background-color: #0F4C81;
+  padding: 5px 10px;
+  border: 1px solid #0F4C81;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  
+}
+.monthSelect:hover,
+.yearSelect:hover {
+  appearance: none; 
+}
+.weekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-weight: bold;
+  padding: 10px 0;
+  font-size: 12px;
+  color: grey;
+}
+
+.daysGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+  padding: 5px;
+  text-align: center;
+  border: 1px solid #c0bebe;
+  background-color: #fff;
+  min-height: 50px;
+  color: rgb(91, 90, 90);
+  height: 50px;
+  overflow-y: auto;
+   font-size: 12px; 
+  scrollbar-width: none;
+}
+
+.currentMonthDay {
+  font-weight: bold;
+}
+
+.otherMonthDay {
+  color: #c2c1c1;
+}
+
+.today {
+  font-weight: bold;
+  color: white;
+  background-color: #0070f3;
+}
+.eventDay {
+  background-color: #FFE4C8; 
+  border: 1px solid #F9BE81; 
+}
+.today {
+  background-color: #0F4C81;; 
+  color: white;
+  border: 1px solid #0F4C81;;
+}
+.today strong{
+  color: black;
+}
+.eventList{
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 2px;
+}
+.event{
+  border: 1px solid rgb(154, 108, 2);
+  border-radius: 3px;
+  background-color: #FFE4C8;
+  width: 100%;
+  padding: 2px 5px;
+  margin-bottom: 3px;
+  text-overflow: ellipsis;
+}
+.eventDetails {
+  margin-top: 20px;
+}
+
+.eventDetails ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.eventDetails li {
+  margin-bottom: 10px;
+}
+.titleEvents{
+  color: #0F4C81;
+  font-weight: 800;
+  font-size: 25px;
+}
+.eventsOnDay{
+  border: none;
+  display: flex;
+  justify-content: space-around;
+  background-color: #FFE4C8;
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.titleEventDay{
+  font-size: 25px;
+  font-weight: 600;
+  color: #0F4C81;
+}
+.timeEventDay{
+  font-size: 18px;
+  font-weight: 500;
+  color: #0F4C81;
+}
+.noteEventDay{
+  font-size: 18px;
+  color: black;
+}
+@media (max-width: 768px) {
+  .calendarContainer {
+    padding: 10px;
+  }
+
+  .headerTitle {
+    font-size: 18px;
+  }
+
+  .navButton {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 700px) {
+  .yearSelect,.monthSelect{
+    display: none;
+  }
+  .btnToday{
+    display: none;
+  }
+  .headerLeft{
+    display: none;
+  }
+  .headerMobile{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+  }
+  .header{
+    justify-content: center;
+  }
+  .eventList{
+    display: none;
+  }
+  .daysGrid{
+    gap: 5px;
+  }
+  .day{
+    padding: 5px;
+    border-radius: 50%;
+    min-height: 40px;
+    height: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+  }
+}
+.eventStatus {
+  font-size: 0.9em;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.eventStatus:after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  margin-top: 2px;
+}
+
+.eventStatus.muộn {
+  color: red;
+}
+
+.eventStatus.hoàn-thành {
+  color: green;
+}
+.dateEventDay {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 5px;
+}
+.day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ddd;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.currentMonthDay.hoàn-thành {
+  background-color: #d4f8d4; /* Màu xanh lá nhạt */
+}
+
+.currentMonthDay.muộn {
+  background-color: #faacac; /* Màu đỏ nhạt */
+}
+
+.currentMonthDay.đang-làm-việc {
+  background-color: #f3f65a; /* Màu cam nhạt */
+}
+.currentMonthDay.xin-nghỉ {
+    background-color: #4bb1e8; /* Màu cam nhạt */
+  }
+.otherMonthDay {
+  background-color: #f5f5f5;
+  color: #aaa;
+}
+
+.today {
+  border: 2px solid #007bff; /* Đánh dấu ngày hiện tại */
+}
+.currentMonthDay.unknown {
+  background-color: #f0f0f0; /* Màu xám nhạt */
+  color: #999; /* Màu chữ nhạt */
+}
+
+.checkOutButton {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+}
+
+.checkOutButton:hover {
+  background-color: #0056b3;
+}
+.videoPreview {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  border: 2px solid #007bff;
+  object-fit: cover;
+}
+
+.captureButton {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.captureButton:hover {
+  background-color: #0056b3;
+}
+
+.okButton {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.okButton:hover {
+  background-color: #218838;
+}
+
+.uploadContainer {
+  margin-top: 20px;
+}
+
+.uploadButton {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.uploadButton:hover {
+  background-color: #0056b3;
+}
+
+.hiddenCanvas {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.videoPreview {
+  width: 700px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.captureButton,
+.closeButton {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.closeButton {
+  background-color: red;
+  color: white;
+}
+
+.captureButton {
+  background-color: green;
+  color: white;
+}
+
+

@@ -1,10 +1,43 @@
 import axios from "axios";
 import styles from "./delete.module.css";
 import { Modal } from "antd";
-
+import { useEffect, useState } from "react";
+const apiAi = "https://b20dccn460.serveo.net/api/v1/";
 export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
+  const [accUser, setAccUser] = useState<any>(null);
+  useEffect(() => {
+    if (dataEm?.id) {
+      const ApiGetAccount = async () => {
+        try {
+          const res = await axios.get(
+            `http://localhost:7295/api/Account/GetAccountByEmployeeId/${dataEm?.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          if (res.data.statusCode === 200) {
+            setAccUser(res.data.data);
+          } else {
+            setAccUser(null);
+          }
+        } catch (error) {
+          console.error("Error fetching account data:", error);
+          setAccUser(null);
+        }
+      };
+      ApiGetAccount();
+    }
+  }, [token, dataEm?.id]);
   const apiDeleteDepartment = async () => {
+    if(accUser !== null){
+      const formData = new FormData();
+      formData.append("face_id", accUser.face_id);
+      const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
+      console.log(deleteFace)
+    }
     try {
       const res = await axios.delete(
         `http://localhost:7295/api/Employee/${dataEm?.id}`,
@@ -16,7 +49,13 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
       );
       console.log(res.data);
       if (res.data.statusCode == 200) {
-        window.location.reload();
+        if(accUser !== null){
+          const formData = new FormData();
+          formData.append("face_id", accUser.face_id);
+          const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
+          console.log(deleteFace)
+        }
+        // window.location.reload();
       }
       console.log(res);
     } catch (error) {
