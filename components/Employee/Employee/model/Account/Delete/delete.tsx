@@ -1,30 +1,34 @@
 import axios from "axios";
 import styles from "./delete.module.css";
-import { Modal,Button } from "antd";
-
-export default function Delete(open: boolean, setOpen: Function, idLeave: any) {
+import { Modal, Button } from "antd";
+import { useEffect, useState } from "react";
+const apiAi = "https://b20dccn460.serveo.net/api/v1/";
+export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
-  const apiDeleteDepartment = async () => {
-    try {
-      const res = await axios.delete(
-        `http://localhost:7295/api/LeaveReq/${idLeave}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (res.status == 200) {
-        alert("Delele leaveapplication success");
+  const deleteAcc = async() =>{
+    const formData = new FormData();
+    formData.append("face_id", dataEm.face_id);
+    try{
+      const res = await axios.delete(`http://localhost:7295/api/Account/${dataEm?.id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log(res)
+      if(res.status == 200){
+        const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
+        console.log(deleteFace)
         window.location.reload()
+        alert('Delete account success')
       }
-    } catch (error) {
-      console.log(error);
     }
-  };
+    catch(erorr){
+      console.log(erorr)
+    }
+  }
   return (
     <Modal
-      title="Delete Employee"
+      title="Delete Account"
       open={open}
       onCancel={()=>setOpen(false)}
       footer={[
@@ -35,13 +39,13 @@ export default function Delete(open: boolean, setOpen: Function, idLeave: any) {
           key="delete"
           type="primary"
           danger
-          onClick={() => apiDeleteDepartment()}
+          onClick={() => deleteAcc()}
         >
           Delete
         </Button>,
       ]}
     >
-      <p>Are you sure you want to delete leaveapplication?</p>
+      <p>Are you sure you want to delete account: {dataEm?.email}?</p>
     </Modal>
     // <Modal
     //   open={open}
@@ -52,9 +56,9 @@ export default function Delete(open: boolean, setOpen: Function, idLeave: any) {
     //   okButtonProps={{ style: { display: "none" } }}
     // >
     //   <div className={styles.bodyLogout}>
-    //     <p className={styles.title}>Delete LeaveApplication</p>
+    //     <p className={styles.title}>Delete Department</p>
     //     <p className={styles.text}>
-    //       Are you sure you want to delete leaveapplication?
+    //       Are you sure you want to delete the {dataEm?.fullName} employee?
     //     </p>
     //     <div className={styles.bodyBtn}>
     //       <button

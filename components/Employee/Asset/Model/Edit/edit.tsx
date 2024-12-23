@@ -30,7 +30,11 @@ export default function EditModal({
     price: 0, // Thêm trường price
     description: "",
   });
-
+  const [errors, setErrors] = useState({
+    name: "",
+    quantiy: "",
+  });
+  
   useEffect(() => {
     if (dataAsset) {
       setFormData({
@@ -81,28 +85,48 @@ export default function EditModal({
    }
   };
 
-  const handleSubmit = async(e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Updated Data:", formData);
-    try{
-        const res = await axios.put(
-          `http://localhost:7295/api/Asset/${formData.id}`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if(res.status == 200){
-            window.location.reload()
+  
+    // Khởi tạo object lỗi
+    const newErrors = { name: "", quantiy: "" };
+  
+    // Validate trường name
+    if (formData.name.trim() === "") {
+      newErrors.name = "Name is required.";
+    }
+  
+    // Validate trường quantiy
+    if (formData.quantiy <= 0) {
+      newErrors.quantiy = "Quantity must be greater than 0.";
+    }
+  
+    // Cập nhật trạng thái lỗi
+    setErrors(newErrors);
+  
+    // Nếu có lỗi, ngừng việc submit
+    if (newErrors.name || newErrors.quantiy) return;
+  
+    try {
+      const res = await axios.put(
+        `http://localhost:7295/api/Asset/${formData.id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Error updating asset:", error);
     }
-    catch(error){
-        console.log(error)
-    }
-    setModelEdit(false); 
+  
+    setModelEdit(false);
   };
+  
 
   if (!modelEdit) return null;
 
@@ -130,8 +154,10 @@ export default function EditModal({
             type="text"
             value={formData.name}
             onChange={handleChange("name")}
-            className={styles.input}
+            className={`${styles.input} ${errors.name ? styles.inputError : ""}`}
           />
+          {errors.name && <span className={styles.error}>{errors.name}</span>}
+
 
           <label className={styles.label}>Image</label>
           <input
@@ -151,8 +177,10 @@ export default function EditModal({
             type="number"
             value={formData.quantiy}
             onChange={handleChange("quantiy")}
-            className={styles.input}
+            className={`${styles.input} ${errors.quantiy ? styles.inputError : ""}`}
           />
+          {errors.quantiy && <span className={styles.error}>{errors.quantiy}</span>}
+
           <label className={styles.label}>Price</label>
           <input
             type="number"

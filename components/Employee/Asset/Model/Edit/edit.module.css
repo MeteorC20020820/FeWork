@@ -215,3 +215,12 @@
     transform: translateY(0);
   }
 }
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.inputError {
+  border: 1px solid red;
+}

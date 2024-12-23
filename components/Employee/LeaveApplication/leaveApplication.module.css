@@ -1,84 +1,114 @@
-.bodyleave{
-    padding: 20px;
-    width: 80%;
-    background-color: #f7f9fc;
-    font-family: Arial, sans-serif;
+/* General Layout */
+.bodyleave {
+  flex: 1;
+  padding: 20px;
+  background-color: #f9f9f9;
+  font-family: 'Arial', sans-serif;
 }
+
 .header {
-  font-size: 24px;
+  font-size: 2em;
   font-weight: bold;
   color: #333;
   margin-bottom: 20px;
   text-align: center;
 }
 
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.tabButton {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  font-size: 1em;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  color: #333;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tabButton:hover {
+  background-color: #d6d6d6;
+}
+
+.activeTab {
+  background-color: #454545;
+  color: rgb(68, 68, 68);
+}
+
 .list {
-  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
   padding: 0;
-  margin: 0 auto;
-  max-width: 800px;
-  height: 100vh; /* Chiều cao tối đa */
-  overflow-y: auto; /* Hiển thị thanh cuộn nếu tràn */
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
+  margin: 20px 0;
+  list-style: none;
 }
 
 .listItem {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 16px 0;
-  padding: 20px;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s;
-  position: relative;
-  padding: 20px;
-  margin-bottom: 10px;
-  background: #f9f9f9;
+  background-color: #fff;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: calc(33.33% - 20px); /* Three cards per row */
+  min-width: 280px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
 }
 
 .listItem:hover {
-  background-color: #f1f1f1;
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.listItem p {
-  margin: 8px 0;
+.leftContent, .rightContent {
+  padding: 16px;
+}
+
+.leftContent p {
+  margin: 5px 0;
+  font-size: 14px;
   color: #555;
-  font-size: 16px;
 }
 
-.listItem p strong {
-  color: #222;
-  font-weight: 600;
-}
-.leftContent {
-  flex: 1;
+.leftContent p strong {
+  color: #333;
 }
 
 .rightContent {
-  text-align: right;
-  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid #eee;
 }
 
 .buttons {
   display: flex;
   gap: 10px;
+  margin-top: 10px;
+}
+
+.approveButton, .rejectButton {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .approveButton {
   background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
 }
 
 .approveButton:hover {
@@ -87,30 +117,49 @@
 
 .rejectButton {
   background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 8px 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
 }
 
 .rejectButton:hover {
-  background-color: #d32f2f;
+  background-color: #e53935;
 }
+
 .closeButton {
   position: absolute;
-  top: 5px;
+  top: 10px;
   right: 10px;
   background: none;
   border: none;
-  color: red;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 20px;
+  color: #888;
   cursor: pointer;
 }
 
 .closeButton:hover {
-  color: darkred;
+  color: #555;
+}
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ddd;
+  /* background-image: linear-gradient(white, black); */
+}
+
+.tab {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #797979;
+}
+
+.activeTab {
+  border-bottom: 3px solid #007bff;
+  background-color: #e9f5ff;
+  width: 10%;
 }

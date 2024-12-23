@@ -140,18 +140,29 @@ export default function Employee() {
         const employees = await fetchEmployees(token);
         const formattedData = await Promise.all(
           employees.map(async (item: any) => {
-            const email = await fetchAccountEmailByEmployeeId(item.id, token);
-            const avatar = await fetchAccountAvatarByEmployeeId(item.id, token);
-            return {
-              ...item,
-              birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
-              email: email || "N/A", // Gắn email vào dữ liệu
-              avatar:avatar || ""
-
-            };
-            
+            try {
+              const email = await fetchAccountEmailByEmployeeId(item?.id, token);
+              const avatar = await fetchAccountAvatarByEmployeeId(item?.id, token);
+        
+              console.log(`Employee ID: ${item?.id}, Email: ${email}, Avatar: ${avatar}`);
+              return {
+                ...item,
+                birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
+                email: email || "N/A",
+                avatar: avatar || "",
+              };
+            } catch (error) {
+              console.error(`Error fetching data for ID ${item?.id}:`, error);
+              return {
+                ...item,
+                birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
+                email: "N/A",
+                avatar: "",
+              };
+            }
           })
         );
+        
         setEmployee(formattedData);
         setFilteredEmployee(formattedData);
       } catch (error) {
@@ -162,7 +173,7 @@ export default function Employee() {
     fetchAllData();
   }, [token]);
 
-
+  console.log(filteredEmployee)
   return (
     <div className={styles.bodyEmployee}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />

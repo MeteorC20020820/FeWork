@@ -2,6 +2,7 @@ import axios from "axios";
 import styles from "./account.module.css";
 import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
+import Delete from "./Delete/delete";
 const apiAi = "https://b20dccn460.serveo.net/api/v1/";
 export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
@@ -12,6 +13,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const [imgFaceChange, setImgFaceChange] = useState<File | null>(null);
   const [changeFace, setChangeFace] = useState(false)
   const [preview, setPreview] = useState<string | null>(null);
+  const [modalDelete, setModalDelete] = useState(false)
   const [newAccount, setNewAccount] = useState({
     email: "",
     password: "",
@@ -209,25 +211,6 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
       console.log(error)
     }
   }
-  const deleteAcc = async() =>{
-    const formData = new FormData();
-    formData.append("face_id", accUser.face_id);
-    try{
-      const res = await axios.delete(`http://localhost:7295/api/Account/${accUser?.id}`,{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      if(res.status == 200){
-        const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
-        console.log(deleteFace)
-        alert('Delete account success')
-      }
-    }
-    catch(erorr){
-      console.log(erorr)
-    }
-  }
   return (
     <>
       {/* Modal to view or create account */}
@@ -263,7 +246,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
                 </button>
                 <button
                   className={styles.buttondelete}
-                  onClick={() =>deleteAcc()}
+                  onClick={() =>setModalDelete(true)}
                 >
                   Delete Account
                 </button>
@@ -381,6 +364,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           </div>
         </div>
       </Modal>
+      {Delete(modalDelete, setModalDelete, accUser)}
     </>
   );
 }

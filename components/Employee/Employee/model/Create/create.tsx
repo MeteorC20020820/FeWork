@@ -48,6 +48,7 @@ export default function Create(open: boolean, setOpen: Function) {
     setChangeDep({
       fullName: name,
       phone: phone,
+      imageUrl:"",
       birthday: birthday,
       identificationId: identificationId,
       position: position,
@@ -215,7 +216,7 @@ export default function Create(open: boolean, setOpen: Function) {
           </div>
           <div className={styles.inputWrapper}>
             <label htmlFor="departmentId" className={styles.label}>
-              Department ID
+              Department
             </label>
             <select
               value={departmentId}
@@ -224,7 +225,7 @@ export default function Create(open: boolean, setOpen: Function) {
               className={styles.inputDep}
               required
             >
-              <option value="" disabled>
+              <option value="">
                 Select Department
               </option>
               {dep.map((d) => (

@@ -84,7 +84,7 @@
   .searchInput {
     width: 100%;
     max-width: 400px; /* Đặt giới hạn chiều rộng */
-    padding: 8px 12px;
+    padding: 10px 12px;
     border: 1px solid #ccc; /* Viền nhạt */
     border-radius: 5px; /* Bo góc */
     font-size: 16px;

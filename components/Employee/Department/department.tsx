@@ -254,7 +254,11 @@ export default function Department() {
     try {
       const res = await axios.post(
         "http://localhost:7295/api/Department",
-        senDep
+        senDep,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }
       );
       console.log(res.data)
       if(res.data.statusCode == 201){
