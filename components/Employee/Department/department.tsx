@@ -294,23 +294,35 @@ export default function Department() {
             {!create && (
               <div className={styles.bodyCreate}>
                 <div className={styles.bodyTitleCreate}>
-                  <p className={styles.titleCreate}>Creat Department</p>
+                  <p className={styles.titleCreate}>Create Department</p>
                 </div>
                 <div className={styles.creatDepartment}>
-                  <input
-                    type="text"
-                    className={styles.inputCreate}
-                    value={nameDep}
-                    onChange={changeNameDep}
-                    placeholder="Enter name department..."
-                  />
-                  <input
-                    type="text"
-                    className={styles.inputCreate}
-                    value={desDep}
-                    onChange={changeDesDep}
-                    placeholder="Enter description department..."
-                  />
+                  <div>
+                    <label htmlFor="nameDep" className={styles.labelCreate}>
+                      Department Name:
+                    </label>
+                    <input
+                      id="nameDep"
+                      type="text"
+                      className={styles.inputCreate}
+                      value={nameDep}
+                      onChange={changeNameDep}
+                      placeholder="Enter name department..."
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="desDep" className={styles.labelCreate}>
+                      Description:
+                    </label>
+                    <input
+                      id="desDep"
+                      type="text"
+                      className={styles.inputCreate}
+                      value={desDep}
+                      onChange={changeDesDep}
+                      placeholder="Enter description department..."
+                    />
+                  </div>
                   <button
                     className={styles.btnCreate}
                     onClick={() => ApiPostDepartment()}

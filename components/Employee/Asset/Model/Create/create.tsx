@@ -8,10 +8,7 @@ interface ModalAddAssetProps {
   onClose: () => void;
 }
 
-export default function Create({
-  isOpen,
-  onClose,
-}: ModalAddAssetProps) {
+export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
   const [formData, setFormData] = useState({
     name: "",
     quantiy: 0,
@@ -19,15 +16,24 @@ export default function Create({
     price: 0,
     description: "",
   });
-  console.log(formData)
+  const [errors, setErrors] = useState({
+    name: "",
+    quantiy: "",
+    imageUrl: "",
+    price: "",
+    description: "",
+  });
+
+  const token = localStorage.getItem("authToken");
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" })); // Clear error when typing
   };
-  const [imageUrl, setImageUrl] = useState<any>(null)
-  const token = localStorage.getItem("authToken");
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -45,37 +51,56 @@ export default function Create({
             },
           }
         );
-        const uploadedUrl = res.data.url; 
+        const uploadedUrl = res.data.url;
         setFormData((prev) => ({
           ...prev,
-          imageUrl: uploadedUrl, 
+          imageUrl: uploadedUrl,
         }));
+        setErrors((prev) => ({ ...prev, imageUrl: "" })); // Clear image error
       } catch (error) {
         console.error("Failed to upload image:", error);
       }
     }
   };
 
-  console.log(imageUrl)
-  
-  const handleSubmit = async() => {
-    try{
-        const res = await axios.post(
-          "http://localhost:7295/api/Asset",
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        if(res.status == 200){
-            window.location.reload()
-        }
+  const validateFormData = () => {
+    const newErrors: any = {};
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required.";
     }
-    catch(error){
-        console.log(error)
-        alert("Creat Error")
+
+    if (!formData.quantiy || formData.quantiy <= 0) {
+      newErrors.quantiy = "Quantity must be greater than 0.";
+    }
+
+    setErrors(newErrors);
+
+    // Return true if no errors
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateFormData()) {
+      return; // Stop execution if validation fails
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:7295/api/Asset",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status == 200) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Create Error");
     }
   };
 
@@ -93,6 +118,7 @@ export default function Create({
             value={formData.name}
             onChange={handleChange}
           />
+          {errors.name && <p className={styles.error}>{errors.name}</p>}
         </div>
         <div className={styles.formGroup}>
           <label>Quantity</label>
@@ -102,6 +128,7 @@ export default function Create({
             value={formData.quantiy}
             onChange={handleChange}
           />
+          {errors.quantiy && <p className={styles.error}>{errors.quantiy}</p>}
         </div>
         <div className={styles.formGroup}>
           <label>Image</label>
@@ -118,6 +145,7 @@ export default function Create({
               className={styles.imagePreview}
             />
           )}
+          {errors.imageUrl && <p className={styles.error}>{errors.imageUrl}</p>}
         </div>
         <div className={styles.formGroup}>
           <label>Price</label>
@@ -127,6 +155,7 @@ export default function Create({
             value={formData.price}
             onChange={handleChange}
           />
+          {errors.price && <p className={styles.error}>{errors.price}</p>}
         </div>
         <div className={styles.formGroup}>
           <label>Description</label>
@@ -137,6 +166,9 @@ export default function Create({
             rows={4}
             className={styles.textarea}
           ></textarea>
+          {errors.description && (
+            <p className={styles.error}>{errors.description}</p>
+          )}
         </div>
         <div className={styles.actions}>
           <button onClick={handleSubmit}>Submit</button>

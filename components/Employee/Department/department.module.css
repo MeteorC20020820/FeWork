@@ -5,75 +5,94 @@
     padding: 20px;
     width: 80%;
 }
-.titleDep{
-    font-weight: 600;
-    color: black;
-    font-size: 50px;
+.titleDep {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
-.bodyCreateDep{
-    padding: 10px;
+
+.bodyCreateDep {
+  margin-bottom: 20px;
 }
-.bodyBtnCreatDep{
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding: 10px 0
+
+.bodyBtnCreatDep {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px;
 }
-.bodyBtnCloseDep{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 0;
+
+.bodyBtnCloseDep {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
 }
-.bodyTitleCreate{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 0 10px 0;
+
+.btnCreate {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
-.titleCreate{
-    font-size: 20px;
-    font-weight: 600;
-    color: black;
+
+.btnCreate:hover {
+  background-color: #45a049;
 }
-.bodyCreate{
-    border: 2px solid black;
-    border-radius: 15px;
-    padding: 20px 0;
+
+.btnClose {
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
-.creatDepartment{
-   width: 100%;
-   display: flex;
-   justify-content: space-around;
-   align-items: center;
+
+.btnClose:hover {
+  background-color: #e53935;
 }
-.inputCreate{
-    padding: 5px 15px;
-    font-size: 16px;
-    color: black;
-    border: 1px solid black;
-    border-radius: 20px;
-    width: 34%;
+
+.bodyCreate {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 10px;
 }
-.btnClose{
-    padding: 5px 20px;
-    color: red;
-    border: solid 2px red;
-    border-radius: 15px;
-    font-weight: 600;
+
+.bodyTitleCreate {
+  margin-bottom: 15px;
 }
-.btnCreate{
-    padding: 5px 20px;
-    color: green;
-    border: solid 2px green;
-    border-radius: 15px;
-    font-weight: 600;
+
+.titleCreate {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
 }
-:hover.btnClose{
-    color: white;
-    background-color: red;
+
+.creatDepartment {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
-:hover.btnCreate{
-    color: white;
-    background-color: green;
+
+.inputCreate {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.labelCreate {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 5px;
 }

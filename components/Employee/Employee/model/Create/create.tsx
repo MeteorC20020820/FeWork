@@ -13,9 +13,9 @@ export default function Create(open: boolean, setOpen: Function) {
   const [departmentId, setDepartmentId] = useState<any>(null);
   const [address, setAddess] = useState<any>(null);
   const [baseSalary, setBaseSalary] = useState<any>(null);
+  const [gender, setGender] = useState<number | null>(null); // Thêm state cho giới tính
   const [error, setError] = useState("");
   const [changeDep, setChangeDep] = useState<any>({});
-  const [formattedBirthday, setFormattedBirthday] = useState<string>("");
   const [dep, setDep] = useState<any[]>([]);
 
   const changeName = (e: any) => setName(e.target.value);
@@ -25,10 +25,8 @@ export default function Create(open: boolean, setOpen: Function) {
   const changeBase = (e: any) => setBaseSalary(e.target.value);
   const changeIden = (e: any) => setIdentificationId(e.target.value);
   const changeBirth = (e: any) => setBirthDay(e.target.value);
-  const changeIdde = (e: any) => setDepartmentId(e.target.value);
-  const changeDepartment = (e: any) => {
-    setDepartmentId(parseInt(e.target.value)); 
-  };
+  const changeDepartment = (e: any) => setDepartmentId(parseInt(e.target.value));
+  const changeGender = (e: any) => setGender(parseInt(e.target.value)); // Hàm thay đổi giới tính
 
   useEffect(() => {
     const apiGetDep = async () => {
@@ -45,6 +43,7 @@ export default function Create(open: boolean, setOpen: Function) {
     };
     apiGetDep();
   }, []);
+
   useEffect(() => {
     setChangeDep({
       fullName: name,
@@ -56,6 +55,7 @@ export default function Create(open: boolean, setOpen: Function) {
       baseSalary: parseInt(baseSalary),
       status: 0,
       departmentId: parseInt(departmentId),
+      gender: gender, // Thêm giới tính vào object changeDep
     });
   }, [
     name,
@@ -66,6 +66,7 @@ export default function Create(open: boolean, setOpen: Function) {
     birthday,
     departmentId,
     identificationId,
+    gender, // Theo dõi thay đổi của gender
   ]);
 
   const apiEditDepartment = async () => {
@@ -77,7 +78,8 @@ export default function Create(open: boolean, setOpen: Function) {
       !baseSalary ||
       !birthday ||
       !departmentId ||
-      !identificationId
+      !identificationId ||
+      gender === null // Kiểm tra nếu gender chưa được chọn
     ) {
       setError("Please fill in all fields!");
       return;
@@ -103,14 +105,11 @@ export default function Create(open: boolean, setOpen: Function) {
       } else {
         setError("Failed to update employee.");
       }
-
-      console.log(res);
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred while updating the department.");
     }
   };
-  console.log(changeDep)
   return (
     <Modal
       open={open}
@@ -233,6 +232,24 @@ export default function Create(open: boolean, setOpen: Function) {
                   {d.name}
                 </option>
               ))}
+            </select>
+          </div>
+          <div className={styles.inputWrapper}>
+            <label htmlFor="gender" className={styles.label}>
+              Gender
+            </label>
+            <select
+              value={gender ?? ""}
+              id="gender"
+              onChange={changeGender}
+              className={styles.inputDep}
+              required
+            >
+              <option value="" disabled>
+                Select Gender
+              </option>
+              <option value="1">Male</option>
+              <option value="0">Female</option>
             </select>
           </div>
         </div>

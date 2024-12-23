@@ -1,19 +1,17 @@
-'use client';
-import styles from './employee.module.css';
-import SideBar from '../SideBar/sideBar';
-import { useState, useEffect } from 'react';
-import { Card, Button, Space, Dropdown, Menu, Input } from 'antd';
-import { MoreOutlined } from '@ant-design/icons';
-import axios from 'axios';
-import Edit from './model/Edit/edit';
-import Delete from './model/Delete/delete';
-import Create from './model/Create/create';
-import Account from './model/Account/account';
-import Salary from './model/Salary/salary';
-import ModalWorkshedule from './model/Workshedule/workshedule';
-import './employee.css';
-
-const localApi = "http://localhost:7295/api";
+"use client";
+import styles from "./employee.module.css";
+import SideBar from "../SideBar/sideBar";
+import { useState, useEffect } from "react";
+import { Card, Button, Dropdown, Menu, Input } from "antd";
+import { MoreOutlined } from "@ant-design/icons";
+import { fetchEmployees, fetchAccountEmailByEmployeeId, fetchAccountAvatarByEmployeeId } from "./apiHelper"; // Import helper
+import Edit from "./model/Edit/edit";
+import Delete from "./model/Delete/delete";
+import Create from "./model/Create/create";
+import Account from "./model/Account/account";
+import Salary from "./model/Salary/salary";
+import ModalWorkshedule from "./model/Workshedule/workshedule";
+import "./employee.css";
 
 interface DataType {
   id: number;
@@ -26,13 +24,15 @@ interface DataType {
   baseSalary: string;
   status: number;
   departmentId: number;
+  avatar:string,
+  email:string
 }
 
 export default function Employee() {
   const [user, setUser] = useState<any>({});
   const [employee, setEmployee] = useState<DataType[]>([]);
-  const [filteredEmployee, setFilteredEmployee] = useState<DataType[]>([]); // Danh sách nhân viên đã lọc
-  const [searchValue, setSearchValue] = useState<string>(''); // Giá trị tìm kiếm
+  const [filteredEmployee, setFilteredEmployee] = useState<DataType[]>([]);
+  const [searchValue, setSearchValue] = useState<string>("");
   const [userRoleP, setUserRoleP] = useState<string | null>(null);
   const [modalDelete, setModalDelete] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
@@ -42,37 +42,28 @@ export default function Employee() {
   const [modalWorkshedule, setModalWorkshedule] = useState(false);
   const [dataEm, setDataEm] = useState<DataType | null>(null);
 
-  const token = localStorage?.getItem("authToken");
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
 
-  // Fetch data từ API
   useEffect(() => {
-    const ApiGetEmployee = async () => {
+    // Fetch employees
+    const getEmployees = async () => {
       try {
-        const res = await axios.get(`${localApi}/Employee`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        if (Array.isArray(res.data.data)) {
-          const formattedData = res.data.data.map((item: any) => ({
-            ...item,
-            birthday: new Date(item.birthday).toLocaleDateString('en-GB'),
-          }));
-          setEmployee(formattedData);
-          setFilteredEmployee(formattedData); // Khởi tạo danh sách nhân viên mặc định
-        } else {
-          console.error("Expected array but received:", res.data.data);
-        }
+        const employees = await fetchEmployees(token);
+        const formattedData = employees.map((item: any) => ({
+          ...item,
+          birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
+        }));
+        setEmployee(formattedData);
+        setFilteredEmployee(formattedData);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
 
-    ApiGetEmployee();
+    getEmployees();
   }, [token]);
 
-  // Lọc nhân viên dựa trên giá trị tìm kiếm
   useEffect(() => {
     const filtered = employee.filter((emp) =>
       emp.fullName.toLowerCase().includes(searchValue.toLowerCase())
@@ -80,12 +71,10 @@ export default function Employee() {
     setFilteredEmployee(filtered);
   }, [searchValue, employee]);
 
-  // Xử lý thay đổi giá trị tìm kiếm
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value); // Cập nhật giá trị tìm kiếm
+    setSearchValue(e.target.value);
   };
 
-  // Render menu hành động
   const renderCardActions = (record: DataType) => {
     const menu = (
       <Menu>
@@ -139,16 +128,45 @@ export default function Employee() {
     );
 
     return (
-      <Dropdown overlay={menu} trigger={['click']}>
+      <Dropdown overlay={menu} trigger={["click"]}>
         <Button type="link" icon={<MoreOutlined />} />
       </Dropdown>
     );
   };
 
+  useEffect(() => {
+    const fetchAllData = async () => {
+      try {
+        const employees = await fetchEmployees(token);
+        const formattedData = await Promise.all(
+          employees.map(async (item: any) => {
+            const email = await fetchAccountEmailByEmployeeId(item.id, token);
+            const avatar = await fetchAccountAvatarByEmployeeId(item.id, token);
+            return {
+              ...item,
+              birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
+              email: email || "N/A", // Gắn email vào dữ liệu
+              avatar:avatar || ""
+
+            };
+            
+          })
+        );
+        setEmployee(formattedData);
+        setFilteredEmployee(formattedData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAllData();
+  }, [token]);
+
+
   return (
     <div className={styles.bodyEmployee}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
-      <div style={{ width: '18%' }}></div>
+      <div style={{ width: "18%" }}></div>
       <div className={styles.employee}>
         <p className={styles.titleEm}>Employee</p>
         {userRoleP === "1" && (
@@ -178,10 +196,13 @@ export default function Employee() {
               extra={userRoleP === "1" && renderCardActions(record)}
             >
               <div className={styles.bodyImg}>
-                <img src="" alt="" className={styles.imgEm} />
+                <img src={record.avatar} alt="" className={styles.imgEm} />
               </div>
               <p>
                 <strong>Position:</strong> {record.position}
+              </p>
+              <p>
+                <strong>Email:</strong> {record.email}
               </p>
               <p>
                 <strong>Identification ID:</strong> {record.identificationId}
@@ -194,9 +215,9 @@ export default function Employee() {
               </p>
               <p>
                 <strong>Base Salary:</strong>{" "}
-                {Number(record.baseSalary).toLocaleString('vi-VN', {
-                  style: 'currency',
-                  currency: 'VND',
+                {Number(record.baseSalary).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
                 })}
               </p>
             </Card>
@@ -204,7 +225,6 @@ export default function Employee() {
         </div>
       </div>
 
-      {/* Các modal */}
       {Edit(modalEdit, setModalEdit, dataEm)}
       {Delete(modalDelete, setModalDelete, dataEm)}
       {Create(modalCreate, setModalCreate)}

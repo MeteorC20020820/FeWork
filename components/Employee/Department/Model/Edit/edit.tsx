@@ -69,33 +69,45 @@ export default function Edit(open: boolean, setOpen: Function, dataDep: any) {
       cancelButtonProps={{ style: { display: "none" } }}
       okButtonProps={{ style: { display: "none" } }}
     >
-      <div className={styles.bodyLogout}>
+      <div className={styles.bodyEditModal}>
         <p className={styles.title}>Edit Department</p>
-        <div className={styles.bodyEdit}>
-          <input
-            type="text"
-            value={name}
-            className={styles.inputDep}
-            onChange={changeName}
-            required
-            placeholder="Enter department name..."
-          />
-          <input
-            type="text"
-            value={descrip}
-            className={styles.inputDep}
-            onChange={changeDescrip}
-            required
-            placeholder="Enter description"
-          />
+        <div className={styles.bodyEditForm}>
+          <div className={styles.formGroup}>
+            <label htmlFor="editName" className={styles.label}>
+              Department Name:
+            </label>
+            <input
+              id="editName"
+              type="text"
+              value={name}
+              className={styles.inputDep}
+              onChange={changeName}
+              required
+              placeholder="Enter department name..."
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="editDescription" className={styles.label}>
+              Description:
+            </label>
+            <input
+              id="editDescription"
+              type="text"
+              value={descrip}
+              className={styles.inputDep}
+              onChange={changeDescrip}
+              required
+              placeholder="Enter description..."
+            />
+          </div>
         </div>
-        {error && (<p className={styles.error}>{error}</p>)}
+        {error && <p className={styles.error}>{error}</p>}
         <div className={styles.bodyBtn}>
           <button
-            className={styles.btnLogout}
+            className={styles.btnSave}
             onClick={() => apiEditDepartment()}
           >
-            Edit
+            Save
           </button>
           <button className={styles.btnCancel} onClick={() => setOpen(false)}>
             Cancel

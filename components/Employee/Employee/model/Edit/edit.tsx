@@ -21,6 +21,7 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
     dataEm?.departmentId || ""
   );
   const [dep, setDep] = useState<any[]>([]);
+  const [gender, setGender] = useState<number>(dataEm?.gender || 0); // Thêm state giới tính
 
   useEffect(() => {
     if (dataEm?.departmentId) {
@@ -39,15 +40,17 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
     setPosition(dataEm?.position || "");
     setAddress(dataEm?.address || "");
     setBaseSalary(dataEm?.baseSalary);
+    setGender(dataEm?.gender || 0); // Cập nhật giới tính khi nhận dữ liệu
   }, [dataEm]);
 
   const changeDepartment = (e: any) => {
     setDepartmentId(parseInt(e.target.value));
   };
+
   useEffect(() => {
     const apiGetDep = async () => {
       try {
-        const res = await axios.get(`http://localhost:7295/api/Department`,{
+        const res = await axios.get(`http://localhost:7295/api/Department`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,15 +67,28 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
     setChangeEm({
       fullName: name,
       phone: phone,
+      imageUrl:"",
       position: position,
       address: address,
       identificationId: identificationId,
       baseSalary: baseSalary,
+      gender: gender, // Thêm trường giới tính
       status: 0,
       birthday: formattedBirthday,
       departmentId: departmentId,
     });
-  }, [name, phone, position,identificationId, address, baseSalary, departmentId, dataEm, formattedBirthday]);
+  }, [
+    name,
+    phone,
+    position,
+    identificationId,
+    address,
+    baseSalary,
+    departmentId,
+    gender,
+    dataEm,
+    formattedBirthday,
+  ]);
 
   const apiEditDepartment = async () => {
     if (
@@ -81,7 +97,8 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       !position ||
       !address ||
       !baseSalary ||
-      !departmentId
+      !departmentId ||
+      gender === null // Kiểm tra nếu giới tính chưa được chọn
     ) {
       setError("Please fill in all fields!");
       return;
@@ -113,8 +130,7 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       setError("An error occurred while updating the department.");
     }
   };
-  console.log(changeEm)
-  console.log(dataEm)
+
   return (
     <Modal
       open={open}
@@ -239,6 +255,22 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
               required
               className={styles.inputDep}
             />
+          </div>
+
+          <div className={styles.inputWrapper}>
+            <label htmlFor="gender" className={styles.label}>
+              Gender
+            </label>
+            <select
+              value={gender}
+              id="gender"
+              onChange={(e) => setGender(Number(e.target.value))}
+              className={styles.inputDep}
+              required
+            >
+              <option value={0}>Female</option>
+              <option value={1}>Male</option>
+            </select>
           </div>
 
           <div className={styles.inputWrapper}>
