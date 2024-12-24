@@ -96,6 +96,7 @@ export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
         }
       );
       if (res.status == 200) {
+        alert('Create asset success')
         window.location.reload();
       }
     } catch (error) {

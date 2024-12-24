@@ -4,7 +4,6 @@
 .bodyAsset {
   display: flex;
   flex-direction: row;
-  padding: 20px;
   background-color: #f4f6f9;
 }
 
@@ -21,17 +20,22 @@
 .asset {
   flex-grow: 1;
   background-color: #fff;
-  padding: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
   overflow: hidden;
   width: 80%;
+  height: 100vh;
 }
-
+.header{
+  background-image: url(/ct2.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+}
 /* Tiêu đề của trang */
 .titleEm {
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 40px;
+  font-weight: 800;
   color: #333;
   margin-bottom: 20px;
 }
@@ -54,29 +58,55 @@
 
 /* Container chứa các Card */
 .assetCardsContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
-  gap: 10%;
-  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Cho phép xuống dòng */
+  gap: 20px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow-x: auto; /* Thêm thanh cuộn ngang khi cần */
+  max-width: 100%; /* Đảm bảo container có chiều rộng tối đa */
+  box-sizing: border-box; 
 }
 
 /* Card hiển thị tài sản */
 .assetCard {
+  flex: 1 1 calc(25% - 16px); 
+  max-width: calc(25% - 16px);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
   transition: all 0.3s ease;
   display: flex;
+  height: 100%;
   flex-direction: column;
   justify-content: space-between;
+  background-color: rgb(222, 239, 255);
+  cursor: pointer;
+  position: relative; /* Đảm bảo vị trí tương đối cho phần tử con */
+  transition: transform 0.3s ease; /* Tạo hiệu ứng khi hover */
 }
 
 .assetCard:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+  border: 2px solid black;
 }
+.hoverDetails {
+  display: none; /* Ẩn thông tin mặc định */
+  opacity: 0; 
+  transition: opacity 0.3s ease; /* Hiệu ứng chuyển đổi độ trong suốt */
+}
+
+.assetCard:hover .hoverDetails {
+  display: block; /* Hiển thị thông tin khi hover */
+  opacity: 1;
+}
+
 .assetCard .ant-card-cover img {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
+  object-fit: cover;
 }
 
 .assetCard .ant-card-body {
@@ -136,4 +166,19 @@
 
 .ant-btn {
   border-radius: 8px;
+}
+.searchBar {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  width: 50%;
+}
+.search{
+  padding: 10px;
+  border: 2px solid black;
+}
+.action{
+  display: flex;
+  gap: 20px;
+  width: 100%;
 }

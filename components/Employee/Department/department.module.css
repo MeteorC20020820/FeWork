@@ -2,18 +2,30 @@
     display: flex;
 }
 .department{
-    padding: 20px;
     width: 80%;
 }
+.header{
+  background-image: url(/ct3.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+  height: 25vh;
+}
 .titleDep {
-  font-size: 24px;
-  font-weight: bold;
+  font-size: 50px;
+  font-weight: 800;
   color: #333;
   margin-bottom: 20px;
+  text-shadow: 
+    2px 2px 0 #ffffff,  
+    -2px 2px 0 #2915d9, 
+    2px -2px 0 #ffffff, 
+    -2px -2px 0 #1bbcd8; 
 }
 
 .bodyCreateDep {
-  margin-bottom: 20px;
+  padding: 20px;
 }
 
 .bodyBtnCreatDep {
@@ -30,6 +42,7 @@
 
 .btnCreate {
   background-color: #4caf50;
+  font-weight: 600;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -95,4 +108,7 @@
   font-weight: 600;
   color: #555;
   margin-bottom: 5px;
+}
+.bodyTable{
+  padding: 0 20px;
 }

@@ -12,7 +12,7 @@ import Account from "./model/Account/account";
 import Salary from "./model/Salary/salary";
 import ModalWorkshedule from "./model/Workshedule/workshedule";
 import "./employee.css";
-
+import { SearchOutlined } from "@ant-design/icons";
 interface DataType {
   id: number;
   fullName: string;
@@ -26,6 +26,7 @@ interface DataType {
   departmentId: number;
   avatar:string,
   email:string
+  gender:number
 }
 
 export default function Employee() {
@@ -84,6 +85,7 @@ export default function Employee() {
             setModalEdit(true);
             setDataEm(record);
           }}
+          className="custom-menu-item"
         >
           Edit
         </Menu.Item>
@@ -94,6 +96,7 @@ export default function Employee() {
             setDataEm(record);
           }}
           danger
+          className="custom-menu-item"
         >
           Delete
         </Menu.Item>
@@ -103,6 +106,7 @@ export default function Employee() {
             setModalAccount(true);
             setDataEm(record);
           }}
+          className="custom-menu-item"
         >
           Account
         </Menu.Item>
@@ -112,6 +116,7 @@ export default function Employee() {
             setModalSalary(true);
             setDataEm(record);
           }}
+          className="custom-menu-item"
         >
           Salary
         </Menu.Item>
@@ -121,18 +126,25 @@ export default function Employee() {
             setModalWorkshedule(true);
             setDataEm(record);
           }}
+          className="custom-menu-item"
         >
           Workshedule
         </Menu.Item>
       </Menu>
     );
-
+  
     return (
       <Dropdown overlay={menu} trigger={["click"]}>
-        <Button type="link" icon={<MoreOutlined />} />
+        <Button
+          type="link"
+          icon={<MoreOutlined className="custom-icon" />}
+          className="custom-button"
+        />
       </Dropdown>
     );
+    
   };
+  
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -172,68 +184,75 @@ export default function Employee() {
 
     fetchAllData();
   }, [token]);
-
+  const gender = (gender:any) =>{
+    if(gender == 0) return "Female"
+    return "Male"
+  }
   console.log(filteredEmployee)
   return (
     <div className={styles.bodyEmployee}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div style={{ width: "18%" }}></div>
       <div className={styles.employee}>
-        <p className={styles.titleEm}>Employee</p>
-        {userRoleP === "1" && (
+        <div className={styles.header}>
+          <p className={styles.titleEm}>Employee</p>
           <div className={styles.bodyCreateEm}>
-            <button
-              className={styles.btnCreateEm}
-              onClick={() => setModalCreate(true)}
-            >
-              Create Employee
-            </button>
+              <button
+                className={styles.btnCreateEm}
+                onClick={() => setModalCreate(true)}
+              >
+                Create Employee
+              </button>
+              <div className={styles.searchContainer}>
+              <Input
+                className={styles.searchInputs}
+                placeholder="Search employee by name..."
+                prefix={<SearchOutlined />}
+                value={searchValue}
+                onChange={handleSearch}
+                allowClear
+              />
           </div>
-        )}
-        <div className={styles.searchContainer}>
-          <Input
-            className={styles.searchInputs}
-            placeholder="Search by name"
-            value={searchValue}
-            onChange={handleSearch}
-            allowClear
-          />
+        </div>
         </div>
         <div className="cardContainer">
-          {filteredEmployee.map((record) => (
-            <Card
-              key={record.id}
-              title={record.fullName}
-              extra={userRoleP === "1" && renderCardActions(record)}
-            >
-              <div className={styles.bodyImg}>
-                <img src={record.avatar} alt="" className={styles.imgEm} />
-              </div>
-              <p>
-                <strong>Position:</strong> {record.position}
-              </p>
-              <p>
-                <strong>Email:</strong> {record.email}
-              </p>
-              <p>
-                <strong>Identification ID:</strong> {record.identificationId}
-              </p>
-              <p>
-                <strong>Birthday:</strong> {record.birthday}
-              </p>
-              <p>
-                <strong>Address:</strong> {record.address}
-              </p>
-              <p>
-                <strong>Base Salary:</strong>{" "}
-                {Number(record.baseSalary).toLocaleString("vi-VN", {
-                  style: "currency",
-                  currency: "VND",
-                })}
-              </p>
-            </Card>
-          ))}
-        </div>
+            {filteredEmployee.map((record) => (
+              <Card
+                key={record.id}
+                title={<p style={{marginLeft:'15px', fontSize:'23px', color:'white'}}>{record.fullName}</p>}
+                extra={userRoleP === "1" && renderCardActions(record)}
+              >
+                <div className={styles.bodyImg}>
+                  <img src={record.avatar} alt="" className={styles.imgEm} />
+                </div>
+                <p>
+                  <strong>Position:</strong> {record.position}
+                </p>
+                <p>
+                  <strong>Email:</strong> {record.email}
+                </p>
+                <p>
+                  <strong>Identification ID:</strong> {record.identificationId}
+                </p>
+                <p>
+                  <strong>Birthday:</strong> {record.birthday}
+                </p>
+                <p>
+                  <strong>Address:</strong> {record.address}
+                </p>
+                <p>
+                  <strong>Gender:</strong> {gender(record.gender)}
+                </p>
+                <p>
+                  <strong>Base Salary:</strong>{" "}
+                  {Number(record.baseSalary).toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </p>
+              </Card>
+            ))}
+          </div>
       </div>
 
       {Edit(modalEdit, setModalEdit, dataEm)}

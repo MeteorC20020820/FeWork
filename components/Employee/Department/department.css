@@ -1,0 +1,25 @@
+.custom-table {
+    border-collapse: collapse; 
+    border-radius: 20px;
+  }
+  
+  .custom-table .ant-table {
+    border: 1px solid #000000; 
+  }
+  
+  .custom-table .ant-table-thead > tr > th {
+    background-color: rgb(220, 220, 220); 
+    color: black;             
+    border: 1px solid #565656; 
+  }
+  
+  .custom-table .ant-table-tbody > tr > td {
+    background-color: #ffffff; 
+    color: #000;
+    border-radius: 10px;              
+  }
+  
+  .custom-table .ant-table-tbody > tr:hover > td {
+    background-color: #e6f7ff; 
+  }
+  

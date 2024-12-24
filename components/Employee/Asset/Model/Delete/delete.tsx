@@ -25,6 +25,7 @@ const Delete: React.FC<DeleteProps> = ({
               }
             );
             if(res.status == 200){
+                alert('Delete assect success')
                 onClose(),
                 window.location.reload()
             }

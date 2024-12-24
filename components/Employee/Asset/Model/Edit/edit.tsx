@@ -118,6 +118,7 @@ export default function EditModal({
         }
       );
       if (res.status === 200) {
+        alert("Edit asset success")
         window.location.reload();
       }
     } catch (error) {

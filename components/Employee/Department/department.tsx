@@ -14,6 +14,7 @@ import Edit from "./Model/Edit/edit";
 import ModalEmployee from "./Model/Employee/employee";
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
+import './department.css'
 interface DataType {
   key: number;
   name: string;
@@ -148,7 +149,7 @@ export default function Department() {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      width: "25%",
+     
       ...getColumnSearchProps("name"),
     },
     {
@@ -165,12 +166,10 @@ export default function Department() {
       sorter: (a, b) => a.createdAt.length - b.createdAt.length,
       sortDirections: ["descend", "ascend"],
     },
-  ];
-  if (userRoleP === "1") {
-    columns.push({
+    {
       title: "Actions",
       key: "actions",
-      width:'10%',
+      align:'center',
       render: (text: any, record: DataType) => {
         const menu = (
           <Menu>
@@ -210,8 +209,8 @@ export default function Department() {
           </Dropdown>
         );
       },
-    });
-  }
+    }
+  ];
   const changeNameDep = (e: any) => {
     setNameDep(e.target.value);
   };
@@ -278,9 +277,10 @@ export default function Department() {
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div style={{ width: "18%" }}></div>
       <div className={styles.department}>
-        <p className={styles.titleDep}>Department</p>
-        {userRoleP === "1" && (
-          <div className={styles.bodyCreateDep}>
+        <div className={styles.header}>
+          <p className={styles.titleDep}>Department</p>
+        </div>
+        <div className={styles.bodyCreateDep}>
             <div
               className={
                 create ? styles.bodyBtnCreatDep : styles.bodyBtnCloseDep
@@ -336,13 +336,15 @@ export default function Department() {
                 </div>
               </div>
             )}
-          </div>
-        )}
-        <Table<DataType>
-          columns={columns}
-          dataSource={data}
-          scroll={{ y: 400 }}
-        />
+        </div>
+        <div className={styles.bodyTable}>
+          <Table<DataType>
+            columns={columns}
+            dataSource={data}
+            scroll={{ y: 400 }}
+            className="custom-table"
+          />
+        </div>
       </div>
       {Delete(modalDelete, setModalDelete, dataDep)}
       {Edit(modalEdit, setModalEdit, dataDep)}

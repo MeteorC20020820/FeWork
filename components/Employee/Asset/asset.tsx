@@ -23,106 +23,146 @@ interface DataType {
   description: string;
 }
 
-export default function Asset(){
-    const [user, setUser] = useState<any>({})
-    const [userRoleP, setUserRoleP] = useState<any>({});
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [searchText, setSearchText] = useState("");
-    const [searchedColumn, setSearchedColumn] = useState("");
-    const [assets, setAssets] = useState<DataType[]>([]);
-    const [asset, setAsset] = useState<any>(null)
-    const [modelEdit, setModelEdit] = useState(false)
-    const token = localStorage.getItem("authToken");
+export default function Asset() {
+  const [user, setUser] = useState<any>({});
+  const [userRoleP, setUserRoleP] = useState<any>({});
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [assets, setAssets] = useState<DataType[]>([]);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // State cho từ khóa tìm kiếm
+  const [asset, setAsset] = useState<any>(null);
+  const [modelEdit, setModelEdit] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const token = localStorage.getItem("authToken");
 
-    const handleSearch = (
-      selectedKeys: string[],
-      confirm: FilterDropdownProps["confirm"],
-      dataIndex: keyof DataType
-    ) => {
-      confirm();
-      setSearchText(selectedKeys[0]);
-      setSearchedColumn(dataIndex);
-    };
-
-    const handleReset = (clearFilters: () => void) => {
-      clearFilters();
-      setSearchText("");
-    };
-
-    
-    const handleAddClick = () => setIsModalOpen(true);
-
-    const handleModalClose = () => setIsModalOpen(false);
-
-    const handleDeleteClick = (asset: DataType) => {
-      setAsset(asset);
-      setIsDeleteModalOpen(true);
-    };
-
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [assetToDelete, setAssetToDelete] = useState<DataType | null>(null);
-
-    useEffect(() => {
-      const apiGetAsset = async () => {
-        try {
-          const res = await axios.get("http://localhost:7295/api/Asset", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          });
-          setAssets(res.data.data)
-        } catch (error) {
-          console.log(error)
-        }
+  useEffect(() => {
+    const apiGetAsset = async () => {
+      try{
+        const res = await axios.get("http://localhost:7295/api/Asset", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        setAssets(res.data.data);
       }
-      apiGetAsset()
-    }, [token]);
+      catch(error){
+        console.log(error)
+      }
+    };
+    apiGetAsset();
+  }, [token]);
+  const filteredAssets = assets.filter((asset) =>
+    asset.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-    return (
-      <div className={styles.bodyAsset}>
-        <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
-        <div style={{ width: "18%" }}></div>
-        <div className={styles.asset}>
+  return (
+    <div className={styles.bodyAsset}>
+      <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
+      <div style={{ width: "18%" }}></div>
+      <div className={styles.asset}>
+        <div className={styles.header}>
           <p className={styles.titleEm}>Asset</p>
-          <div className={styles.creatAss}>
-            <button onClick={handleAddClick}>Add</button>
-          </div>
-          <div className={styles.assetCardsContainer}>
-            {assets.map((asset) => (
-              <Card
-                key={asset.id}
-                hoverable
-                className={styles.assetCard}
-                cover={<img alt="asset" src={asset.imageUrl} className={styles.img}/>}
-              >
-                <Card.Meta
-                  title={asset.name}
-                  description={
-                    <>
-                      <p><strong>Price:</strong> {asset.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</p>
-                      <p><strong>Quantity:</strong> {asset.quantiy}</p>
-                      <p><strong>Description:</strong> {asset.description}</p>
-                    </>
-                  }
-                />
-                <div className={styles.cardActions}>
-                  <Dropdown overlay={
-                    <Menu>
-                      <Menu.Item key="edit" onClick={() => { setModelEdit(true); setAsset(asset); }}>Edit</Menu.Item>
-                      <Menu.Item key="delete" onClick={() => { setAsset(asset); setIsDeleteModalOpen(true); }} danger>Delete</Menu.Item>
-                    </Menu>
-                  } trigger={['click']}>
-                    <Button type="link" icon={<MoreOutlined />} />
-                  </Dropdown>
-                </div>
-              </Card>
-            ))}
+          <div className={styles.action}>
+            <div className={styles.creatAss}>
+              <button onClick={() => setIsModalOpen(true)}>Create Asset</button>
+            </div>
+            <div className={styles.searchBar}>
+              <Input
+                placeholder="Search asset by name..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                prefix={<SearchOutlined />}
+                className={styles.search}
+              />
+            </div>
           </div>
         </div>
-        {<Create isOpen={isModalOpen} onClose={handleModalClose} />}
-        <Edit modelEdit={modelEdit} setModelEdit={() => setModelEdit(false)} dataAsset={asset} />
-        <Delete isOpen={isDeleteModalOpen} onClose={() => setIsDeleteModalOpen(false)} asset={asset} />
+        <div className={styles.assetCardsContainer}>
+          {filteredAssets.map((asset) => (
+            <Card
+              key={asset.id}
+              hoverable
+              className={styles.assetCard}
+              cover={
+                <img alt="asset" src={asset.imageUrl} className={styles.img} />
+              }
+            >
+              <Card.Meta
+                title={asset.name}
+                description={
+                  <>
+                    <p>
+                      <strong>Price:</strong>{" "}
+                      {asset.price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </p>
+                    <p>
+                      <strong>Quantity:</strong> {asset.quantiy}
+                    </p>
+                    <div className={styles.hoverDetails}>
+                      <p>
+                        <strong>CreatedDate:</strong>{" "}
+                        {new Date(asset.createdDate).toLocaleDateString("vi-VN", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                        })}
+                      </p>
+                      <p>
+                        <strong>Description:</strong> {asset.description}
+                      </p>
+                    </div>
+                  </>
+                }
+            />
+
+              <div className={styles.cardActions}>
+                <Dropdown
+                  overlay={
+                    <Menu>
+                      <Menu.Item
+                        key="edit"
+                        onClick={() => {
+                          setModelEdit(true);
+                          setAsset(asset);
+                        }}
+                      >
+                        Edit
+                      </Menu.Item>
+                      <Menu.Item
+                        key="delete"
+                        onClick={() => {
+                          setAsset(asset);
+                          setIsDeleteModalOpen(true);
+                        }}
+                        danger
+                      >
+                        Delete
+                      </Menu.Item>
+                    </Menu>
+                  }
+                  trigger={["click"]}
+                >
+                  <Button type="link" icon={<MoreOutlined />} />
+                </Dropdown>
+              </div>
+            </Card>
+          ))}
+        </div>
       </div>
-    );
+      {<Create isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
+      <Edit
+        modelEdit={modelEdit}
+        setModelEdit={() => setModelEdit(false)}
+        dataAsset={asset}
+      />
+      <Delete
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        asset={asset}
+      />
+    </div>
+  );
 }
