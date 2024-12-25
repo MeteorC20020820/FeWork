@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import styles from './workshedule.module.css'
 import { IconNextMonth, IconPrevMonth } from "@/components/icon/icon";
 import axios from "axios";
-const apiAi = "https://b20dccn460.serveo.net/api/v1/";
+const apiAi = "https://7650-1-55-211-158.ngrok-free.app/api/v1/";
 const events = [
   {
     id: 1,
@@ -16,28 +16,8 @@ const events = [
     year: "2024",
     note: "check",
     status: 0,
-  },
-  {
-    id: 2,
-    name: "event2",
-    timeStart: "9:00",
-    timeEnd: "10:00",
-    day: 13,
-    month: "November",
-    year: "2024",
-    note: "check123",
-    status: 0,
-  },
-  {
-    id: 3,
-    name: "event12",
-    timeStart: "9:00",
-    timeEnd: "10:00",
-    day: 12,
-    month: "November",
-    year: "2024",
-    note: "check12",
-    status: 0,
+    checkIn:'',
+    checkOut:'',
   },
 ];
 export default function Workshedule(){
@@ -47,11 +27,12 @@ const [idAcc, setIDAcc] = useState<any>(null)
 const [acc, setAcc] = useState<any>(null)
 const [data, setData] = useState<any>({})
 const [idCheckIn, setIdCheckIn] = useState<any>(null)
+console.log(user)
 useEffect(() =>{
   const ApiGetAccID = async() =>{
     try {
       const res = await axios.get(
-        `http://localhost:7295/api/Account/${user?.id}`,
+        `http://localhost:7295/api/Account/GetAccountByEmployeeId/${user?.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -98,9 +79,11 @@ useEffect(() => {
             day: checkInDate.getDate(),
             month: checkInDate.toLocaleString("default", { month: "long" }),
             year: checkInDate.getFullYear(),
-            note: `Check-In: ${checkInDate.toLocaleTimeString()} | Check-Out: ${checkOutDate.toLocaleTimeString()} | Late: ${
+            note: ` Late: ${
               item.late === 1 ? "Yes" : "No"
             }`,
+            checkIn:`Check-In: ${checkInDate.toLocaleTimeString()}`,
+            checkOut:` Check-Out: ${checkOutDate.toLocaleTimeString()}`,
             late: item.late,
             status: item.status,
             face_id:item.account.face_id,
@@ -382,189 +365,208 @@ useEffect(() => {
     }
     apiUrlImage();
   };
+  const items = new Array(10).fill(null);
     return (
       <div className={styles.bodyWorkshedule}>
         <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
         <div style={{ width: "18%" }}></div>
         <div className={styles.content}>
-          <div className={styles.calendarContainer}>
-            <div className={styles.header}>
-              <div className={styles.headerLeft}>
-                <button onClick={handleToday} className={styles.btnToday}>
-                  Today
-                </button>
-                <button onClick={handlePrevMonth}>
-                  <IconPrevMonth />
-                </button>
-                <button onClick={handleNextMonth}>
-                  <IconNextMonth />
-                </button>
-                <h2 className={styles.headerTitle}>{`${month} ${year}`}</h2>
-              </div>
-              <div className={styles.headerMobile}>
-                <button onClick={handlePrevMonth}>
-                  <IconPrevMonth />
-                </button>
-                <h2 className={styles.headerTitle}>{`${month} ${year}`}</h2>
-                <button onClick={handleNextMonth}>
-                  <IconNextMonth />
-                </button>
-              </div>
-              <select
-                className={styles.monthSelect}
-                value={selectedMonth}
-                onChange={handleMonthChange}
-              >
-                {Array.from({ length: 12 }).map((_, index) => (
-                  <option
-                    key={index}
-                    className={styles.optionYear}
-                    value={index}
-                  >
-                    {new Date(0, index).toLocaleString("default", {
-                      month: "long",
-                    })}
-                  </option>
-                ))}
-              </select>
-              <select
-                className={styles.yearSelect}
-                value={selectedYear}
-                onChange={handleYearChange}
-              >
-                {Array.from({ length: 10 }).map((_, index) => (
-                  <option
-                    className={styles.optionYear}
-                    key={index}
-                    value={year - 5 + index}
-                  >
-                    {year - 5 + index}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={styles.weekDays}>
-              <div>Mon</div>
-              <div>Tue</div>
-              <div>Wed</div>
-              <div>Thu</div>
-              <div>Fri</div>
-              <div>Sat</div>
-              <div>Sun</div>
-            </div>
-
-            <div className={styles.daysGrid}>
-              {displayDays.map((dayObj, index) => (
-                <div
-                  key={index}
-                  className={`${styles.day} ${
-                    dayObj.isCurrentMonth
-                      ? `${styles.currentMonthDay} ${
-                          styles[dayObj.status?.replace(/ /g, "-") || "unknown"]
-                        }`
-                      : styles.otherMonthDay
-                  } ${
-                    dayObj.isCurrentMonth &&
-                    dayObj.day === currentDay &&
-                    currentDate.getMonth() === new Date().getMonth() &&
-                    currentDate.getFullYear() === new Date().getFullYear()
-                      ? styles.today
-                      : ""
-                  }`}
-                  onClick={() =>
-                    dayObj.isCurrentMonth && handleDayClick(dayObj.day)
-                  }
-                >
-                  <div className={styles.dayNumber}>{dayObj.day}</div>
-                  {dayObj.isCurrentMonth && dayObj.events.length > 0 && (
-                    <div className={styles.eventList}>
-                      <div className={styles.eventStatus}>
-                        {dayObj.status === "muộn"
-                          ? "Muộn"
-                          : dayObj.status === "đang làm việc"
-                          ? "Đang làm việc"
-                          : dayObj.status === "hoàn thành"
-                          ? "Hoàn thành"
-                          : dayObj.status === "xin nghỉ"
-                          ? "Xin Nghỉ"
-                          : "Không có sự kiện"}
-                      </div>
-                    </div>
-                  )}
+          <div className={styles.headerT}>
+            <p className={styles.titleHeader}>WorkShedule</p>
+          </div>
+          <div className={styles.bodySD}>
+            <div className={styles.wsd}>
+                <div className={styles.bodyCricle}>
+                  {items.map(() =>(
+                     <div className={styles.cricle}></div>
+                  ))}
                 </div>
-              ))}
-            </div>
-
-            {selectedDay !== null && selectedEvents.length > 0 && (
-              <div className={styles.eventDetails}>
-                <h1 className={styles.titleEvents}>Details for Selected Day</h1>
-                <ul>
-                  {selectedEvents.map((event) => (
-                    <div key={event.id} className={styles.eventsOnDay}>
-                      <div>
-                        <h3 className={styles.titleEventDay}>{event.name}</h3>
-                        <p className={styles.timeEventDay}>
-                          {event.timeStart} - {event.timeEnd}
-                        </p>
-                        <p className={styles.noteEventDay}>
-                          Note: {event.note}
-                        </p>
-                        <p className={styles.dateEventDay}>
-                          Date: {event.day} {event.month} {event.year}
-                        </p>
-                      </div>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "end",
-                        }}
+              <p className={styles.titleWsd}>Schedule</p>
+              <div className={styles.calendarContainer}>
+                <div className={styles.header}>
+                  <div className={styles.headerLeft}>
+                    <button onClick={handleToday} className={styles.btnToday}>
+                      Today
+                    </button>
+                    <button onClick={handlePrevMonth}>
+                      <IconPrevMonth />
+                    </button>
+                    <button onClick={handleNextMonth}>
+                      <IconNextMonth />
+                    </button>
+                    <h2 className={styles.headerTitle}>{`${month} ${year}`}</h2>
+                  </div>
+                  <div className={styles.headerMobile}>
+                    <button onClick={handlePrevMonth}>
+                      <IconPrevMonth />
+                    </button>
+                    <h2 className={styles.headerTitle}>{`${month} ${year}`}</h2>
+                    <button onClick={handleNextMonth}>
+                      <IconNextMonth />
+                    </button>
+                  </div>
+                  <select
+                    className={styles.monthSelect}
+                    value={selectedMonth}
+                    onChange={handleMonthChange}
+                  >
+                    {Array.from({ length: 12 }).map((_, index) => (
+                      <option
+                        key={index}
+                        className={styles.optionYear}
+                        value={index}
                       >
-                        {event.status === 0 &&
-                        !checkedOutEvents.includes(event.id) ? (
-                          <button
-                            className={styles.checkOutButton}
-                            onClick={() => {handleCheckOut(event.id), setIdCheckIn(event.id)}}
-                          >
-                            Check Out
-                          </button>
-                        ) : event.status === 0 &&
-                          checkedOutEvents.includes(event.id) ? (
-                          <p className={styles.checkedOutMessage}>
-                            Checked Out
-                          </p>
-                        ) : null}
-                        {isCameraActive && (
-                          <div className={styles.modal}>
-                            <div className={styles.modalContent}>
-                              <video
-                                ref={videoRef}
-                                className={styles.videoPreview}
-                              ></video>
-                              <button
-                                className={styles.captureButton}
-                                onClick={handleCapture}
-                              >
-                                Capture
-                              </button>
-                              <button
-                                className={styles.closeButton}
-                                onClick={handleCloseModal}
-                              >
-                                Close
-                              </button>
-                            </div>
+                        {new Date(0, index).toLocaleString("default", {
+                          month: "long",
+                        })}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className={styles.yearSelect}
+                    value={selectedYear}
+                    onChange={handleYearChange}
+                  >
+                    {Array.from({ length: 10 }).map((_, index) => (
+                      <option
+                        className={styles.optionYear}
+                        key={index}
+                        value={year - 5 + index}
+                      >
+                        {year - 5 + index}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className={styles.weekDays}>
+                  <div>Mon</div>
+                  <div>Tue</div>
+                  <div>Wed</div>
+                  <div>Thu</div>
+                  <div>Fri</div>
+                  <div>Sat</div>
+                  <div>Sun</div>
+                </div>
+
+                <div className={styles.daysGrid}>
+                  {displayDays.map((dayObj, index) => (
+                    <div
+                      key={index}
+                      className={`${styles.day} ${
+                        dayObj.isCurrentMonth
+                          ? `${styles.currentMonthDay} ${
+                              styles[dayObj.status?.replace(/ /g, "-") || "unknown"]
+                            }`
+                          : styles.otherMonthDay
+                      } ${
+                        dayObj.isCurrentMonth &&
+                        dayObj.day === currentDay &&
+                        currentDate.getMonth() === new Date().getMonth() &&
+                        currentDate.getFullYear() === new Date().getFullYear()
+                          ? styles.today
+                          : ""
+                      }`}
+                      onClick={() =>
+                        dayObj.isCurrentMonth && handleDayClick(dayObj.day)
+                      }
+                    >
+                      <div className={styles.dayNumber}>{dayObj.day}</div>
+                      {dayObj.isCurrentMonth && dayObj.events.length > 0 && (
+                        <div className={styles.eventList}>
+                          <div className={styles.eventStatus}>
+                            {dayObj.status === "muộn"
+                              ? "Muộn"
+                              : dayObj.status === "đang làm việc"
+                              ? "Đang làm việc"
+                              : dayObj.status === "hoàn thành"
+                              ? "Hoàn thành"
+                              : dayObj.status === "xin nghỉ"
+                              ? "Xin Nghỉ"
+                              : "Không có sự kiện"}
                           </div>
-                        )}
-                         <canvas ref={canvasRef} className={styles.hiddenCanvas}></canvas>
-                      </div>
+                        </div>
+                      )}
                     </div>
                   ))}
-                </ul>
+                </div>
               </div>
-            )}
-          </div>
+            </div>
+            <div className={styles.eventDetails}>
+              <h1 className={styles.titleEvents}>Details for Selected Day</h1>
+              {selectedDay !== null && selectedEvents.length > 0 &&(
+                      <ul>
+                        {selectedEvents.map((event) => (
+                          <div key={event.id} className={styles.eventsOnDay}>
+                            <div>
+                              <h3 className={styles.titleEventDay}>{event.name}</h3>
+                              <p className={styles.timeEventDay}>
+                                {event.timeStart} - {event.timeEnd}
+                              </p>
+                              <p className={styles.noteEventDay}>
+                                 {event.checkIn}
+                              </p>
+                              <p className={styles.noteEventDay}>
+                                 {event.checkOut}
+                              </p>
+                              <p className={styles.noteEventDay}>
+                                 {event.note}
+                              </p>
+                              <p className={styles.dateEventDay}>
+                                Date: {event.day} {event.month} {event.year}
+                              </p>
+                            </div>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "end",
+                              }}
+                            >
+                              {event.status === 0 &&
+                              !checkedOutEvents.includes(event.id) ? (
+                                <button
+                                  className={styles.checkOutButton}
+                                  onClick={() => {handleCheckOut(event.id), setIdCheckIn(event.id)}}
+                                >
+                                  Check Out
+                                </button>
+                              ) : event.status === 0 &&
+                                checkedOutEvents.includes(event.id) ? (
+                                <p className={styles.checkedOutMessage}>
+                                  Checked Out
+                                </p>
+                              ) : null}
+                              {isCameraActive && (
+                                <div className={styles.modal}>
+                                  <div className={styles.modalContent}>
+                                    <video
+                                      ref={videoRef}
+                                      className={styles.videoPreview}
+                                    ></video>
+                                    <button
+                                      className={styles.captureButton}
+                                      onClick={handleCapture}
+                                    >
+                                      Capture
+                                    </button>
+                                    <button
+                                      className={styles.closeButton}
+                                      onClick={handleCloseModal}
+                                    >
+                                      Close
+                                    </button>
+                                  </div>
+                                </div>
+                              )}
+                              <canvas ref={canvasRef} className={styles.hiddenCanvas}></canvas>
+                            </div>
+                          </div>
+                        ))}
+                    </ul>
+              )}
+            </div>
+            </div>
         </div>
       </div>
     );

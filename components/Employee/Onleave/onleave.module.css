@@ -1,23 +1,40 @@
 .bodyOnleave {
   display: flex;
   flex-direction: row;
-  background-color: #f3f4f6;
+  background-color: #ccc;
   min-height: 100vh;
 }
 
 .right {
   flex: 1;
-  padding: 20px 40px;
-  background-color: #fff;
+  background-color: #ccc;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin: 20px;
 }
-
+.headerx{
+  background-image: url(/onleave.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+  height: 25vh;
+}
+.titleHeader{
+  font-size: 50px;
+  font-weight: 800;
+  color: #000000;
+  margin-bottom: 20px;
+  text-shadow: 
+    2px 2px 0 #31b90c,  
+    -2px 2px 0 #d93615, 
+    2px -2px 0 #ffffff, 
+    -2px -2px 0 #1bbcd8; 
+}
 .tabContainer {
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
+  padding: 30px;
 }
 
 .tabButton {
@@ -26,7 +43,6 @@
   font-size: 16px;
   border: none;
   border-bottom: 3px solid transparent;
-  background-color: #fff;
   cursor: pointer;
   font-weight: bold;
   color: #555;

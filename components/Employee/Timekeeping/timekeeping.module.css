@@ -7,30 +7,61 @@
 }
 
 .right {
-  flex: 1;
-  padding: 20px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 82%;
+  height: 100vh;
 }
-
+.header{
+  background-image: url(/faceAI.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+  height: 25vh;
+}
 .title {
-  font-size: 24px;
+  font-size: 50px;
   margin-bottom: 20px;
-  color: #333;
+  color: #efefef;
   font-weight: bold;
+  text-shadow: 
+    2px 2px 0 #0033ff,  
+    -2px 2px 0 #ccd915, 
+    2px -2px 0 #030cb9, 
+    -2px -2px 0 #d81b1b; 
 }
-
-.imagePreview {
+.bodyFace{
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  padding: 30px 20px;
+}
+.bodyRight{
+  width: 60%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  align-items: center;
+}
+.bodyLeft{
+  background-image: url(/aileft.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 40%;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.imagePreview {
+  background-image: url(/ai.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   width: 100%;
-  height: 100%;
+  height: 50vh;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
 }
 
 .previewImg {
@@ -159,3 +190,63 @@
   color: white;
 }
 
+/* General Note Board Styles */
+.noteBoard {
+  width: 80%;
+  max-width: 800px;
+  margin: 20px auto;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Title of the Note Board */
+.boardTitle {
+  font-size: 2rem;
+  color: #4a90e2;
+  margin-bottom: 20px;
+}
+
+/* Notes Container */
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* Individual Note */
+.note {
+  background: #ffeaa772;
+  border: 2px solid #f6b93b;
+  border-radius: 8px;
+  padding: 15px;
+  width: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover Effect for Notes */
+.note:hover {
+  transform: translateY(-5px);
+}
+
+/* Note Title */
+.noteTitle {
+  font-size: 1.6rem;
+  color: #ff0000;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+/* Note Content */
+.noteContent {
+  font-size: 1rem;
+  color: #ff0000;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Note Date */
+.noteDate {
+  font-size: 0.8rem;
+  color: #b2bec3;
+}

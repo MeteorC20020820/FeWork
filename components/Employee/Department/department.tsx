@@ -170,6 +170,7 @@ export default function Department() {
       title: "Actions",
       key: "actions",
       align:'center',
+      width:'10%',
       render: (text: any, record: DataType) => {
         const menu = (
           <Menu>

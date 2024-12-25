@@ -4,7 +4,8 @@ import styles from "./forum.module.css";
 import SideBar from "../SideBar/sideBar";
 import axios from "axios";
 import CommentSection from "./CommentSection";
-
+import { SendX, Delete, Edit } from "@/components/icon/icon";
+import DeleteP from "./Delete/delete";
 export default function Forum() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
@@ -16,6 +17,8 @@ export default function Forum() {
   const token = localStorage?.getItem("authToken");
   const [acc, setAcc] = useState<any>({});
   const [editPost, setEditPost] = useState<any>(null);
+  const [modalDelete, setModalDelete] = useState(false)
+  const [post, setPost] = useState<any>(null)
   console.log(editPost)
   const [imageLink, setImageLink] = useState<any>(null)
   // Fetch user account
@@ -23,7 +26,7 @@ export default function Forum() {
     const getApiAcc = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:7295/api/Account/${user.id}`,
+          `http://localhost:7295/api/Account/GetAccountByEmployeeId/${user.id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -207,30 +210,35 @@ export default function Forum() {
       <div style={{ width: "18%" }}></div>
 
       <div className={styles.right}>
-        <div
-          className={styles.inputContainer}
-          onClick={() => setIsModalOpen(true)}
-        >
+        <div className={styles.header}>
+          <p className={styles.titleHeader}>Forum</p>
+        </div>
+        <div style={{padding:'5px 20px'}}>
           <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "5px",
-              padding: "10px",
-            }}
+            className={styles.inputContainer}
+            onClick={() => setIsModalOpen(true)}
           >
-            <img
-              src={`${acc.avatarUrl}`}
-              alt="Avatar"
-              className={styles.avatar}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "5px",
+                padding: "10px",
+              }}
+            >
+              <img
+                src={`${acc.avatarUrl}`}
+                alt="Avatar"
+                className={styles.avatar}
+              />
+              <p className={styles.name}>{user.fullName}</p>
+            </div>
+            <input
+              className={styles.inputField}
+              placeholder="What's on your mind?"
+              readOnly
             />
-            <p className={styles.name}>{user.fullName}</p>
           </div>
-          <input
-            className={styles.inputField}
-            placeholder="What's on your mind?"
-            readOnly
-          />
         </div>
         <div
           style={{ display: "flex", justifyContent: "center", width: "100%" }}
@@ -251,21 +259,23 @@ export default function Forum() {
                         {new Date(post?.createdAt).toLocaleString()}
                       </span>
                     </div>
-                    {post?.accountId === acc?.id && (
+                    {(post?.accountId === acc?.id || userRoleP ==='1') && (
                       <div className={styles.options}>
                         <button className={styles.optionButton}>⋮</button>
                         <div className={styles.dropdown}>
-                          <button
+                          {(post?.accountId === acc?.id ) &&(
+                            <button
                             className={styles.dropdownItem}
                             onClick={() => handleEdit(post)}
                           >
-                            Edit
+                            <Edit color={"#c5ab01"} width={20} height={20}/>
                           </button>
+                          )}
                           <button
                             className={styles.dropdownItem}
-                            onClick={() => handleDelete(post?.id)}
+                            onClick={() => {setModalDelete(true), setPost(post)}}
                           >
-                            Delete
+                            <Delete color={"red"} width={20} height={20}/>
                           </button>
                         </div>
                       </div>
@@ -281,7 +291,7 @@ export default function Forum() {
                       />
                     )}
                   </div>
-                  <CommentSection postId={post?.id} acc={post} acc2={acc} />
+                  <CommentSection postId={post?.id} acc={post} acc2={acc} role={userRoleP}/>
                 </div>
               ))
             ) : (
@@ -341,6 +351,7 @@ export default function Forum() {
           </div>
         </div>
       )}
+      {DeleteP(modalDelete, setModalDelete,"Post",handleDelete,post)}
     </div>
   );
 }

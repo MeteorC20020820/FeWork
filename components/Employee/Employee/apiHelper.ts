@@ -37,5 +37,6 @@ export const fetchAccountAvatarByEmployeeId = async (
       },
     }
   );
+  console.log(res.data.data.faceUrl)
   return res.data.data.faceUrl;
 };

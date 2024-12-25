@@ -1,252 +1,185 @@
-/* Tổng thể của sidebar */
+/* General body styling for sidebar */
 .bodySideBar {
   width: 18%;
   height: 100vh;
-  background-image: url(/bgsidebar.png);
-  background-position: center;
-  background-size: cover;
-  color: #ffffff;
+  background-color: #464646; /* Dark background */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  position: fixed; 
-  top: 0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
   left: 0;
-  z-index: 1000; 
+  top: 0;
+  z-index: 100;
 }
 
-/* Thông tin người dùng ở trên cùng */
+/* Styling for the user info section */
 .bodyInfo {
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: center;
-  padding:10px;
-  justify-content: space-between;
-  background-color: #1f1f1fcd;
+  background-color:  #3c3c3c;
 }
-.info{
-    display: flex;
-    align-items: center;
+.bodyF{
+  padding: 0 20px;
+}
+.info {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+.infoName{
+  display: flex;
+  flex-direction: column;
 }
 .imgEmployee {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background-color: #333; /* Placeholder màu xám nếu không có ảnh */
-  margin-right: 10px;
-  object-fit: cover;
+  margin-right: 15px;
 }
 
 .textName {
-  font-size: 14px;
-  font-weight: bold;
-  color: #ffffff;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
 }
 
-.position {
+.textName:nth-child(2) {
   font-size: 12px;
-  color: #b3b3b3;
-  margin: 0;
+  color: #bbb;
 }
 
-/* Các tính năng trong sidebar */
+/* Setting section */
+.bodyInfo div {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-top: 10px;
+  color: white;
+  font-size: 14px;
+}
+
+.bodyInfo div:hover {
+  color: #00bcd4; /* Highlight on hover */
+}
+
+/* Title for features section */
+.titleFeature {
+  color: #ccc;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+/* Sidebar feature sections (menu items) */
 .feature {
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  margin-bottom: 10px;
-  color: #ffffff; /* Màu chữ ban đầu */
+  color: white;
 }
 
-/* Hiệu ứng khi hover: nền trắng, chữ đen */
 .feature:hover {
-  background-color: #ffffff;
-  color: #1f1f1f;
+  background-color: #1a1a1a;
+  color: #00bcd4;
 }
 
-/* Biểu tượng của tính năng, giữ nguyên màu đen khi hover */
+.textFeature {
+  margin-left: 15px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* Active state for selected feature */
+.active {
+  background-color: #f1eded;
+  color: #00bcd4;
+}
+
+/* Sidebar icon color changes on hover */
 .feature svg {
-  margin-right: 15px;
-  transition: color 0.3s;
+  transition: 0.3s;
 }
 
 .feature:hover svg {
-  color: #1f1f1f; /* Đổi màu biểu tượng thành đen khi hover */
+  color: white;
+  fill: #00bcd4;
 }
 
-/* Màu nền cho mục đang active */
-.active {
-  background-color: #ffffff;
-  color: black;
-  font-weight: 600;
-}
-
-.active:hover {
-  background-color: #ffffff;
-  color: #1f1f1f;
-  font-weight: 600;
-}
-
-/* Văn bản mô tả tính năng */
-.textFeature {
-  font-size: 14px;
-  margin: 0;
-  transition: color 0.3s;
-}
-.titleFeature{
-  padding: 0 10px;
-  background-color: #cdcdcd5c;
-  font-weight: 600;
-}
-/* Kiểu cho nút Logout ở dưới cùng */
+/* Logout section */
 .logout {
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px;
+  margin-top: auto;
   cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-  margin: 20px 0;
-  border-radius: 8px;
 }
 
 .logout:hover {
-  background-color: #ffffff;
-  color: #1f1f1f;
+  background-color: #1a1a1a;
+  color: #00bcd4;
 }
 
-/* Kiểu cho chuyển đổi chế độ sáng/tối */
-.switchMode {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #333333;
-  border-radius: 8px;
-  margin: 0 20px 20px 20px;
+.textFeature.activeText {
+  color: #00bcd4;
 }
 
-.switchMode p {
-  font-size: 14px;
-  color: #ffffff;
-  margin: 0;
-}
-
-.switchButton {
-  position: relative;
-  width: 40px;
-  height: 20px;
-  background-color: #ffffff;
-  border-radius: 15px;
-  cursor: pointer;
-}
-
-.switchButton::before {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  background-color: #1f1f1f;
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  transition: left 0.3s;
-}
-
-.switchButton.active::before {
-  left: 22px; /* Vị trí khi chế độ bật */
-}
-/* Overlay loading */
+/* Modal and loading overlay styles */
 .loadingOverlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1001; /* Đảm bảo overlay nằm trên các thành phần khác */
+  z-index: 200;
 }
 
-/* Spinner container */
 .loader {
-  position: relative;
-  width: 50px; /* Kích thước của spinner */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 50px;
   height: 50px;
 }
 
-/* Vòng tròn trong spinner */
 .loader div {
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  background-color: #4c4cff; /* Màu xanh lam */
+  width: 10px;
+  height: 10px;
+  background-color: white;
   border-radius: 50%;
-  animation: loaderAnimation 1.2s linear infinite;
+  animation: loader 1.2s infinite ease-in-out;
 }
 
-/* Vị trí từng vòng tròn */
 .loader div:nth-child(1) {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation-delay: -0.6s;
-}
-.loader div:nth-child(2) {
-  top: 14%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.5s;
-}
-.loader div:nth-child(3) {
-  top: 50%;
-  left: 100%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.4s;
-}
-.loader div:nth-child(4) {
-  bottom: 14%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.3s;
-}
-.loader div:nth-child(5) {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation-delay: -0.2s;
-}
-.loader div:nth-child(6) {
-  bottom: 14%;
-  left: 15%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.1s;
-}
-.loader div:nth-child(7) {
-  top: 50%;
-  left: 0;
-  transform: translate(-50%, -50%);
   animation-delay: 0s;
 }
-.loader div:nth-child(8) {
-  top: 14%;
-  left: 15%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.7s;
+
+.loader div:nth-child(2) {
+  animation-delay: 0.1s;
 }
 
-/* Animation cho spinner */
-@keyframes loaderAnimation {
+.loader div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes loader {
   0% {
+    transform: scale(0);
+  }
+  50% {
     transform: scale(1);
-    opacity: 1;
   }
   100% {
-    transform: scale(0.3);
-    opacity: 0;
+    transform: scale(0);
   }
 }

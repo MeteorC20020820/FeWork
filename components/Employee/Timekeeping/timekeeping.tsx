@@ -150,34 +150,55 @@ export default function TimeKeeping() {
       console.log("Sending image:", previewImage);
     }
   };
-
+  const notes = [
+    { id: 1, title: "Note:", content: "Do not wear a mask, do not wear glasses, and look directly at the camera when checking in.", date: "" },
+  ];
   return (
     <div className={styles.bodyTimekeep}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div style={{ width: "18%" }}></div>
 
       <div className={styles.right}>
-        <h2 className={styles.title}>Face Recognition Timekeeping</h2>
-        <div className={styles.imagePreview}>
-          <Timekeeping
-            className={styles.iconTimekeeping}
-            color="black"
-            width="250px"
-            height="250px"
-          />
+        <div className={styles.header}>
+          <h2 className={styles.title}>Face Recognition Timekeeping</h2>
         </div>
+        <div className={styles.bodyFace}>
+          <div className={styles.bodyRight}>
+            <div className={styles.imagePreview}>
+              {/* <Timekeeping
+                className={styles.iconTimekeeping}
+                color="black"
+                width="250px"
+                height="250px"
+              /> */}
+            </div>
 
-        {!isCameraActive && !previewImage && (
-          <div className={styles.uploadContainer}>
-            <button
-              className={styles.uploadButton}
-              onClick={handleCameraAccess}
-              disabled={isLoadingCamera}
-            >
-              {isLoadingCamera ? "Opening Camera..." : "Open Camera"}
-            </button>
+            {!isCameraActive && !previewImage && (
+              <div className={styles.uploadContainer}>
+                <button
+                  className={styles.uploadButton}
+                  onClick={handleCameraAccess}
+                  disabled={isLoadingCamera}
+                >
+                  {isLoadingCamera ? "Opening Camera..." : "Open Camera"}
+                </button>
+              </div>
+            )}
           </div>
-        )}
+          <div className={styles.bodyLeft}>
+            <div className={styles.noteBoard}>
+              <div className={styles.notes}>
+                {notes.map((note) => (
+                  <div key={note.id} className={styles.note}>
+                    <h2 className={styles.noteTitle}>{note.title}</h2>
+                    <p className={styles.noteContent}>{note.content}</p>
+                    <span className={styles.noteDate}>{note.date}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       {isCameraActive && (

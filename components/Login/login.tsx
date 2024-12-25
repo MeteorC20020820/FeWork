@@ -38,7 +38,7 @@ export default function Login() {
       const decodedPayload = JSON.parse(atob(payloadBase64));
       console.log(decodedPayload);
 
-      handleNavigation("/Employee/Info");
+      handleNavigation("/Employee/Forum");
     } catch (error) {
       console.log(error);
       setError("Error Email or Password.");

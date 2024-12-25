@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./commentSection.module.css";
-
+import { SendX, Delete } from "@/components/icon/icon";
+import DeleteP from "./Delete/delete";
 const CommentSection = ({
   postId,
   acc,
   acc2,
+  role
 }: {
   postId: number;
   acc: any;
   acc2: any;
+  role:any
 }) => {
   const [comments, setComments] = useState<any[]>([]);
   const [newComment, setNewComment] = useState("");
+  const [cmt, setCmt] = useState(false)
+  const [modalDelete, setModalDelete] = useState<any>(null)
   const token = localStorage.getItem("authToken");
-
+  console.log(role)
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -97,12 +102,12 @@ const CommentSection = ({
                   <p className={styles.author}>{comment.fullName}</p>
                   <p className={styles.content}>{comment.content}</p>
                 </div>
-                {acc2.id === comment.accountId && ( // Chỉ hiện nút xóa nếu acc hiện tại là người tạo comment
+                {(acc2.id === comment.accountId || role === '1') && ( // Chỉ hiện nút xóa nếu acc hiện tại là người tạo comment
                   <button
                     className={styles.deleteButton}
-                    onClick={() => handleDeleteComment(comment.id)}
+                    onClick={() => {setModalDelete(true), setCmt(comment)}}
                   >
-                    X
+                    <Delete color="red" width={20} height={20}/>
                   </button>
                 )}
               </div>
@@ -125,10 +130,11 @@ const CommentSection = ({
           onChange={(e) => setNewComment(e.target.value)}
           className={styles.commentInput}
         />
-        <button onClick={handleAddComment} className={styles.commentButton}>
-          Post
-        </button>
+        <div  onClick={handleAddComment} >
+          <SendX color="#007bff" width="30px" height="30px"/>
+        </div>
       </div>
+      {DeleteP(modalDelete, setModalDelete, "comment",handleDeleteComment,cmt)}
     </div>
   );
 };

@@ -1,25 +1,54 @@
 .custom-table {
-    border-collapse: collapse; 
+    border-collapse: separate; 
     border-radius: 20px;
+    border-spacing: 0;
+    overflow: hidden;
   }
   
   .custom-table .ant-table {
-    border: 1px solid #000000; 
+    border-left:1px solid black;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius:20px ; 
+    border-bottom: none;
+  }
+  .custom-table .ant-table-wrapper {
+    overflow: hidden !important; /* Loại bỏ scroll bar */
+  }
+  
+  .custom-table .ant-table-body {
+    overflow: hidden !important; /* Ẩn phần overflow trong phần nội dung table */
   }
   
   .custom-table .ant-table-thead > tr > th {
-    background-color: rgb(220, 220, 220); 
+    background-color: rgb(181, 181, 181); 
+    border: 1px solid black;
+   
     color: black;             
-    border: 1px solid #565656; 
   }
   
   .custom-table .ant-table-tbody > tr > td {
     background-color: #ffffff; 
     color: #000;
-    border-radius: 10px;              
+    border-bottom: 1px solid black;
+    border-right: 1px solid #000;            
   }
   
   .custom-table .ant-table-tbody > tr:hover > td {
     background-color: #e6f7ff; 
+  }
+  .custom-table .ant-table-thead > tr > th:first-child {
+    border-top-left-radius: 20px; /* Bo góc trái trên */
+  }
+  
+  .custom-table .ant-table-thead > tr > th:last-child {
+    border-top-right-radius: 20px; /* Bo góc phải trên */
+  }
+  
+  .custom-table .ant-table-tbody > tr:last-child > td:first-child {
+    border-bottom-left-radius: 20px; /* Bo góc trái dưới */
+  }
+  
+  .custom-table .ant-table-tbody > tr:last-child > td:last-child {
+    border-bottom-right-radius: 20px; /* Bo góc phải dưới */
   }
   

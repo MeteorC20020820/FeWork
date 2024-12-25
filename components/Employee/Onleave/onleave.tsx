@@ -215,6 +215,9 @@ export default function Onleave() {
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div style={{ width: "18%" }}></div>
       <div className={styles.right}>
+        <div className={styles.headerx}>
+          <p className={styles.titleHeader}>Onleave</p>
+        </div>
         {/* Thanh chuyển đổi tab */}
         <div className={styles.tabContainer}>
           <button
@@ -236,9 +239,11 @@ export default function Onleave() {
         </div>
 
         {/* Nội dung tab */}
-        <div className={styles.tabContent}>
-          {activeTab === "create" && <CreateLeaveForm />}
-          {activeTab === "view" && <ViewLeaveRequests />}
+        <div style={{padding:'0 80px 30px 80px'}}>
+          <div className={styles.tabContent}>
+            {activeTab === "create" && <CreateLeaveForm />}
+            {activeTab === "view" && <ViewLeaveRequests />}
+          </div>
         </div>
       </div>
     </div>

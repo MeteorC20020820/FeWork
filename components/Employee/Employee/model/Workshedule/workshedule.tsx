@@ -51,7 +51,7 @@ useEffect(() =>{
   const ApiGetAccID = async() =>{
     try {
       const res = await axios.get(
-        `http://localhost:7295/api/Account/${dataEm?.id}`,
+        `http://localhost:7295/api/Account/GetAccountByEmployeeId/${dataEm?.id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

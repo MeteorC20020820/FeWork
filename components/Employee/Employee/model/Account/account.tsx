@@ -3,7 +3,7 @@ import styles from "./account.module.css";
 import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import Delete from "./Delete/delete";
-const apiAi = "https://b20dccn460.serveo.net/api/v1/";
+const apiAi = "https://7650-1-55-211-158.ngrok-free.app/api/v1/";
 export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);

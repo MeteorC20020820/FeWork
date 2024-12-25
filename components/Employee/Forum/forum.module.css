@@ -2,10 +2,29 @@
     color: black;
     display: flex;
     background-color: #ccc;
+    height: auto;
 }
 .right{
-    padding: 10px 15px;
     width: 82%;
+}
+.header{
+  background-image: url(/forum.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+  height: 25vh;
+}
+.titleHeader{
+  font-size: 50px;
+  font-weight: 800;
+  color: #000000;
+  margin-bottom: 20px;
+  text-shadow: 
+    2px 2px 0 #31b90c,  
+    -2px 2px 0 #d93615, 
+    2px -2px 0 #ffffff, 
+    -2px -2px 0 #1bbcd8; 
 }
 /* Container input */
 .inputContainer {
