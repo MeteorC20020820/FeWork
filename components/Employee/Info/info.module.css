@@ -2,36 +2,62 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 50px;
   font-family: Arial, sans-serif;
-  width: 80%;
+  width: 82%;
 }
-
+.header{
+  background-image: url(/info2.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+  height: 25vh;
+}
+.titleDep {
+  font-size: 50px;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 20px;
+  /* text-shadow: 
+    2px 2px 0 #ffffff,  
+    -2px 2px 0 #2915d9, 
+    2px -2px 0 #ffffff, 
+    -2px -2px 0 #1bbcd8;  */
+}
 /* Hộp thông tin */
 .profileCard {
   display: flex;
   background-color: #fff;
   border-radius: 10px;
   justify-content: center;
-  width: 800px;
+  width: 100%;
   padding: 20px;
+  gap: 40px;
 }
-
+.left{
+  flex: 1;
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+}
 /* Phần bên trái */
 .profileLeft {
-  flex: 1;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-right: 20px;
-  border-right: 1px solid #ddd;
+  justify-content: center;
+  padding: 30px;
+  border-radius: 10px;
+  background-color: #8c8c8c8d;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   background-color: #eee;
   margin-bottom: 20px;
@@ -54,43 +80,53 @@
 .profileRight {
   flex: 2;
   padding-left: 20px;
+  color: #000000;
 }
 
 .title {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
   color: #333;
+  text-align: center;
+}
+
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .detailRow {
   display: flex;
-  align-items: center;
-  margin-bottom: 15px;
+  flex-direction: column;
+  flex: 1 1 calc(50% - 20px);
+  padding: 10px 15px;
+  background-color: #fff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .detailLabel {
-  flex: 1;
   font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
   color: #666;
+  text-transform: uppercase;
 }
 
-.detailInput {
-  flex: 2;
-  font-size: 14px;
-  color: #333;
-  padding: 8px 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #f8f8f8;
+.detailText {
+  font-size: 16px;
+  color: #000000;
+  word-wrap: break-word;
 }
 
-.detailInput:focus {
-  border-color: #007bff;
-  background-color: #fff;
-  outline: none;
+@media (max-width: 768px) {
+  .detailRow {
+    flex: 1 1 100%;
+  }
 }
-
 .datePicker {
   cursor: pointer;
 }
@@ -172,8 +208,10 @@
 
 .uploadLabel {
   cursor: pointer;
-  color: #007bff;
+  color: #01356c;
   text-decoration: underline;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .fileInput {
@@ -211,11 +249,11 @@
   margin-top: 20px;
 }
 .cardInfo{
-  margin-top: 20px;
+  margin-top: 40px;
   background-color: #fff;
   width: 100%;
   height: auto;
-  padding: 20px 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
