@@ -3,7 +3,7 @@ import styles from "./account.module.css";
 import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import Delete from "./Delete/delete";
-const apiAi = "https://7650-1-55-211-158.ngrok-free.app/api/v1/";
+const ai = process.env.NEXT_PUBLIC_API_AI
 export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
@@ -24,7 +24,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     employeeId: dataEm?.id || "",
     roleId: 3,
   });
-
+  console.log(ai)
   // Update employeeId when dataEm changes
   useEffect(() => {
     if (dataEm?.id) {
@@ -110,16 +110,12 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     try {
       const avatarUrl = await apiChangeImage(newAccount.avatarFile);
       const faceUrl = await apiChangeImage(newAccount.faceFile);
-      const res2 = await axios.post(`${apiAi}enroll`,formData);
-      console.log(res2);
+      const res2 = await axios.post(`${ai}enroll`,formData);
+      console.log(res2)
+      console.log(res2.data.data.face_id);
       if(res2.data.statusCode == 400){
         alert(res2.data.message)
       }
-      if (!avatarUrl || !faceUrl) {
-        alert("Failed to upload files. Please try again.");
-        return;
-      }
-
       const payload = {
         email: newAccount.email,
         password: newAccount.password,
@@ -131,31 +127,32 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
         roleId: newAccount.roleId,
       };
       console.log(payload)
-      const res = await axios.post(
-        `http://localhost:7295/api/Account`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+      if(res2.data.statusCode == 200){
+        const res = await axios.post(
+          `http://localhost:7295/api/Account`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (res.status === 200) {
+          alert("Account created successfully!");
+          window.location.reload();
+          setIsCreateModalOpen(false);
+          setNewAccount({
+            email: "",
+            password: "",
+            avatarFile: null,
+            faceFile: null,
+            faceId:'',
+            status: 1,
+            employeeId: dataEm?.id || "",
+            roleId: 3,
+          });
         }
-      );
-
-      if (res.status === 200) {
-        alert("Account created successfully!");
-        window.location.reload();
-        setIsCreateModalOpen(false);
-        setNewAccount({
-          email: "",
-          password: "",
-          avatarFile: null,
-          faceFile: null,
-          faceId:'',
-          status: 1,
-          employeeId: dataEm?.id || "",
-          roleId: 3,
-        });
       }
     } catch (error) {
       console.error("Error creating account:", error);
@@ -183,7 +180,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     formData.append("file", imgFaceChange);
     formData.append("face_id", accUser?.face_id);
     try{
-      const res = await axios.put(`${apiAi}update`,formData)
+      const res = await axios.put(`${ai}update`,formData)
       console.log(res.data.data.face_id);
       if(res.data.statusCode == 200){
         const resFace = await axios.put(
@@ -199,7 +196,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           }
         );
         if(resFace.status ==200){
-          alert('ok')
+          alert('Change face employee success!')
         }
         else{
           alert('erorr')
@@ -288,7 +285,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
             </div>
           ) : (
             <div className={styles.noAccount}>
-              <p>No account found for this employee.</p>
+              <p className={styles.titleNoAcc}>No account found for this employee.</p>
               <button
                 className={`${styles.button} ${styles.create}`}
                 onClick={() => setIsCreateModalOpen(true)}

@@ -158,3 +158,15 @@
   border-radius: 10px;
   object-fit: cover;
 }
+.noAccount{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.titleNoAcc{
+  font-size: 20px;
+  color: black;
+  font-weight: 600;
+}

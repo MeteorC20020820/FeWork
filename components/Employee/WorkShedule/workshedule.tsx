@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import styles from './workshedule.module.css'
 import { IconNextMonth, IconPrevMonth } from "@/components/icon/icon";
 import axios from "axios";
-const apiAi = "https://7650-1-55-211-158.ngrok-free.app/api/v1/";
+const apiAi = process.env.NEXT_PUBLIC_API_AI;
 const events = [
   {
     id: 1,
@@ -26,8 +26,8 @@ const token = localStorage?.getItem("authToken");
 const [idAcc, setIDAcc] = useState<any>(null)
 const [acc, setAcc] = useState<any>(null)
 const [data, setData] = useState<any>({})
-const [idCheckIn, setIdCheckIn] = useState<any>(null)
 console.log(user)
+const [idCheckIn, setIdCheckIn] = useState<any>(null)
 useEffect(() =>{
   const ApiGetAccID = async() =>{
     try {
@@ -59,7 +59,6 @@ useEffect(() => {
         }
       );
       // Kiểm tra nếu res.data.data là mảng
-      console.log(res.data.data)
       if (Array.isArray(res.data.data)) {
         const formattedData = res.data.data.map((item:any) => {
           const checkInDate = new Date(item.checkIn);
@@ -227,7 +226,6 @@ const videoRef = useRef<HTMLVideoElement | null>(null);
     const [isLoadingCamera, setIsLoadingCamera] = useState(false);
 const handleCheckOut = async(eventId: number) => {
   setCheckedOutEvents((prev) => [...prev, eventId]);
-  console.log("Attempting to access camera...");
   setIsLoadingCamera(true);
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -237,10 +235,8 @@ const handleCheckOut = async(eventId: number) => {
     const mediaStream = await navigator.mediaDevices.getUserMedia({
       video: true,
     });
-    console.log("Camera stream obtained:", mediaStream);
     setStream(mediaStream);
     setIsCameraActive(true);
-    console.log("Camera is active");
   } catch (err) {
     console.error("Error accessing camera:", err);
   } finally {
@@ -319,8 +315,6 @@ const apiUrlImage = async() => {
     console.log(error);
   }
 };
-console.log(idCheckIn)
-console.log(imageFile)
 useEffect(() => {
     if (isCameraActive && videoRef.current && stream) {
       videoRef.current.srcObject = stream;

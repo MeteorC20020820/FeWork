@@ -4,7 +4,7 @@ import SideBar from "../SideBar/sideBar";
 import React, { useState, useRef, useEffect } from "react";
 import { Timekeeping } from "@/components/icon/icon";
 import axios from "axios";
-const apiAi = "https://b20dccn460.serveo.net/api/v1/";
+const apiAi = process.env.NEXT_PUBLIC_API_AI;
 export default function TimeKeeping() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
@@ -19,7 +19,7 @@ export default function TimeKeeping() {
   useEffect(()=>{
     const apiGetAcc = async() =>{
       try{
-        const res = await axios.get(`http://localhost:7295/api/Account/${user?.id}`,{
+        const res = await axios.get(`http://localhost:7295/api/Account/GetAccountByEmployeeId/${user?.id}`,{
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -90,16 +90,22 @@ export default function TimeKeeping() {
       const res = await axios.post(`${apiAi}check-in`,formData);
       console.log(res)
       if(res.data.statusCode == 200){
+        console.log(res.data.data.face_id)
+        console.log(acc.face_id)
         if(res.data.data.face_id === acc.face_id){
           const checkIn = await axios.post(`http://localhost:7295/api/Attendance/check-in`,{},{
             headers: {
               Authorization: `Bearer ${token}`,
             },
           })
+          console.log(checkIn)
           if(checkIn.status == 200){
             alert("Check in success")
             window.location.reload()
           }
+        }
+        else{
+          alert("Checkin failed")
         }
       }
     } catch (error) {

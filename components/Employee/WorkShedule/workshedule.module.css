@@ -161,7 +161,7 @@
 }
 .today {
   background-color: #0F4C81;; 
-  color: white;
+  color: rgb(0, 0, 0);
   border: 1px solid #0F4C81;;
 }
 .today strong{

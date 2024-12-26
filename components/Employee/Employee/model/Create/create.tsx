@@ -102,6 +102,7 @@ export default function Create(open: boolean, setOpen: Function) {
       );
       console.log(res);
       if (res.status === 200) {
+        alert("Create employee success")
         window.location.reload();
       } else {
         setError("Failed to update employee.");
