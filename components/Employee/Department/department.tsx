@@ -344,6 +344,11 @@ export default function Department() {
             dataSource={data}
             scroll={{ y: 400 }}
             className="custom-table"
+            pagination={{
+              pageSize: 4, // Số dòng hiển thị trên mỗi trang
+              showSizeChanger: true, // Hiển thị tuỳ chọn thay đổi số dòng
+              pageSizeOptions: ["5", "10", "20"], // Các tuỳ chọn số dòng mỗi trang
+            }}
           />
         </div>
       </div>

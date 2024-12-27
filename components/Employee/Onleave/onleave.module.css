@@ -24,11 +24,6 @@
   font-weight: 800;
   color: #000000;
   margin-bottom: 20px;
-  text-shadow: 
-    2px 2px 0 #31b90c,  
-    -2px 2px 0 #d93615, 
-    2px -2px 0 #ffffff, 
-    -2px -2px 0 #1bbcd8; 
 }
 .tabContainer {
   display: flex;
@@ -194,6 +189,7 @@
 }
 .statusPending {
   background-color: orange;
+  border-radius: 10px;
   width: 50%;
   height: 50%;
   font-weight: bold;
@@ -209,6 +205,7 @@
   height: 50%;
   font-weight: bold;
   padding: 20px;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,6 +213,7 @@
 
 .statusRejected {
   background-color: red;
+  border-radius: 10px;
    width: 50%;
   height: 50%;
   font-weight: bold;

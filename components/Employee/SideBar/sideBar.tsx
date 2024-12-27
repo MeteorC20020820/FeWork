@@ -149,141 +149,142 @@ export default function SideBar({setUser, setUserRoleP}:any) {
               <p className={styles.titleFeature}>Feature</p>
               <div className={styles.bodyF}>
                 {/* Thẻ Forum */}
-              <div
-                className={getFeatureClass("Forum")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/Forum")}
-              >
-            
-                <p className={getTextFeatureClass("forum")}>Forum</p>
-              </div>
+                <div
+                  className={getFeatureClass("Forum")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleNavigation("/Employee/Forum")}
+                >
+              
+                  <p className={getTextFeatureClass("forum")}>Forum</p>
+                </div>
 
-              {/* Thẻ OnLeave */}
-              <div
-                className={getFeatureClass("Onleave")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/Onleave")}
-              >
-                <p className={getTextFeatureClass("onleave")}>On leave</p>
-              </div>
+                {/* Thẻ OnLeave */}
+                <div
+                  className={getFeatureClass("Onleave")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Onleave") setHoveredIcon("onleave");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleNavigation("/Employee/Onleave")}
+                >
+                  <p className={getTextFeatureClass("onleave")}>On leave</p>
+                </div>
 
-              {/* Thẻ WorkSchedules */}
-              <div
-                className={getFeatureClass("Workshedule")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/Workshedule")
-                    setHoveredIcon("workshedule");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/Workshedule")}
-              >
-                <p className={getTextFeatureClass("workshedule")}>Work schedule</p>
-              </div>
+                {/* Thẻ WorkSchedules */}
+                <div
+                  className={getFeatureClass("Workshedule")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Workshedule")
+                      setHoveredIcon("workshedule");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleNavigation("/Employee/Workshedule")}
+                >
+                  <p className={getTextFeatureClass("workshedule")}>Work schedule</p>
+                </div>
 
-              {/* Thẻ Timekeeping */}
-              <div
-                className={getFeatureClass("Timekeeping")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/Timekeeping")
-                    setHoveredIcon("timekeeping");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/Timekeeping")}
-              >
-                <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
-              </div>
+                {/* Thẻ Timekeeping */}
+                <div
+                  className={getFeatureClass("Timekeeping")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Timekeeping")
+                      setHoveredIcon("timekeeping");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleNavigation("/Employee/Timekeeping")}
+                >
+                  <p className={getTextFeatureClass("timekeeping")}>Timekeeping</p>
+                </div>
               </div>
             </div>
           )}
           {(userRole === "1") && (
             <div>
               <p className={styles.titleFeature}>Manage</p>
-              {/* Thẻ Forum */}
-              <div
-                className={getFeatureClass("Forum")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/Forum")}
-              >
-                {/* <Forum color={getIconColor("forum")} width="30px" height="30px" /> */}
-                <p className={getTextFeatureClass("forum")}>Forum</p>
-              </div>
-              <div>
+              <div className={styles.bodyF}>
                 <div
-                  className={getFeatureClass("Department")}
+                  className={getFeatureClass("Forum")}
                   onMouseEnter={() => {
-                    if (pathname !== "/Employee/Department")
-                      setHoveredIcon("department");
+                    if (pathname !== "/Employee/Forum") setHoveredIcon("forum");
                   }}
                   onMouseLeave={() => setHoveredIcon(null)}
-                  onClick={() => handleNavigation("/Employee/Department")}
+                  onClick={() => handleNavigation("/Employee/Forum")}
                 >
-                  {/* <Department
-                    color={getIconColor("department")}
+                  {/* <Forum color={getIconColor("forum")} width="30px" height="30px" /> */}
+                  <p className={getTextFeatureClass("forum")}>Forum</p>
+                </div>
+                <div>
+                  <div
+                    className={getFeatureClass("Department")}
+                    onMouseEnter={() => {
+                      if (pathname !== "/Employee/Department")
+                        setHoveredIcon("department");
+                    }}
+                    onMouseLeave={() => setHoveredIcon(null)}
+                    onClick={() => handleNavigation("/Employee/Department")}
+                  >
+                    {/* <Department
+                      color={getIconColor("department")}
+                      width={size}
+                      height={size}
+                    /> */}
+                    <p className={getTextFeatureClass("department")}>
+                      Department
+                    </p>
+                  </div>
+                  <div
+                    className={getFeatureClass("Employee")}
+                    onMouseEnter={() => {
+                      if (pathname !== "/Employee/Employee")
+                        setHoveredIcon("employee");
+                    }}
+                    onMouseLeave={() => setHoveredIcon(null)}
+                    onClick={() => handleNavigation("/Employee/Employee")}
+                  >
+                    {/* <Employee
+                      color={getIconColor("employee")}
+                      width={size}
+                      height={size}
+                    /> */}
+                    <p className={getTextFeatureClass("employee")}>Employee</p>
+                  </div>
+                </div>
+                <div
+                  className={getFeatureClass("Asset")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/Asset") setHoveredIcon("asset");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleNavigation("/Employee/Asset")}
+                >
+                  {/* <Asset
+                    color={getIconColor("asset")}
                     width={size}
                     height={size}
                   /> */}
-                  <p className={getTextFeatureClass("department")}>
-                    Department
+                  <p className={getTextFeatureClass("asset")}>Asset</p>
+                </div>
+                <div
+                  className={getFeatureClass("LeaveApplication")}
+                  onMouseEnter={() => {
+                    if (pathname !== "/Employee/LeaveApplication")
+                      setHoveredIcon("LeaveApplication");
+                  }}
+                  onMouseLeave={() => setHoveredIcon(null)}
+                  onClick={() => handleNavigation("/Employee/LeaveApplication")}
+                >
+                  {/* <LeaveApplication
+                    color={getIconColor("LeaveApplication")}
+                    width={size}
+                    height={size}
+                  /> */}
+                  <p className={getTextFeatureClass("LeaveApplication")}>
+                    LeaveApplication
                   </p>
                 </div>
-                <div
-                  className={getFeatureClass("Employee")}
-                  onMouseEnter={() => {
-                    if (pathname !== "/Employee/Employee")
-                      setHoveredIcon("employee");
-                  }}
-                  onMouseLeave={() => setHoveredIcon(null)}
-                  onClick={() => handleNavigation("/Employee/Employee")}
-                >
-                  {/* <Employee
-                    color={getIconColor("employee")}
-                    width={size}
-                    height={size}
-                  /> */}
-                  <p className={getTextFeatureClass("employee")}>Employee</p>
-                </div>
-              </div>
-              <div
-                className={getFeatureClass("Asset")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/Asset") setHoveredIcon("asset");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/Asset")}
-              >
-                {/* <Asset
-                  color={getIconColor("asset")}
-                  width={size}
-                  height={size}
-                /> */}
-                <p className={getTextFeatureClass("asset")}>Asset</p>
-              </div>
-              <div
-                className={getFeatureClass("LeaveApplication")}
-                onMouseEnter={() => {
-                  if (pathname !== "/Employee/LeaveApplication")
-                    setHoveredIcon("LeaveApplication");
-                }}
-                onMouseLeave={() => setHoveredIcon(null)}
-                onClick={() => handleNavigation("/Employee/LeaveApplication")}
-              >
-                {/* <LeaveApplication
-                  color={getIconColor("LeaveApplication")}
-                  width={size}
-                  height={size}
-                /> */}
-                <p className={getTextFeatureClass("LeaveApplication")}>
-                  LeaveApplication
-                </p>
               </div>
             </div>
           )}

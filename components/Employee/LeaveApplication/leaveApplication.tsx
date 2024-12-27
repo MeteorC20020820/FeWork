@@ -130,34 +130,40 @@ export default function LeaveApplication() {
       ));
 
   return (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", backgroundColor:'#ccc', height:'100vh' }}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
       <div style={{ width: "18%" }}></div>
       <div className={styles.bodyleave}>
-        <h1 className={styles.header}>Leave Applications</h1>
-        <div className={styles.tabs}>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "pending" ? styles.activeTab : ""
-            }`}
-            onClick={() => setActiveTab("pending")}
-          >
-            Pending
-          </div>
-          <div
-            className={`${styles.tab} ${
-              activeTab === "processed" ? styles.activeTab : ""
-            }`}
-            onClick={() => setActiveTab("processed")}
-          >
-            Processed
+        <div className={styles.header}>
+          <p className={styles.titleDep}>Leave Applications</p>
+        </div>
+        <div style={{padding:"50px 80px"}}>
+          <div style={{borderRadius:'20px', backgroundColor:'white', padding:'20px 30px'}}>
+            <div className={styles.tabs}>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "pending" ? styles.activeTab : ""
+                }`}
+                onClick={() => setActiveTab("pending")}
+              >
+                Pending
+              </div>
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "processed" ? styles.activeTab : ""
+                }`}
+                onClick={() => setActiveTab("processed")}
+              >
+                Processed
+              </div>
+            </div>
+            <ul className={styles.list}>
+              {activeTab === "pending"
+                ? renderLeaves(pendingLeaves)
+                : renderLeaves(processedLeaves)}
+            </ul>
           </div>
         </div>
-        <ul className={styles.list}>
-          {activeTab === "pending"
-            ? renderLeaves(pendingLeaves)
-            : renderLeaves(processedLeaves)}
-        </ul>
       </div>
       {Delete(modalDelete, setModalDelete, idLeave)}
     </div>

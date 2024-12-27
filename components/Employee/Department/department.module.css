@@ -1,8 +1,10 @@
 .bodyDepartment{
     display: flex;
+    height: 100%;
 }
 .department{
     width: 80%;
+
 }
 .header{
   background-image: url(/ct3.jpg);
@@ -111,4 +113,5 @@
 }
 .bodyTable{
   padding: 0 20px;
+  height: 100%;
 }

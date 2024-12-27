@@ -1,17 +1,27 @@
 /* General Layout */
 .bodyleave {
   flex: 1;
-  padding: 20px;
-  background-color: #f9f9f9;
   font-family: 'Arial', sans-serif;
 }
 
-.header {
-  font-size: 2em;
-  font-weight: bold;
+.header{
+  background-image: url(/la.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 30px 20px;
+  height: 25vh;
+}
+.titleDep {
+  font-size: 50px;
+  font-weight: 800;
   color: #333;
   margin-bottom: 20px;
-  text-align: center;
+  text-shadow: 
+    2px 2px 0 #ffffff,  
+    -2px 2px 0 #ffffff, 
+    2px -2px 0 #ffffff, 
+    -2px -2px 0 #ffffff; 
 }
 
 .tabs {
@@ -54,7 +64,7 @@
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 1);
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   width: calc(33.33% - 20px); /* Three cards per row */
@@ -65,7 +75,7 @@
 
 .listItem:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 4px 8px 16px rgb(4, 40, 160);
 }
 
 .leftContent, .rightContent {
@@ -150,12 +160,14 @@
   justify-content: center;
   padding: 10px 20px;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  font-size: 20px;
   transition: background-color 0.3s;
 }
 
 .tab:hover {
-  background-color: #797979;
+  background-color: #989898;
+  border-radius: 10px;
 }
 
 .activeTab {

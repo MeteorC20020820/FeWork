@@ -1,139 +1,157 @@
-.bodyLogout{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    align-items: center;
-    padding: 4%;
+.bodyLogout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(145deg, #ffffff, #f0f0f0);
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
-.title{
-    font-size: 40px;
-    font-weight: 600;
-    color: red;
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-.text{
-    font-size: 20px;
-    font-weight: 600;
-    color: black;
+
+.text {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
-.bodyBtn{
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    align-items: center;
-    gap: 25px;
-    padding: 20px 0 0 0;
+
+.bodyBtn {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  width: 80%;
 }
-.btnLogout{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 25px;
-    background-color: rgb(246, 118, 118);
-    color: red;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
+
+.btnLogout {
+  padding: 10px 20px;
+  background: #ff4d4f;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
-.btnCancel{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 25px;
-    background-color: rgb(99, 99, 99);
-    color: rgb(0, 0, 0);
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 20px;
+
+.btnLogout:hover {
+  background: #d9363e;
+  transform: scale(1.05);
 }
+
+.btnCancel {
+  padding: 10px 20px;
+  background: #1890ff;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btnCancel:hover {
+  background: #1468c2;
+  transform: scale(1.05);
+}
+
 .loadingOverlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* Nền mờ */
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.4);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1001; /* Đảm bảo overlay nằm trên các thành phần khác */
+  justify-content: center;
+  z-index: 1000;
 }
 
-/* Spinner container */
 .loader {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
   position: relative;
-  width: 50px; /* Kích thước của spinner */
-  height: 50px;
 }
 
-/* Vòng tròn trong spinner */
 .loader div {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  background-color: #4c4cff; /* Màu xanh lam */
+  width: 5px;
+  height: 5px;
+  background: #1890ff;
   border-radius: 50%;
-  animation: loaderAnimation 1.2s linear infinite;
+  animation: loaderAnim 1.2s linear infinite;
 }
 
-/* Vị trí từng vòng tròn */
 .loader div:nth-child(1) {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation-delay: -0.6s;
-}
-.loader div:nth-child(2) {
-  top: 14%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.5s;
-}
-.loader div:nth-child(3) {
-  top: 50%;
-  left: 100%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.4s;
-}
-.loader div:nth-child(4) {
-  bottom: 14%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.3s;
-}
-.loader div:nth-child(5) {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation-delay: -0.2s;
-}
-.loader div:nth-child(6) {
-  bottom: 14%;
-  left: 15%;
-  transform: translate(-50%, -50%);
-  animation-delay: -0.1s;
-}
-.loader div:nth-child(7) {
-  top: 50%;
-  left: 0;
-  transform: translate(-50%, -50%);
+  top: 29px;
+  left: 53px;
   animation-delay: 0s;
 }
+
+.loader div:nth-child(2) {
+  top: 18px;
+  left: 50px;
+  animation-delay: -0.1s;
+}
+
+.loader div:nth-child(3) {
+  top: 9px;
+  left: 41px;
+  animation-delay: -0.2s;
+}
+
+.loader div:nth-child(4) {
+  top: 6px;
+  left: 29px;
+  animation-delay: -0.3s;
+}
+
+.loader div:nth-child(5) {
+  top: 9px;
+  left: 17px;
+  animation-delay: -0.4s;
+}
+
+.loader div:nth-child(6) {
+  top: 18px;
+  left: 8px;
+  animation-delay: -0.5s;
+}
+
+.loader div:nth-child(7) {
+  top: 29px;
+  left: 5px;
+  animation-delay: -0.6s;
+}
+
 .loader div:nth-child(8) {
-  top: 14%;
-  left: 15%;
-  transform: translate(-50%, -50%);
+  top: 41px;
+  left: 8px;
   animation-delay: -0.7s;
 }
 
-/* Animation cho spinner */
-@keyframes loaderAnimation {
-  0% {
+@keyframes loaderAnim {
+  0%, 100% {
     transform: scale(1);
-    opacity: 1;
+    background: #1890ff;
   }
-  100% {
-    transform: scale(0.3);
-    opacity: 0;
+  50% {
+    transform: scale(1.5);
+    background: #ff4d4f;
   }
 }

@@ -283,13 +283,15 @@ export default function Forum() {
                   </div>
                   <div className={styles.postContent}>
                     <p>{post?.content}</p>
-                    {post?.imageUrl && (
-                      <img
-                        src={`${post?.imageUrl}`}
-                        alt="Post"
-                        className={styles.postImage}
-                      />
-                    )}
+                    <div style={{display:'flex', justifyContent:'center'}}>
+                      {post?.imageUrl && (
+                        <img
+                          src={`${post?.imageUrl}`}
+                          alt="Post"
+                          className={styles.postImage}
+                        />
+                      )}
+                    </div>
                   </div>
                   <CommentSection postId={post?.id} acc={post} acc2={acc} role={userRoleP}/>
                 </div>
