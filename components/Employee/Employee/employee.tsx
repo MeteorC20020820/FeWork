@@ -145,45 +145,51 @@ export default function Employee() {
     
   };
   
+  const fetchAllData = async () => {
+    try {
+      const employees = await fetchEmployees(token);
+      const formattedData = await Promise.all(
+        employees.map(async (item: any) => {
+          try {
+            const email = await fetchAccountEmailByEmployeeId(item?.id, token);
+            const avatar = await fetchAccountAvatarByEmployeeId(
+              item?.id,
+              token
+            );
 
+            console.log(
+              `Employee ID: ${item?.id}, Email: ${email}, Avatar: ${avatar}`
+            );
+            return {
+              ...item,
+              birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
+              email: email || "N/A",
+              avatar: avatar || "",
+            };
+          } catch (error) {
+            console.error(`Error fetching data for ID ${item?.id}:`, error);
+            return {
+              ...item,
+              birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
+              email: "N/A",
+              avatar: "",
+            };
+          }
+        })
+      );
+
+      setEmployee(formattedData);
+      setFilteredEmployee(formattedData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const fetchAllData = async () => {
-      try {
-        const employees = await fetchEmployees(token);
-        const formattedData = await Promise.all(
-          employees.map(async (item: any) => {
-            try {
-              const email = await fetchAccountEmailByEmployeeId(item?.id, token);
-              const avatar = await fetchAccountAvatarByEmployeeId(item?.id, token);
-        
-              console.log(`Employee ID: ${item?.id}, Email: ${email}, Avatar: ${avatar}`);
-              return {
-                ...item,
-                birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
-                email: email || "N/A",
-                avatar: avatar || "",
-              };
-            } catch (error) {
-              console.error(`Error fetching data for ID ${item?.id}:`, error);
-              return {
-                ...item,
-                birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
-                email: "N/A",
-                avatar: "",
-              };
-            }
-          })
-        );
-        
-        setEmployee(formattedData);
-        setFilteredEmployee(formattedData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchAllData();
-  }, [token]);
+  }, []);
+  const handelReset =() =>{
+    fetchAllData();
+  }
   const gender = (gender:any) =>{
     if(gender == 0) return "Female"
     return "Male"
@@ -197,13 +203,13 @@ export default function Employee() {
         <div className={styles.header}>
           <p className={styles.titleEm}>Employee</p>
           <div className={styles.bodyCreateEm}>
-              <button
-                className={styles.btnCreateEm}
-                onClick={() => setModalCreate(true)}
-              >
-                Create Employee
-              </button>
-              <div className={styles.searchContainer}>
+            <button
+              className={styles.btnCreateEm}
+              onClick={() => setModalCreate(true)}
+            >
+              Create Employee
+            </button>
+            <div className={styles.searchContainer}>
               <Input
                 className={styles.searchInputs}
                 placeholder="Search employee by name..."
@@ -212,52 +218,62 @@ export default function Employee() {
                 onChange={handleSearch}
                 allowClear
               />
+            </div>
           </div>
-        </div>
         </div>
         <div className="cardContainer">
-            {filteredEmployee.map((record) => (
-              <Card
-                key={record.id}
-                title={<p style={{marginLeft:'15px', fontSize:'23px', color:'white'}}>{record.fullName}</p>}
-                extra={userRoleP === "1" && renderCardActions(record)}
-              >
-                <div className={styles.bodyImg}>
-                  <img src={record.avatar} alt="" className={styles.imgEm} />
-                </div>
-                <p>
-                  <strong>Position:</strong> {record.position}
+          {filteredEmployee.map((record) => (
+            <Card
+              key={record.id}
+              title={
+                <p
+                  style={{
+                    marginLeft: "15px",
+                    fontSize: "23px",
+                    color: "white",
+                  }}
+                >
+                  {record.fullName}
                 </p>
-                <p>
-                  <strong>Email:</strong> {record.email}
-                </p>
-                <p>
-                  <strong>Identification ID:</strong> {record.identificationId}
-                </p>
-                <p>
-                  <strong>Birthday:</strong> {record.birthday}
-                </p>
-                <p>
-                  <strong>Address:</strong> {record.address}
-                </p>
-                <p>
-                  <strong>Gender:</strong> {gender(record.gender)}
-                </p>
-                <p>
-                  <strong>Base Salary:</strong>{" "}
-                  {Number(record.baseSalary).toLocaleString("vi-VN", {
-                    style: "currency",
-                    currency: "VND",
-                  })}
-                </p>
-              </Card>
-            ))}
-          </div>
+              }
+              extra={userRoleP === "1" && renderCardActions(record)}
+            >
+              <div className={styles.bodyImg}>
+                <img src={record.avatar} alt="" className={styles.imgEm} />
+              </div>
+              <p>
+                <strong>Position:</strong> {record.position}
+              </p>
+              <p>
+                <strong>Email:</strong> {record.email}
+              </p>
+              <p>
+                <strong>Identification ID:</strong> {record.identificationId}
+              </p>
+              <p>
+                <strong>Birthday:</strong> {record.birthday}
+              </p>
+              <p>
+                <strong>Address:</strong> {record.address}
+              </p>
+              <p>
+                <strong>Gender:</strong> {gender(record.gender)}
+              </p>
+              <p>
+                <strong>Base Salary:</strong>{" "}
+                {Number(record.baseSalary).toLocaleString("vi-VN", {
+                  style: "currency",
+                  currency: "VND",
+                })}
+              </p>
+            </Card>
+          ))}
+        </div>
       </div>
 
-      {Edit(modalEdit, setModalEdit, dataEm)}
-      {Delete(modalDelete, setModalDelete, dataEm)}
-      {Create(modalCreate, setModalCreate)}
+      {Edit(modalEdit, setModalEdit, dataEm, handelReset)}
+      {Delete(modalDelete, setModalDelete, dataEm, handelReset)}
+      {Create(modalCreate, setModalCreate, handelReset)}
       {Account(modalAccount, setModalAccount, dataEm)}
       {Salary(modalSalary, setModalSalary, dataEm)}
       {ModalWorkshedule(modalWorkshedule, setModalWorkshedule, dataEm)}

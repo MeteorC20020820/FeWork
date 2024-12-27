@@ -3,7 +3,7 @@ import styles from "./edit.module.css";
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 
-export default function Edit(open: boolean, setOpen: Function, dataDep: any) {
+export default function Edit(open: boolean, setOpen: Function, dataDep: any, handelReset:Function) {
   const token = localStorage?.getItem("authToken");
   console.log(token)
   const [name, setName] = useState<any>(dataDep?.name);
@@ -48,7 +48,8 @@ export default function Edit(open: boolean, setOpen: Function, dataDep: any) {
       );
 
       if (res.data.statusCode === 200) {
-        window.location.reload();
+        handelReset(),
+        setOpen(false)
       } else {
         setError("Failed to update department.");
       }

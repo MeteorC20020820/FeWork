@@ -6,34 +6,35 @@ interface DeleteProps {
   isOpen: boolean;
   onClose: () => void;
   asset: any;
+  onAssetCreated: () => void;
 }
 
 const Delete: React.FC<DeleteProps> = ({
   isOpen,
   onClose,
   asset,
+  onAssetCreated,
 }) => {
-    const token = localStorage.getItem("authToken");
-    const apiDeleteAsset = async()=>{
-        try{
-            const res = await axios.delete(
-              `http://localhost:7295/api/Asset/${asset?.id}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              }
-            );
-            if(res.status == 200){
-                alert('Delete assect success')
-                onClose(),
-                window.location.reload()
-            }
+  const token = localStorage.getItem("authToken");
+  const apiDeleteAsset = async () => {
+    try {
+      const res = await axios.delete(
+        `http://localhost:7295/api/Asset/${asset?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        catch(error){
-            console.log(error)
-        }
+      );
+      if (res.status == 200) {
+        alert("Delete assect success");
+        onClose(),
+        onAssetCreated()
+      }
+    } catch (error) {
+      console.log(error);
     }
+  };
   return (
     <Modal
       title="Delete Asset"

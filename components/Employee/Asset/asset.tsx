@@ -33,28 +33,28 @@ export default function Asset() {
   const [modelEdit, setModelEdit] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
-
+  const apiGetAsset = async () => {
+    try {
+      const res = await axios.get("http://localhost:7295/api/Asset", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setAssets(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    const apiGetAsset = async () => {
-      try{
-        const res = await axios.get("http://localhost:7295/api/Asset", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        setAssets(res.data.data);
-      }
-      catch(error){
-        console.log(error)
-      }
-    };
     apiGetAsset();
   }, [token]);
   const filteredAssets = assets.filter((asset) =>
     asset.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
+  const handleAssetCreated = () => {
+    apiGetAsset();
+  };
   return (
     <div className={styles.bodyAsset}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -104,11 +104,14 @@ export default function Asset() {
                     <div className={styles.hoverDetails}>
                       <p>
                         <strong>CreatedDate:</strong>{" "}
-                        {new Date(asset.createdDate).toLocaleDateString("vi-VN", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        })}
+                        {new Date(asset.createdDate).toLocaleDateString(
+                          "vi-VN",
+                          {
+                            day: "2-digit",
+                            month: "2-digit",
+                            year: "numeric",
+                          }
+                        )}
                       </p>
                       <p>
                         <strong>Description:</strong> {asset.description}
@@ -116,7 +119,7 @@ export default function Asset() {
                     </div>
                   </>
                 }
-            />
+              />
 
               <div className={styles.cardActions}>
                 <Dropdown
@@ -152,16 +155,24 @@ export default function Asset() {
           ))}
         </div>
       </div>
-      {<Create isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />}
+      {
+        <Create
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAssetCreated={handleAssetCreated}
+        />
+      }
       <Edit
         modelEdit={modelEdit}
         setModelEdit={() => setModelEdit(false)}
         dataAsset={asset}
+        onAssetCreated={handleAssetCreated}
       />
       <Delete
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         asset={asset}
+        onAssetCreated={handleAssetCreated}
       />
     </div>
   );

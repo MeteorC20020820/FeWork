@@ -4,7 +4,8 @@ import { Modal, Button } from "antd";
 export default function Delete(
   open: boolean,
   setOpen: Function,
-  dataDep: any
+  dataDep: any,
+  handelReset:Function
 ) {
     const token = localStorage?.getItem("authToken")
     const apiDeleteDepartment = async() =>{
@@ -18,9 +19,10 @@ export default function Delete(
               }
             );
             console.log(res.data);
-            if(res.data.statusCode == 200){
-                alert("Delete department success!")
-                window.location.reload()
+            if(res.data.statusCode === 200){
+              alert('ok')
+                handelReset()
+                setOpen(false)
             }
             console.log(res)
         }

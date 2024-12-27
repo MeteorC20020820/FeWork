@@ -2,13 +2,14 @@
 import axios from "axios";
 import styles from "./creat.module.css";
 import { useState } from "react";
-
+import { useRouter, usePathname } from "next/navigation";
 interface ModalAddAssetProps {
   isOpen: boolean;
   onClose: () => void;
+  onAssetCreated: () => void;
 }
 
-export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
+export default function Create({ isOpen, onClose,onAssetCreated }: ModalAddAssetProps) {
   const [formData, setFormData] = useState({
     name: "",
     quantiy: 0,
@@ -23,7 +24,13 @@ export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
     price: "",
     description: "",
   });
-
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+   const handleNavigation = (path: string) => {
+     setLoading(true); // Bật loading khi bắt đầu điều hướng
+     router.push(path);
+     setTimeout(() => setLoading(false), 1000); // Tắt loading sau khi điều hướng (hoặc xử lý tại sự kiện onRouteChangeComplete)
+   };
   const token = localStorage.getItem("authToken");
 
   const handleChange = (
@@ -82,7 +89,7 @@ export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
 
   const handleSubmit = async () => {
     if (!validateFormData()) {
-      return; // Stop execution if validation fails
+      return;
     }
 
     try {
@@ -96,8 +103,16 @@ export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
         }
       );
       if (res.status == 200) {
-        alert('Create asset success')
-        window.location.reload();
+        onAssetCreated();
+        alert("Create asset success");
+        setFormData({
+          name: "",
+          quantiy: 0,
+          imageUrl: "",
+          price: 0,
+          description: "",
+        });
+        onClose(); 
       }
     } catch (error) {
       console.log(error);
@@ -176,6 +191,20 @@ export default function Create({ isOpen, onClose }: ModalAddAssetProps) {
           <button onClick={onClose}>Cancel</button>
         </div>
       </div>
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loader}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

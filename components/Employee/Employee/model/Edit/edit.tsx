@@ -3,7 +3,7 @@ import styles from "./edit.module.css";
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 
-export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
+export default function Edit(open: boolean, setOpen: Function, dataEm: any, handelReset:Function) {
   const token = localStorage?.getItem("authToken");
   const [name, setName] = useState<string>(dataEm?.fullName || "");
   const [phone, setPhone] = useState<string>(dataEm?.phone || "");
@@ -121,7 +121,9 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
       );
 
       if (res.data.statusCode === 200) {
-        window.location.reload();
+        alert('Edit employee success!')
+        handelReset();
+        setOpen(false)
       } else {
         setError("Failed to update employee.");
       }

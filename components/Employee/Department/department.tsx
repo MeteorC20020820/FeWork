@@ -226,29 +226,32 @@ export default function Department() {
     });
   }, [nameDep, desDep]);
   const token = localStorage?.getItem("authToken");
- useEffect(() => {
-   const ApiGetDepartment = async () => {
-     try {
-       const res = await axios.get("http://localhost:7295/api/Department", {
-         headers: {
-           Authorization: `Bearer ${token}`,
-         },
-       });
-       if (Array.isArray(res.data.data)) {
-        const formattedData = res.data.data.map((item:any) => ({
+  const ApiGetDepartment = async () => {
+    try {
+      const res = await axios.get("http://localhost:7295/api/Department", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (Array.isArray(res.data.data)) {
+        const formattedData = res.data.data.map((item: any) => ({
           ...item,
-          createdAt: new Date(item.createdAt).toLocaleDateString("en-GB"), 
+          createdAt: new Date(item.createdAt).toLocaleDateString("en-GB"),
         }));
-         setDepartment(formattedData);
-       } else {
-         console.error("Expected array but received:", res.data.data);
-       }
-     } catch (error) {
-       console.log(error);
-     }
-   };
+        setDepartment(formattedData);
+      } else {
+        console.error("Expected array but received:", res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+ useEffect(() => {
    ApiGetDepartment();
  }, []);
+ const handelReset = () =>{
+  ApiGetDepartment()
+ }
  const data: DataType[] = department;
   const ApiPostDepartment = async () => {
     try {
@@ -262,7 +265,10 @@ export default function Department() {
       );
       console.log(res.data)
       if(res.data.statusCode == 201){
-        window.location.reload()
+        alert('ok')
+        handalButtonCreate();
+        handelReset()
+        
       }
     } catch (error) {
       console.log(error);
@@ -330,7 +336,7 @@ export default function Department() {
                   </div>
                   <button
                     className={styles.btnCreate}
-                    onClick={() => ApiPostDepartment()}
+                    onClick={() => {ApiPostDepartment();}}
                   >
                     Create
                   </button>
@@ -352,8 +358,8 @@ export default function Department() {
           />
         </div>
       </div>
-      {Delete(modalDelete, setModalDelete, dataDep)}
-      {Edit(modalEdit, setModalEdit, dataDep)}
+      {Delete(modalDelete, setModalDelete, dataDep, handelReset)}
+      {Edit(modalEdit, setModalEdit, dataDep, handelReset)}
       {ModalEmployee(modalEmployee, setModalEmployee, dataDep)}
     </div>
   );

@@ -3,7 +3,7 @@ import styles from "./create.module.css";
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 
-export default function Create(open: boolean, setOpen: Function) {
+export default function Create(open: boolean, setOpen: Function, handelReset:Function) {
   const token = localStorage?.getItem("authToken");
   const [name, setName] = useState<any>(null);
   const [phone, setPhone] = useState<any>(null);
@@ -103,7 +103,8 @@ export default function Create(open: boolean, setOpen: Function) {
       console.log(res);
       if (res.status === 200) {
         alert("Create employee success")
-        window.location.reload();
+        handelReset()
+        setOpen(false)
       } else {
         setError("Failed to update employee.");
       }

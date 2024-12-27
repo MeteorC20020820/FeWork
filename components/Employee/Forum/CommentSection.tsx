@@ -130,9 +130,9 @@ const CommentSection = ({
           onChange={(e) => setNewComment(e.target.value)}
           className={styles.commentInput}
         />
-        <div  onClick={handleAddComment} >
+        <button  onClick={handleAddComment} >
           <SendX color="#007bff" width="30px" height="30px"/>
-        </div>
+        </button>
       </div>
       {DeleteP(modalDelete, setModalDelete, "comment",handleDeleteComment,cmt)}
     </div>
