@@ -219,6 +219,9 @@ for (let i = 1; i <= daysInMonth; i++) {
   } else if (eventsForDay.some((event) => event.status === 0)) {
     status = "đang làm việc";
   }
+  else if(eventsForDay.some((event) => event.status === 2)){
+    status = "xin nghỉ"
+  }
 
   // Nếu không có sự kiện nào, gán status mặc định là "unknown"
   if (eventsForDay.length === 0) {
@@ -483,6 +486,8 @@ useEffect(() => {
                           ? "Đang làm việc"
                           : dayObj.status === "hoàn thành"
                           ? "Hoàn thành"
+                          : dayObj.status === "xin nghỉ"
+                          ? "Xin Nghỉ"
                           : "Không có sự kiện"}
                       </div>
                     </div>

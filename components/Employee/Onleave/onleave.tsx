@@ -39,6 +39,7 @@ export default function Onleave() {
       }
     } 
     catch(error){
+      alert("Note: You need to request leave at least 3 days in advance from the date of submission, and leave requests cannot be made for Saturday and Sunday.")
       console.log(error)
     }  
   };
