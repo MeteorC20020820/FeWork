@@ -3,6 +3,7 @@ import axios from "axios";
 import styles from "./creat.module.css";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Success from "@/components/Employee/Alert/Success/success";
 interface ModalAddAssetProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,6 +26,7 @@ export default function Create({ isOpen, onClose,onAssetCreated }: ModalAddAsset
     description: "",
   });
   const router = useRouter();
+  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
    const handleNavigation = (path: string) => {
      setLoading(true); // Bật loading khi bắt đầu điều hướng
@@ -104,7 +106,7 @@ export default function Create({ isOpen, onClose,onAssetCreated }: ModalAddAsset
       );
       if (res.status == 200) {
         onAssetCreated();
-        alert("Create asset success");
+       
         setFormData({
           name: "",
           quantiy: 0,
@@ -112,11 +114,11 @@ export default function Create({ isOpen, onClose,onAssetCreated }: ModalAddAsset
           price: 0,
           description: "",
         });
+        setSuccess(true); 
         onClose(); 
       }
     } catch (error) {
       console.log(error);
-      alert("Create Error");
     }
   };
 
@@ -204,6 +206,9 @@ export default function Create({ isOpen, onClose,onAssetCreated }: ModalAddAsset
             <div></div>
           </div>
         </div>
+      )}
+      {success && (
+        <Success success={success} setSuccess={() => setSuccess(false)} message="Create asset successfully" />
       )}
     </div>
   );

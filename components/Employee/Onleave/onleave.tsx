@@ -35,7 +35,7 @@ export default function Onleave() {
       );
       if(res.status == 200){
         alert("Create successfully")
-        window.location.reload()
+        reset()
       }
     } 
     catch(error){
@@ -126,25 +126,27 @@ export default function Onleave() {
         return "Không xác định";
     }
   };
-
-  useEffect(()=>{
-    const apiGetLeave = async()=>{
-      try{
-        const res = await axios.get(
-          "http://localhost:7295/api/LeaveReq/GetRequestByEmployee",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log(res)
-        setLeaveRequests(res.data.data)
-      }
-      catch(error){
-        console.log(error)
-      }
+  const apiGetLeave = async()=>{
+    try{
+      const res = await axios.get(
+        "http://localhost:7295/api/LeaveReq/GetRequestByEmployee",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(res)
+      setLeaveRequests(res.data.data)
     }
+    catch(error){
+      console.log(error)
+    }
+  }
+  const reset =()=>{
+    apiGetLeave()
+  }
+  useEffect(()=>{
     apiGetLeave()
   },[token])
   const changeDate = (text:any) =>{

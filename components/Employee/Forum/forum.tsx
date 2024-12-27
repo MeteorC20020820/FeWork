@@ -40,23 +40,25 @@ export default function Forum() {
     };
     getApiAcc();
   }, [user, token]);
-
+  const ApiGetPost = async () => {  
+    try {
+      const res = await axios.get("http://localhost:7295/api/Post", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setPosts(res.data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   // Fetch all posts
   useEffect(() => {
-    const ApiGetPost = async () => {  
-      try {
-        const res = await axios.get("http://localhost:7295/api/Post", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setPosts(res.data.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
     ApiGetPost();
   }, [token]);
+  const resetPost= () =>{
+    ApiGetPost();
+  }
   useEffect(() => {
     const handleFile = async () => {
       if (!image) return; // Nếu không có file, không thực hiện gì
@@ -108,7 +110,7 @@ export default function Forum() {
 
       if (res.status === 200) {
         setPosts([...posts, res.data.data]);
-        window.location.reload()
+        resetPost()
       }
     } catch (error) {
       console.error(error);

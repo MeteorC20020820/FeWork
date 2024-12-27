@@ -24,42 +24,39 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     employeeId: dataEm?.id || "",
     roleId: 3,
   });
-  console.log(ai)
+  console.log(dataEm)
   // Update employeeId when dataEm changes
   useEffect(() => {
     if (dataEm?.id) {
       setNewAccount((prev) => ({ ...prev, employeeId: dataEm.id }));
     }
   }, [dataEm]);
-  const ApiGetAccount = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:7295/api/Account/GetAccountByEmployeeId/${dataEm?.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (res.data.statusCode === 200) {
-        setAccUser(res.data.data);
-      } else {
-        setAccUser(null);
-      }
-    } catch (error) {
-      console.error("Error fetching account data:", error);
-      setAccUser(null);
-    }
-  };
+  
   // Fetch existing account
   useEffect(() => {
-    if (dataEm?.id) {
-      ApiGetAccount();
-    }
-  }, []);
-  const resetAcc = () =>{
-     ApiGetAccount();
-  }
+    const ApiGetAccount = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:7295/api/Account/GetAccountByEmployeeId/${dataEm?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (res.data.statusCode === 200) {
+          setAccUser(res.data.data);
+        } else {
+          setAccUser(null);
+        }
+      } catch (error) {
+        console.error("Error fetching account data:", error);
+        setAccUser(null);
+      }
+    };
+    ApiGetAccount()
+  }, [dataEm]);
+
   // API to upload image and return its URL
   const apiChangeImage = async (file: File | null): Promise<string | null> => {
     if (!file) return null;
@@ -141,7 +138,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
         );
         if (res.status === 200) {
           alert("Account created successfully!");
-          resetAcc()
+          
           setIsCreateModalOpen(false);
           setNewAccount({
             email: "",
@@ -180,6 +177,18 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     const formData = new FormData();
     formData.append("file", imgFaceChange);
     formData.append("face_id", accUser?.face_id);
+    const fd = new FormData();
+    fd.append("file", imgFaceChange)
+    const resimg = await axios.post(
+      "http://localhost:7295/api/FileUpload/upload",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Đảm bảo định dạng đúng
+        },
+      }
+    );
     try{
       const res = await axios.put(`${ai}update`,formData)
       console.log(res.data.data.face_id);
@@ -188,6 +197,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           `http://localhost:7295/api/Account/UpdateFaceId?accountId=${accUser?.id}`,
           {
             face_id: res.data.data.face_id,
+            faceUrl: resimg.data.url
           },
           {
             headers: {

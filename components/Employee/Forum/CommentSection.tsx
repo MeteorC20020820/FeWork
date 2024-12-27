@@ -19,25 +19,25 @@ const CommentSection = ({
   const [cmt, setCmt] = useState(false)
   const [modalDelete, setModalDelete] = useState<any>(null)
   const token = localStorage.getItem("authToken");
-  console.log(role)
+  const fetchComments = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:7295/api/Comment/Post/${postId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setComments(res.data.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
+    }
+  };
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const res = await axios.get(
-          `http://localhost:7295/api/Comment/Post/${postId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        setComments(res.data.data);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
-      }
-    };
-
     fetchComments();
   }, [postId, token]);
-
+  const resetCmt = () =>{
+    fetchComments()
+  }
   const handleAddComment = async () => {
     if (newComment.trim() === "") return;
 
@@ -54,7 +54,7 @@ const CommentSection = ({
       );
 
       if (res.status === 200) {
-        window.location.reload();
+        resetCmt()
       }
       setComments((prevComments) => [...prevComments, res.data]);
       setNewComment("");

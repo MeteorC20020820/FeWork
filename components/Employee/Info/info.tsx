@@ -5,7 +5,7 @@ import { use, useEffect, useState } from "react";
 import axios from "axios";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import App from "./table/table";
-import { url } from "inspector";
+import Success from "../Alert/Success/success";
 export default function Info() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>({});
@@ -13,6 +13,7 @@ export default function Info() {
   const [dep, setDep] = useState<any>(null);
   const [isChangePassword, setIsChangePassword] = useState(false);
   const token = localStorage.getItem("authToken")
+  const [success, setSuccess] = useState(false)
   const [passwords, setPasswords] = useState({
     oldPassword: "",
     newPassword: "",
@@ -24,45 +25,47 @@ export default function Info() {
     confirmPassword: false,
   });
   console.log(user)
-  useEffect(() => {
-    const ApiGetDep = async () => {
-      try {
+  const ApiGetDep = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:7295/api/Department/${user.departmentId}`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (res.status === 200) {
+        setDep(res.data.data.name);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const ApiGetAcc = async() =>{
+    try{
         const res = await axios.get(
-          `http://localhost:7295/api/Department/${user.departmentId}`,{
+          `http://localhost:7295/api/Account/GetAccountByEmployeeId/${user.id}`,
+          {
             headers: {
               Authorization: `Bearer ${token}`,
             },
           }
         );
-        if (res.status === 200) {
-          setDep(res.data.data.name);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    ApiGetDep();
-  }, [user]);
-  useEffect(() =>{
-    const ApiGetAcc = async() =>{
-      try{
-          const res = await axios.get(
-            `http://localhost:7295/api/Account/GetAccountByEmployeeId/${user.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-          setAcc(res.data.data)
-          
-      }
-            catch(error){
-        console.log(error)
-      }
+        setAcc(res.data.data)
+        
     }
-    ApiGetAcc()
+          catch(error){
+      console.log(error)
+    }
+  }
+  useEffect(() =>{
+    ApiGetAcc();
+    ApiGetDep();
   },[user])
+  const reset = () =>{
+    ApiGetAcc();
+    ApiGetDep();
+  }
   // Xử lý thay đổi mật khẩu
   const handleChangePassword = async () => {
     if (passwords.newPassword !== passwords.confirmPassword) {
@@ -142,7 +145,8 @@ export default function Info() {
         }
       );
       if(res.status == 200){
-        window.location.reload()
+        reset()
+        setSuccess(true)
       }
     }
     catch(error){
@@ -445,6 +449,7 @@ export default function Info() {
           </div>
         </div>
       </div>
+      <Success success={success} setSuccess={setSuccess} message="ok" />
     </div>
   );
 }
