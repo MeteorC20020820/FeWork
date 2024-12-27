@@ -301,3 +301,116 @@
 .checkOutButton:hover {
   background-color: #0056b3;
 }
+.videoPreview {
+  width: 300px;
+  height: 300px;
+  border-radius: 10px;
+  border: 2px solid #007bff;
+  object-fit: cover;
+}
+
+.captureButton {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.captureButton:hover {
+  background-color: #0056b3;
+}
+
+.okButton {
+  margin-top: 10px;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.okButton:hover {
+  background-color: #218838;
+}
+
+.uploadContainer {
+  margin-top: 20px;
+}
+
+.uploadButton {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.uploadButton:hover {
+  background-color: #0056b3;
+}
+
+.hiddenCanvas {
+  display: none;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  position: relative;
+}
+
+.videoPreview {
+  width: 700px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+.captureButton,
+.closeButton {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+.closeButton {
+  background-color: red;
+  color: white;
+}
+
+.captureButton {
+  background-color: green;
+  color: white;
+}
+
+

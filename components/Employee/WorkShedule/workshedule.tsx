@@ -44,8 +44,9 @@ export default function Workshedule(){
 const [user, setUser] = useState<any>({});
 const token = localStorage?.getItem("authToken");
 const [idAcc, setIDAcc] = useState<any>(null)
+const [acc, setAcc] = useState<any>(null)
 const [data, setData] = useState<any>({})
-
+const [idCheckIn, setIdCheckIn] = useState<any>(null)
 useEffect(() =>{
   const ApiGetAccID = async() =>{
     try {
@@ -58,6 +59,7 @@ useEffect(() =>{
         }
       );
       setIDAcc(res?.data?.data?.id)
+      setAcc(res?.data?.data)
     } catch (error) {
       console.log(error)
     }
@@ -118,9 +120,6 @@ useEffect(() => {
     ApiGetAttendance();
   }
 }, [idAcc]);
-
-
-console.log(data)
 const [userRoleP, setUserRoleP] = useState<any>(null);
 const [currentDate, setCurrentDate] = useState(new Date());
 const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -305,25 +304,37 @@ useEffect(() => {
     }
     setStream(null);
   };
-const apiUrlImage = async () => {
+const apiUrlImage = async() => {
   if (!imageFile) return;
   const formData = new FormData();
   formData.append("file", imageFile);
   try {
     const res = await axios.post(`${apiAi}check-in`, formData);
-    console.log(res);
-    if (res.data.statusCode == 200) {
-      const checkIn = await axios.post(
-        `http://localhost:7295/api/Attendance/check-in/${idAcc}`
-      );
-      if (checkIn.data.statusCode == 200) {
-        alert("ok");
+    if(res.data.statusCode == 200){
+      if(res.data.data.face_id === acc.face_id){
+        const checkIn = await axios.post(
+          `http://localhost:7295/api/Attendance/check-out/${idCheckIn}`,{},{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (checkIn.data.statusCode == 200) {
+          window.location.reload()
+          alert("Check out success");
+        }
       }
     }
+    else if(res.data.statusCode == 400){
+      alert(res.data.message)
+    }
+    console.log(res)
   } catch (error) {
     console.log(error);
   }
 };
+console.log(idCheckIn)
+console.log(imageFile)
 useEffect(() => {
     if (isCameraActive && videoRef.current && stream) {
       videoRef.current.srcObject = stream;
@@ -332,39 +343,42 @@ useEffect(() => {
       });
     }
   }, [isCameraActive, stream]);
-const handleCapture = () => {
-  if (videoRef.current && canvasRef.current) {
-    const context = canvasRef.current.getContext("2d");
-    if (context) {
-      canvasRef.current.width = videoRef.current.videoWidth;
-      canvasRef.current.height = videoRef.current.videoHeight;
-      context.drawImage(
-        videoRef.current,
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
-      const imageData = canvasRef.current.toDataURL("image/png");
-      // Convert base64 to Blob
-      const byteString = atob(imageData.split(",")[1]); // Decode base64
-      const mimeString = imageData.split(",")[0].split(":")[1].split(";")[0]; // Get MIME type
-      const ab = new ArrayBuffer(byteString.length);
-      const ia = new Uint8Array(ab);
-      for (let i = 0; i < byteString.length; i++) {
-        ia[i] = byteString.charCodeAt(i);
-      }
-      const blob = new Blob([ab], { type: mimeString });
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const handleCapture = () => {
+    if (videoRef.current && canvasRef.current) {
+      const context = canvasRef.current.getContext("2d");
+      if (context) {
+        canvasRef.current.width = videoRef.current.videoWidth;
+        canvasRef.current.height = videoRef.current.videoHeight;
+        context.drawImage(
+          videoRef.current,
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
+        const imageData = canvasRef.current.toDataURL("image/png");
+        setPreviewImage(imageData);
 
-      // Convert Blob to File
-      const file = new File([blob], "captured_image.png", {
-        type: mimeString,
-      });
-      setImageFile(file);
+        // Convert base64 to Blob
+        const byteString = atob(imageData.split(",")[1]); // Decode base64
+        const mimeString = imageData.split(",")[0].split(":")[1].split(";")[0]; // Get MIME type
+        const ab = new ArrayBuffer(byteString.length);
+        const ia = new Uint8Array(ab);
+        for (let i = 0; i < byteString.length; i++) {
+          ia[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([ab], { type: mimeString });
+
+        // Convert Blob to File
+        const file = new File([blob], "captured_image.png", {
+          type: mimeString,
+        });
+        setImageFile(file);
+      }
     }
-  }
-  apiUrlImage();
-};
+    apiUrlImage();
+  };
     return (
       <div className={styles.bodyWorkshedule}>
         <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -506,7 +520,7 @@ const handleCapture = () => {
                         !checkedOutEvents.includes(event.id) ? (
                           <button
                             className={styles.checkOutButton}
-                            onClick={() => handleCheckOut(event.id)}
+                            onClick={() => {handleCheckOut(event.id), setIdCheckIn(event.id)}}
                           >
                             Check Out
                           </button>
@@ -538,6 +552,7 @@ const handleCapture = () => {
                             </div>
                           </div>
                         )}
+                         <canvas ref={canvasRef} className={styles.hiddenCanvas}></canvas>
                       </div>
                     </div>
                   ))}

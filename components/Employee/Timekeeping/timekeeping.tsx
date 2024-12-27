@@ -90,9 +90,16 @@ export default function TimeKeeping() {
       const res = await axios.post(`${apiAi}check-in`,formData);
       console.log(res)
       if(res.data.statusCode == 200){
-        const checkIn = await axios.post(`http://localhost:7295/api/Attendance/check-in/${acc?.id}`)
-        if(checkIn.data.statusCode == 200){
-          alert('ok')
+        if(res.data.data.face_id === acc.face_id){
+          const checkIn = await axios.post(`http://localhost:7295/api/Attendance/check-in`,{},{
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          if(checkIn.status == 200){
+            alert("Check in success")
+            window.location.reload()
+          }
         }
       }
     } catch (error) {

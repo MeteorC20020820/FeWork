@@ -47,7 +47,11 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any) {
   useEffect(() => {
     const apiGetDep = async () => {
       try {
-        const res = await axios.get(`http://localhost:7295/api/Department`);
+        const res = await axios.get(`http://localhost:7295/api/Department`,{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setDep(res.data.data || []);
       } catch (error) {
         console.log(error);
