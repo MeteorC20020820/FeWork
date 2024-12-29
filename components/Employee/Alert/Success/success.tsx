@@ -4,23 +4,24 @@ import styles from "./success.module.css";
 import { SuccessA } from "@/components/icon/icon";
 
 interface SuccessProps {
-  isOpen: boolean;
-  onClose: (value: boolean) => void;
+  success: boolean;
+  setSuccess: Function,
   message: string;
 }
 
-export default function Success(isOpen:boolean, onClose:Function, message:string) {
+export default function Success ({ success, setSuccess, message}:SuccessProps) {
+  console.log(success)
   useEffect(() => {
-    if (isOpen) {
+    if (success) {
       const timer = setTimeout(() => {
-        onClose(false); // Đóng modal sau 3 giây
+        setSuccess(false); // Đóng modal sau 3 giây
       }, 3000);
 
       return () => clearTimeout(timer); // Xóa timer khi component bị unmount
     }
-  }, [isOpen, onClose]);
+  }, [success, setSuccess]);
 
-  if (!isOpen) return null;
+  if (!success) return null;
 
   return (
     <div className={styles.modaloverlay}>
@@ -40,3 +41,4 @@ export default function Success(isOpen:boolean, onClose:Function, message:string
     </div>
   );
 };
+

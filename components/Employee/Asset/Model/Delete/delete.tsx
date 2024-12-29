@@ -7,6 +7,8 @@ interface DeleteProps {
   onClose: () => void;
   asset: any;
   onAssetCreated: () => void;
+  modalCheck:Function
+  setMessage:Function
 }
 
 const Delete: React.FC<DeleteProps> = ({
@@ -14,6 +16,7 @@ const Delete: React.FC<DeleteProps> = ({
   onClose,
   asset,
   onAssetCreated,
+  modalCheck, setMessage
 }) => {
   const token = localStorage.getItem("authToken");
   const apiDeleteAsset = async () => {
@@ -27,7 +30,8 @@ const Delete: React.FC<DeleteProps> = ({
         }
       );
       if (res.status == 200) {
-        alert("Delete assect success");
+        modalCheck(true)
+        setMessage('Delete asset successfully!')
         onClose(),
         onAssetCreated()
       }

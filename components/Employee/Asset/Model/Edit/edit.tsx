@@ -16,6 +16,8 @@ interface EditModalProps {
     description: string;
   };
   onAssetCreated: () => void;
+  modalCheck:Function
+  setMessage:Function
 }
 
 export default function EditModal({
@@ -23,6 +25,7 @@ export default function EditModal({
   setModelEdit,
   dataAsset,
   onAssetCreated,
+  modalCheck, setMessage
 }: EditModalProps) {
   const [formData, setFormData] = useState({
     id: "",
@@ -121,7 +124,8 @@ export default function EditModal({
       );
       if (res.status === 200) {
         onAssetCreated();
-        alert("Create asset success");
+        modalCheck(true)
+        setMessage('Edit asset successfully!')
         setModelEdit(false);
       }
     } catch (error) {

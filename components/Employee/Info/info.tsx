@@ -145,6 +145,7 @@ export default function Info() {
         }
       );
       if(res.status == 200){
+        window.location.reload()
         reset()
         setSuccess(true)
       }

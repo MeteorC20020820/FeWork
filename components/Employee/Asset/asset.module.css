@@ -75,7 +75,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
   transition: all 0.3s ease;
   display: flex;
-  height: 46vh;
+  height: 50vh;
   flex-direction: column;
   justify-content: space-between;
   background-color: rgb(222, 239, 255);

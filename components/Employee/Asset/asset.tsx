@@ -11,7 +11,7 @@ import { MoreOutlined } from "@ant-design/icons";
 import Edit from './Model/Edit/edit'
 import Delete from './Model/Delete/delete'
 import {FilterDropdownProps } from "antd/es/table/interface";
-
+import Success from '../Alert/Success/success'
 interface DataType {
   key: number;
   id: number;
@@ -33,6 +33,8 @@ export default function Asset() {
   const [modelEdit, setModelEdit] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const token = localStorage.getItem("authToken");
+  const [check, setCheck] = useState(false)
+  const [message, setMessage] = useState<any>('')
   const apiGetAsset = async () => {
     try {
       const res = await axios.get("http://localhost:7295/api/Asset", {
@@ -160,6 +162,8 @@ export default function Asset() {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           onAssetCreated={handleAssetCreated}
+          modalCheck={setCheck}
+          setMessage={setMessage}
         />
       }
       <Edit
@@ -167,13 +171,18 @@ export default function Asset() {
         setModelEdit={() => setModelEdit(false)}
         dataAsset={asset}
         onAssetCreated={handleAssetCreated}
+        modalCheck={setCheck}
+        setMessage={setMessage}
       />
       <Delete
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}
         asset={asset}
         onAssetCreated={handleAssetCreated}
+        modalCheck={setCheck}
+        setMessage={setMessage}
       />
+      <Success success={check} setSuccess={setCheck} message={message}/>
     </div>
   );
 }
