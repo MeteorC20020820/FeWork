@@ -3,7 +3,7 @@ import styles from "./edit.module.css";
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 
-export default function Edit(open: boolean, setOpen: Function, dataDep: any, handelReset:Function) {
+export default function Edit(open: boolean, setOpen: Function, dataDep: any, handelReset:Function,setCheck:Function, setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   console.log(token)
   const [name, setName] = useState<any>(dataDep?.name);
@@ -48,6 +48,8 @@ export default function Edit(open: boolean, setOpen: Function, dataDep: any, han
       );
 
       if (res.data.statusCode === 200) {
+        setCheck(true)
+        setMessage('Edit department successfully!')
         handelReset(),
         setOpen(false)
       } else {

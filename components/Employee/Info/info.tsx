@@ -6,6 +6,7 @@ import axios from "axios";
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 import App from "./table/table";
 import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
 export default function Info() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>({});
@@ -14,6 +15,7 @@ export default function Info() {
   const [isChangePassword, setIsChangePassword] = useState(false);
   const token = localStorage.getItem("authToken")
   const [success, setSuccess] = useState(false)
+
   const [passwords, setPasswords] = useState({
     oldPassword: "",
     newPassword: "",
@@ -24,7 +26,8 @@ export default function Info() {
     newPassword: false,
     confirmPassword: false,
   });
-  console.log(user)
+  const [failed, setFailed] = useState(false)
+  const [message, setMessage] = useState<any>('')
   const ApiGetDep = async () => {
     try {
       const res = await axios.get(
@@ -69,7 +72,8 @@ export default function Info() {
   // Xử lý thay đổi mật khẩu
   const handleChangePassword = async () => {
     if (passwords.newPassword !== passwords.confirmPassword) {
-      alert("New password and confirm password do not match!");
+      setFailed(true)
+      setMessage("New password and confirm password do not match!");
       return;
     }
 
@@ -89,12 +93,19 @@ export default function Info() {
       );
 
       if (res.status === 200) {
-        alert("Password changed successfully!");
+        setSuccess(true)
+        setMessage('Change password successfully!')
+        setPasswords({
+          oldPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
         setIsChangePassword(false); // Quay lại giao diện Profile
       }
     } catch (error) {
       console.error(error);
-      alert("Failed to change password. Please try again.");
+      setFailed(true)
+      setMessage("Change password failed! Please try again.");
     }
   };
   const [image, setImage] = useState<File | null>(null);
@@ -450,7 +461,8 @@ export default function Info() {
           </div>
         </div>
       </div>
-      <Success success={success} setSuccess={setSuccess} message="ok" />
+      <Success success={success} setSuccess={setSuccess} message={message} />
+      <Failed failed={failed} setFailed={setFailed} message={message}/>
     </div>
   );
 }

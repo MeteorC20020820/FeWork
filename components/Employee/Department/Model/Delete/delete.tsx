@@ -5,7 +5,9 @@ export default function Delete(
   open: boolean,
   setOpen: Function,
   dataDep: any,
-  handelReset:Function
+  handelReset:Function,
+  setCheck:Function,
+  setMessage:Function
 ) {
     const token = localStorage?.getItem("authToken")
     const apiDeleteDepartment = async() =>{
@@ -20,7 +22,8 @@ export default function Delete(
             );
             console.log(res.data);
             if(res.data.statusCode === 200){
-              alert('ok')
+                setCheck(true)
+                setMessage('Delete department successfully!')
                 handelReset()
                 setOpen(false)
             }

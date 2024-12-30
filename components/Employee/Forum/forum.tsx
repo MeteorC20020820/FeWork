@@ -6,6 +6,7 @@ import axios from "axios";
 import CommentSection from "./CommentSection";
 import { SendX, Delete, Edit } from "@/components/icon/icon";
 import DeleteP from "./Delete/delete";
+import Success from "../Alert/Success/success";
 export default function Forum() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
@@ -21,6 +22,8 @@ export default function Forum() {
   const [post, setPost] = useState<any>(null)
   console.log(editPost)
   const [imageLink, setImageLink] = useState<any>(null)
+  const [check, setCheck] = useState(false)
+  const [message, setMessage] = useState<any>('')
   // Fetch user account
   useEffect(() => {
     const getApiAcc = async () => {
@@ -109,6 +112,8 @@ export default function Forum() {
       );
 
       if (res.status === 200) {
+        setCheck(true)
+        setMessage('Create post successfully!')
         setPosts([...posts, res.data.data]);
         resetPost()
       }
@@ -143,12 +148,13 @@ export default function Forum() {
       );
 
       if (res.status === 200) {
+        setCheck(true)
+        setMessage('Update post successfully!')
         setPosts(
           posts.map((post) =>
             post.id === editPost.id ? { ...post, ...updatedData } : post
           )
         );
-        alert("Post updated successfully!");
       }
     } catch (error) {
       console.error("Error updating post:", error);
@@ -171,8 +177,9 @@ export default function Forum() {
       );
 
       if (res.status === 200) {
+        setCheck(true)
+        setMessage('Delete post successfully!')
         setPosts(posts.filter((post) => post.id !== postId));
-        alert("Post deleted successfully!");
       }
     } catch (error) {
       console.error("Error deleting post:", error);
@@ -356,6 +363,7 @@ export default function Forum() {
         </div>
       )}
       {DeleteP(modalDelete, setModalDelete,"Post",handleDelete,post)}
+      <Success success ={check} setSuccess={setCheck} message={message}/>
     </div>
   );
 }

@@ -1,26 +1,30 @@
 // components/AlertModal.js
 import React, { useEffect } from "react";
-import styles from "./success.module.css";
+import styles from "./failed.module.css";
 import { SuccessA } from "@/components/icon/icon";
 
 interface SuccessProps {
-  success: boolean;
-  setSuccess: Function,
+  failed: boolean;
+  setFailed: Function;
   message: string;
 }
 
-export default function Success ({ success, setSuccess, message}:SuccessProps) {
+export default function Failed({
+  failed,
+  setFailed,
+  message,
+}: SuccessProps) {
   useEffect(() => {
-    if (success) {
+    if (failed) {
       const timer = setTimeout(() => {
-        setSuccess(false); // Đóng modal sau 3 giây
+        setFailed(false); // Đóng modal sau 3 giây
       }, 4000);
 
       return () => clearTimeout(timer); // Xóa timer khi component bị unmount
     }
-  }, [success, setSuccess]);
+  }, [failed, setFailed]);
 
-  if (!success) return null;
+  if (!failed) return null;
 
   return (
     <div className={styles.modaloverlay}>
@@ -39,5 +43,4 @@ export default function Success ({ success, setSuccess, message}:SuccessProps) {
       </div>
     </div>
   );
-};
-
+}

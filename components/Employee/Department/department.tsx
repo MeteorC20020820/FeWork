@@ -15,6 +15,7 @@ import ModalEmployee from "./Model/Employee/employee";
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu } from "antd";
 import './department.css'
+import Success from "../Alert/Success/success";
 interface DataType {
   key: number;
   name: string;
@@ -37,7 +38,8 @@ export default function Department() {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
-
+  const [check, setCheck] = useState(false);
+  const [message, setMessage] = useState<any>("");
   const handleSearch = (
     selectedKeys: string[],
     confirm: FilterDropdownProps["confirm"],
@@ -265,10 +267,12 @@ export default function Department() {
       );
       console.log(res.data)
       if(res.data.statusCode == 201){
-        alert('ok')
+        setCheck(true)
+        setMessage('Create department successfully!')
         handalButtonCreate();
         handelReset()
-        
+        setNameDep('')
+        setDesDep('')
       }
     } catch (error) {
       console.log(error);
@@ -358,9 +362,10 @@ export default function Department() {
           />
         </div>
       </div>
-      {Delete(modalDelete, setModalDelete, dataDep, handelReset)}
-      {Edit(modalEdit, setModalEdit, dataDep, handelReset)}
+      {Delete(modalDelete, setModalDelete, dataDep, handelReset,setCheck,setMessage)}
+      {Edit(modalEdit, setModalEdit, dataDep, handelReset, setCheck, setMessage)}
       {ModalEmployee(modalEmployee, setModalEmployee, dataDep)}
+      <Success success={check} setSuccess={setCheck} message={message}/>
     </div>
   );
 }
