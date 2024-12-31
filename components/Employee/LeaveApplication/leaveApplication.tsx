@@ -4,7 +4,8 @@ import SideBar from "../SideBar/sideBar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Delete from "./Delete/delete";
-
+import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
 export default function LeaveApplication() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>({});
@@ -13,7 +14,9 @@ export default function LeaveApplication() {
   const [modalDelete, setModalDelete] = useState(false);
   const [idLeave, setIdLeave] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"pending" | "processed">("pending");
-
+  const [success, setSuccess] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const [message, setMessage] = useState<any>(null)
   useEffect(() => {
     const apiGetLeave = async () => {
       try {
@@ -35,39 +38,52 @@ export default function LeaveApplication() {
 
   const handleApprove = async (id: number) => {
     try {
-      await axios.put(
+      const res = await axios.put(
         `http://localhost:7295/api/LeaveReq/approve/${id}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setLeaves((prevLeaves) =>
-        prevLeaves.map((leave) =>
-          leave.id === id ? { ...leave, status: 1 } : leave
-        )
-      );
+      if(res.status == 200){
+        setSuccess(true)
+        setMessage('Leave application approved successfully!')
+        setLeaves((prevLeaves) =>
+          prevLeaves.map((leave) =>
+            leave.id === id ? { ...leave, status: 1 } : leave
+          )
+        );
+      }
     } catch (error) {
       console.error(error);
+      setFailed(true)
+        setMessage('Resignation application failed!')
     }
   };
 
   const handleReject = async (id: number) => {
     try {
-      await axios.put(
+      const res = await axios.put(
         `http://localhost:7295/api/LeaveReq/reject/${id}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      setLeaves((prevLeaves) =>
-        prevLeaves.map((leave) =>
-          leave.id === id ? { ...leave, status: -1 } : leave
-        )
-      );
+      console.log(res)
+      if(res.status == 200){
+        setSuccess(true)
+        setMessage('Rejected leave application successfully')
+        setLeaves((prevLeaves) =>
+          prevLeaves.map((leave) =>
+            leave.id === id ? { ...leave, status: -1 } : leave
+          )
+        );
+      }
     } catch (error) {
       console.error(error);
+      setFailed(true)
+      setMessage('Rejection of leave application failed!')
     }
   };
 
@@ -166,6 +182,8 @@ export default function LeaveApplication() {
         </div>
       </div>
       {Delete(modalDelete, setModalDelete, idLeave)}
+      <Success success ={success} setSuccess={setSuccess} message={message}/>
+      <Failed failed ={failed} setFailed={setFailed} message={message}/>
     </div>
   );
 }

@@ -13,6 +13,8 @@ import Salary from "./model/Salary/salary";
 import ModalWorkshedule from "./model/Workshedule/workshedule";
 import "./employee.css";
 import { SearchOutlined } from "@ant-design/icons";
+import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
 interface DataType {
   id: number;
   fullName: string;
@@ -42,7 +44,9 @@ export default function Employee() {
   const [modalSalary, setModalSalary] = useState(false);
   const [modalWorkshedule, setModalWorkshedule] = useState(false);
   const [dataEm, setDataEm] = useState<DataType | null>(null);
-
+  const [success,setSuccess] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const [message, setMessage] = useState<any>(null)
   const token =
     typeof window !== "undefined" ? localStorage.getItem("authToken") : null;
 
@@ -194,7 +198,6 @@ export default function Employee() {
     if(gender == 0) return "Female"
     return "Male"
   }
-  console.log(filteredEmployee)
   return (
     <div className={styles.bodyEmployee}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -271,12 +274,13 @@ export default function Employee() {
         </div>
       </div>
 
-      {Edit(modalEdit, setModalEdit, dataEm, handelReset)}
-      {Delete(modalDelete, setModalDelete, dataEm, handelReset)}
-      {Create(modalCreate, setModalCreate, handelReset)}
+      {Edit(modalEdit, setModalEdit, dataEm, handelReset, setSuccess, setMessage)}
+      {Delete(modalDelete, setModalDelete, dataEm, handelReset,setSuccess, setMessage)}
+      {Create(modalCreate, setModalCreate, handelReset,setSuccess, setMessage)}
       {Account(modalAccount, setModalAccount, dataEm)}
       {Salary(modalSalary, setModalSalary, dataEm)}
       {ModalWorkshedule(modalWorkshedule, setModalWorkshedule, dataEm)}
+      <Success success ={success} setSuccess={setSuccess} message={message}/>
     </div>
   );
 }

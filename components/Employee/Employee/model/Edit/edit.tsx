@@ -3,7 +3,7 @@ import styles from "./edit.module.css";
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 
-export default function Edit(open: boolean, setOpen: Function, dataEm: any, handelReset:Function) {
+export default function Edit(open: boolean, setOpen: Function, dataEm: any, handelReset:Function, setSuccess:Function, setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   const [name, setName] = useState<string>(dataEm?.fullName || "");
   const [phone, setPhone] = useState<string>(dataEm?.phone || "");
@@ -103,7 +103,14 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any, hand
       setError("Please fill in all fields!");
       return;
     }
-
+    if(phone.length !== 10){
+      setError("Phone number must be 10 digits long!");
+      return;
+    }
+    if(identificationId.length !== 12){
+      setError("identificationId must be  12 digits long!");
+      return;
+    }
     if (!token) {
       setError("Unauthorized! Please log in again.");
       return;
@@ -121,7 +128,8 @@ export default function Edit(open: boolean, setOpen: Function, dataEm: any, hand
       );
 
       if (res.data.statusCode === 200) {
-        alert('Edit employee success!')
+        setSuccess(true)
+        setMessage('Update employee successfully!')
         handelReset();
         setOpen(false)
       } else {

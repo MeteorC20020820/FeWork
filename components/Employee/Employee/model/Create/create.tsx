@@ -3,7 +3,7 @@ import styles from "./create.module.css";
 import { Modal } from "antd";
 import { useEffect, useState } from "react";
 
-export default function Create(open: boolean, setOpen: Function, handelReset:Function) {
+export default function Create(open: boolean, setOpen: Function, handelReset:Function, setSuccess:Function,setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   const [name, setName] = useState<any>(null);
   const [phone, setPhone] = useState<any>(null);
@@ -85,7 +85,14 @@ export default function Create(open: boolean, setOpen: Function, handelReset:Fun
       setError("Please fill in all fields!");
       return;
     }
-
+    if(phone.length !== 10){
+      setError("Phone number must be 10 digits long!");
+      return;
+    }
+    if(identificationId.length !== 12){
+      setError("identificationId must be  12 digits long!");
+      return;
+    }
     if (!token) {
       setError("Unauthorized! Please log in again.");
       return;
@@ -102,7 +109,8 @@ export default function Create(open: boolean, setOpen: Function, handelReset:Fun
       );
       console.log(res);
       if (res.status === 200) {
-        alert("Create employee success")
+        setSuccess(true)
+        setMessage('Create employee successfully!')
         handelReset()
         setOpen(false)
       } else {

@@ -54,6 +54,6 @@
     }
     100% {
       opacity: 0;
-      transform: translateX(-100%); /* Biến mất sang phía bên trái */
+      transform: translateX(0%); /* Biến mất sang phía bên trái */
     }
   }

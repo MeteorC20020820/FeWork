@@ -3,7 +3,7 @@ import styles from "./delete.module.css";
 import { Modal, Button } from "antd";
 import { useEffect, useState } from "react";
 const apiAi = "https://b20dccn460.serveo.net/api/v1/";
-export default function Delete(open: boolean, setOpen: Function, dataEm: any, handelReset:Function) {
+export default function Delete(open: boolean, setOpen: Function, dataEm: any, handelReset:Function, setSuccess:Function, setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
   useEffect(() => {
@@ -53,7 +53,15 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any, ha
           const formData = new FormData();
           formData.append("face_id", accUser.face_id);
           const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
+          if(deleteFace.status == 200){
+            setSuccess(true)
+            setMessage('Delete employee and employee account successfully!')
+          }
           console.log(deleteFace)
+        }
+        else{
+          setSuccess(true)
+          setMessage('Delete employee successfully!')
         }
         handelReset()
         setOpen(false)
