@@ -1,7 +1,7 @@
 // components/AlertModal.js
 import React, { useEffect } from "react";
 import styles from "./failed.module.css";
-import { SuccessA } from "@/components/icon/icon";
+import { FailedA } from "@/components/icon/icon";
 
 interface SuccessProps {
   failed: boolean;
@@ -31,13 +31,13 @@ export default function Failed({
       <div className={styles.modalcontent}>
         <div
           style={{
-            marginLeft: "-20px",
+            marginLeft: "-40px",
             zIndex: "9999",
             backgroundColor: "white",
             borderRadius: "50%",
           }}
         >
-          <SuccessA color="green" width={50} height={50} />
+          <FailedA color="red" width={50} height={50} />
         </div>
         <p className={styles.modalmessage}>{message}</p>
       </div>

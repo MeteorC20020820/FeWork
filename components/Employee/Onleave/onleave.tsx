@@ -4,6 +4,9 @@ import SideBar from "../SideBar/sideBar";
 import styles from "./onleave.module.css";
 import axios from "axios";
 import Delete from "./Delete/delete";
+import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
+import Note from "../Alert/Note/note";
 export default function Onleave() {
   const [user, setUser] = useState<any>({});
   const [userRoleP, setUserRoleP] = useState<any>(null);
@@ -11,7 +14,10 @@ export default function Onleave() {
   const [leaveRequests, setLeaveRequests] = useState<any[]>([]);
   const [modelDelete, setModalDelete] = useState(false)
   const [idLeave, setIdLeave] = useState<any>(null)
-    console.log(user)
+  const [success, setSuccess] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const [note, setNote] = useState(false)
+  const [message, setMessage] = useState<any>(null)
     const token = localStorage.getItem("authToken");
   // Xử lý gửi đơn xin nghỉ
   const handleFormSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
@@ -22,7 +28,6 @@ export default function Onleave() {
       reason: formData.get("leaveReason"),
       date: formData.get("startDate"),
     };
-   console.log(newRequest)
     try{
       const res = await axios.post(
         "http://localhost:7295/api/LeaveReq",
@@ -34,17 +39,17 @@ export default function Onleave() {
         }
       );
       if(res.status == 200){
-        alert("Create successfully")
+        setSuccess(true)
+        setMessage("Create leave application successfully!");
         reset()
       }
     } 
     catch(error){
-      alert("Note: You need to request leave at least 3 days in advance from the date of submission, and leave requests cannot be made for Saturday and Sunday.")
+      setNote(true)
+      setMessage("Note: You need to request leave at least 3 days in advance from the date of submission, and leave requests cannot be made for Saturday and Sunday.")
       console.log(error)
     }  
   };
-  console.log(user)
-  // Giao diện cho phần Tạo đơn xin nghỉ
   const CreateLeaveForm = () => (
     <div className={styles.formContainer}>
       <div style={{ width: "100%", textAlign: "center" }}>
@@ -207,7 +212,7 @@ export default function Onleave() {
           </div>
         </li>
       ))}
-      {Delete(modelDelete, setModalDelete, idLeave)}
+      {Delete(modelDelete, setModalDelete, idLeave, setSuccess, setMessage, reset)}
     </div>
   );
 
@@ -248,6 +253,8 @@ export default function Onleave() {
           </div>
         </div>
       </div>
+      {<Success success ={success} setSuccess={setSuccess} message={message}/>}
+      <Note note={note} setNote={setNote} message={message}/>
     </div>
   );
 }

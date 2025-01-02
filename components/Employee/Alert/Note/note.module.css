@@ -12,13 +12,12 @@
   
   .modalcontent {
     padding: 10px;
-    background-color: white;
     display: flex;
     align-items: center;
     width: auto;
     border-radius: 10px 0 0 10px;
     border: 3px solid rgb(62, 62, 62);
-    background-color: rgb(255, 95, 95);
+    background-color: rgb(255, 188, 95);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     animation: slideInFromRight 0.5s ease-out, fadeOutToLeft 2.5s ease-in forwards;
     pointer-events: auto; 
@@ -32,7 +31,7 @@
   
   .modalmessage {
     font-size: 14px;
-    color: #8b0000;
+    color: #8b4500;
     font-weight: 600;
   }
   

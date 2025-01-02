@@ -1,26 +1,26 @@
 // components/AlertModal.js
 import React, { useEffect } from "react";
-import styles from "./success.module.css";
-import { SuccessA } from "@/components/icon/icon";
+import styles from "./note.module.css";
+import { NoteA } from "@/components/icon/icon";
 
 interface SuccessProps {
-  success: boolean;
-  setSuccess: Function,
+  note: boolean;
+  setNote: Function;
   message: string;
 }
 
-export default function Success ({ success, setSuccess, message}:SuccessProps) {
+export default function Note({ note, setNote, message }: SuccessProps) {
   useEffect(() => {
-    if (success) {
+    if (note) {
       const timer = setTimeout(() => {
-        setSuccess(false); // Đóng modal sau 3 giây
-      }, 4000);
+        setNote(false); // Đóng modal sau 3 giây
+      }, 10000);
 
       return () => clearTimeout(timer); // Xóa timer khi component bị unmount
     }
-  }, [success, setSuccess]);
+  }, [note, setNote]);
 
-  if (!success) return null;
+  if (!note) return null;
 
   return (
     <div className={styles.modaloverlay}>
@@ -29,15 +29,13 @@ export default function Success ({ success, setSuccess, message}:SuccessProps) {
           style={{
             marginLeft: "-40px",
             zIndex: "9999",
-            backgroundColor: "white",
-            borderRadius: "50%",
+            
           }}
         >
-          <SuccessA color="green" width={50} height={50} />
+          <NoteA color="#8b4500" width={50} height={50} />
         </div>
         <p className={styles.modalmessage}>{message}</p>
       </div>
     </div>
   );
-};
-
+}

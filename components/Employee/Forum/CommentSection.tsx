@@ -3,6 +3,8 @@ import axios from "axios";
 import styles from "./commentSection.module.css";
 import { SendX, Delete } from "@/components/icon/icon";
 import DeleteP from "./Delete/delete";
+import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
 const CommentSection = ({
   postId,
   acc,
@@ -19,6 +21,9 @@ const CommentSection = ({
   const [cmt, setCmt] = useState(false)
   const [modalDelete, setModalDelete] = useState<any>(null)
   const token = localStorage.getItem("authToken");
+  const [success, setSuccess] = useState(false)
+  const [failed, setFailed] = useState(false)
+  const [message, setMessage] = useState<any>(null)
   const fetchComments = async () => {
     try {
       const res = await axios.get(
@@ -65,18 +70,20 @@ const CommentSection = ({
 
   const handleDeleteComment = async (commentId: number) => {
     try {
-      await axios.delete(`http://localhost:7295/api/Comment/${commentId}`, {
+      const res = await axios.delete(`http://localhost:7295/api/Comment/${commentId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setComments((prevComments) =>
-        prevComments.filter((comment) => comment.id !== commentId)
-      );
+      if(res.status == 200){
+        setSuccess(true)
+        setMessage('Delete comment successfully!')
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.id !== commentId)
+        );
+      }
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
   };
-  console.log(acc)
-  console.log(comments)
   return (
     <div className={styles.commentSection}>
       <div className={styles.commentList}>
@@ -135,6 +142,7 @@ const CommentSection = ({
         </button>
       </div>
       {DeleteP(modalDelete, setModalDelete, "comment",handleDeleteComment,cmt)}
+      <Success success={success} setSuccess={setSuccess} message={message}/>
     </div>
   );
 };

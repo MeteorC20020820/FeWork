@@ -2,7 +2,7 @@ import axios from "axios";
 import styles from "./delete.module.css";
 import { Modal,Button } from "antd";
 
-export default function Delete(open: boolean, setOpen: Function, idLeave: any) {
+export default function Delete(open: boolean, setOpen: Function, idLeave: any, setSuccess:Function, setMessage:Function, reset:Function) {
   const token = localStorage?.getItem("authToken");
   const apiDeleteDepartment = async () => {
     try {
@@ -15,8 +15,10 @@ export default function Delete(open: boolean, setOpen: Function, idLeave: any) {
         }
       );
       if (res.status == 200) {
-        alert("Delele leaveapplication success");
-        window.location.reload()
+        setSuccess(true)
+        setMessage("Delete leave request successfully!");
+        setOpen(false)
+        reset();
       }
     } catch (error) {
       console.log(error);
