@@ -198,6 +198,7 @@ export default function Employee() {
     if(gender == 0) return "Female"
     return "Male"
   }
+  console.log(success)
   return (
     <div className={styles.bodyEmployee}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -277,10 +278,11 @@ export default function Employee() {
       {Edit(modalEdit, setModalEdit, dataEm, handelReset, setSuccess, setMessage)}
       {Delete(modalDelete, setModalDelete, dataEm, handelReset,setSuccess, setMessage)}
       {Create(modalCreate, setModalCreate, handelReset,setSuccess, setMessage)}
-      {Account(modalAccount, setModalAccount, dataEm)}
+      {Account(modalAccount, setModalAccount, dataEm, setSuccess,setFailed, setMessage)}
       {Salary(modalSalary, setModalSalary, dataEm)}
       {ModalWorkshedule(modalWorkshedule, setModalWorkshedule, dataEm)}
       <Success success ={success} setSuccess={setSuccess} message={message}/>
+      <Failed failed={failed} setFailed={setFailed} message={message}/>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 const apiAi = process.env.NEXT_PUBLIC_API_AI;
 export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
   const token = localStorage?.getItem("authToken");
+  console.log(dataEm)
   const deleteAcc = async() =>{
     const formData = new FormData();
     formData.append("face_id", dataEm.face_id);
@@ -18,8 +19,6 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
       if(res.status == 200){
         const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
         console.log(deleteFace)
-        window.location.reload()
-        alert('Delete account success')
       }
     }
     catch(erorr){

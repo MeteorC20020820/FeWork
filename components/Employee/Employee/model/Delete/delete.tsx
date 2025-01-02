@@ -2,7 +2,7 @@ import axios from "axios";
 import styles from "./delete.module.css";
 import { Modal, Button } from "antd";
 import { useEffect, useState } from "react";
-const apiAi = "https://b20dccn460.serveo.net/api/v1/";
+const apiAi = process.env.NEXT_PUBLIC_API_AI
 export default function Delete(open: boolean, setOpen: Function, dataEm: any, handelReset:Function, setSuccess:Function, setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);

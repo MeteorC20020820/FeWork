@@ -1,0 +1,94 @@
+.loadingOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(156, 156, 156, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .loader {
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    position: relative;
+    text-align: center;
+  }
+  .title{
+    font-size: 25px;
+    font-weight: 600;
+    margin-top: -30px;
+    z-index: 9999;
+  }
+  .loader div {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #1890ff;
+    border-radius: 50%;
+    animation: loaderAnim 1.2s linear infinite;
+  }
+  
+  .loader div:nth-child(1) {
+    top: 29px;
+    left: 53px;
+    animation-delay: 0s;
+  }
+  
+  .loader div:nth-child(2) {
+    top: 18px;
+    left: 50px;
+    animation-delay: -0.1s;
+  }
+  
+  .loader div:nth-child(3) {
+    top: 9px;
+    left: 41px;
+    animation-delay: -0.2s;
+  }
+  
+  .loader div:nth-child(4) {
+    top: 6px;
+    left: 29px;
+    animation-delay: -0.3s;
+  }
+  
+  .loader div:nth-child(5) {
+    top: 9px;
+    left: 17px;
+    animation-delay: -0.4s;
+  }
+  
+  .loader div:nth-child(6) {
+    top: 18px;
+    left: 8px;
+    animation-delay: -0.5s;
+  }
+  
+  .loader div:nth-child(7) {
+    top: 29px;
+    left: 5px;
+    animation-delay: -0.6s;
+  }
+  
+  .loader div:nth-child(8) {
+    top: 41px;
+    left: 8px;
+    animation-delay: -0.7s;
+  }
+  
+  @keyframes loaderAnim {
+    0%, 100% {
+      transform: scale(1);
+      background: #1890ff;
+    }
+    50% {
+      transform: scale(1);
+      background: #ff4d4f;
+    }
+  }
+  

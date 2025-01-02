@@ -3,8 +3,9 @@ import styles from "./account.module.css";
 import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import Delete from "./Delete/delete";
+import Loading from "@/components/Employee/Alert/Loading/loading";
 const ai = process.env.NEXT_PUBLIC_API_AI
-export default function Account(open: boolean, setOpen: Function, dataEm: any) {
+export default function Account(open: boolean, setOpen: Function, dataEm: any, setSuccess:Function, setFailed:Function, setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -14,6 +15,8 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
   const [changeFace, setChangeFace] = useState(false)
   const [preview, setPreview] = useState<string | null>(null);
   const [modalDelete, setModalDelete] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState<any>(null)
   const [newAccount, setNewAccount] = useState({
     email: "",
     password: "",
@@ -24,7 +27,6 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     employeeId: dataEm?.id || "",
     roleId: 3,
   });
-  console.log(dataEm)
   // Update employeeId when dataEm changes
   useEffect(() => {
     if (dataEm?.id) {
@@ -105,21 +107,28 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     if (!newAccount.faceFile) return null;
     const formData = new FormData();
     formData.append("file", newAccount.faceFile);
+    setLoading(true)
+    setTitle('Creating an account for the employee, please wait...')
     try {
       const avatarUrl = await apiChangeImage(newAccount.avatarFile);
       const faceUrl = await apiChangeImage(newAccount.faceFile);
       const res2 = await axios.post(`${ai}enroll`,formData);
-      console.log(res2)
-      console.log(res2.data.data.face_id);
+      if(res2.data.statusCode == 200){
+        
+      }
       if(res2.data.statusCode == 400){
-        alert(res2.data.message)
+        setLoading(false)
+        setTitle('')
+        setOpen(false)
+        setFailed(true)
+        setMessage(`${res2.data.message}`)
       }
       const payload = {
         email: newAccount.email,
         password: newAccount.password,
         avatarUrl: "string",
         faceUrl: faceUrl,
-        faceId: res2.data.data.face_id,
+        face_Id: res2.data.data.face_id,
         status: newAccount.status,
         employeeId: newAccount.employeeId,
         roleId: newAccount.roleId,
@@ -137,8 +146,12 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           }
         );
         if (res.status === 200) {
-          alert("Account created successfully!");
-          
+          setLoading(false)
+          setTitle('')
+          setOpen(false)
+          setSuccess(true)
+          setMessage('Employee account created successfully')
+          // handelReset()
           setIsCreateModalOpen(false);
           setNewAccount({
             email: "",
@@ -153,10 +166,11 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
         }
       }
     } catch (error) {
-      console.error("Error creating account:", error);
-      alert(
-        "Failed to create account. The password must include uppercase letters, lowercase letters, numbers, and special characters."
-      );
+      setLoading(false)
+        setTitle('')
+        setOpen(false)
+        setFailed(true)
+        setMessage("Failed to create employee account")
     }
   };
   const role = (e: any) => {
@@ -179,6 +193,8 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
     formData.append("face_id", accUser?.face_id);
     const fd = new FormData();
     fd.append("file", imgFaceChange)
+    setLoading(true)
+    setTitle('Updating face. Please wait...')
     const resimg = await axios.post(
       "http://localhost:7295/api/FileUpload/upload",
       formData,
@@ -207,10 +223,18 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           }
         );
         if(resFace.status ==200){
-          alert('Change face employee success!')
+          setLoading(false)
+          setTitle('')
+          setSuccess(true)
+          setOpen(false)
+          setMessage('Update face employee successfully!')
         }
         else{
-          alert('erorr')
+          setOpen(false)
+          setTitle('')
+          setLoading(false)
+          setFailed(true)
+          setMessage('Update face employee failed!')
         }
         console.log(resFace)
       }
@@ -372,6 +396,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any) {
           </div>
         </div>
       </Modal>
+      {Loading(loading,title)}
       {Delete(modalDelete, setModalDelete, accUser)}
     </>
   );
