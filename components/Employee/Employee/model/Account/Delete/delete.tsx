@@ -3,12 +3,26 @@ import styles from "./delete.module.css";
 import { Modal, Button } from "antd";
 import { useEffect, useState } from "react";
 const apiAi = process.env.NEXT_PUBLIC_API_AI;
-export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
+interface DeleteProp {
+  open:boolean,
+  setOpenD:Function,
+  setOpenAcc:Function
+  dataEm:any,
+  setLoading:Function,
+  setTitle:Function
+}
+export default function Delete({open, setOpenD,setOpenAcc,dataEm, setLoading, setTitle}:DeleteProp) {
   const token = localStorage?.getItem("authToken");
   console.log(dataEm)
   const deleteAcc = async() =>{
     const formData = new FormData();
     formData.append("face_id", dataEm.face_id);
+    setLoading(true)
+    setTitle(
+      "Processing the deletion of the employee's account, please wait..."
+    );
+    setOpenD(false)
+    setOpenAcc(false)
     try{
       const res = await axios.delete(`http://localhost:7295/api/Account/${dataEm?.id}`,{
         headers: {
@@ -19,6 +33,14 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
       if(res.status == 200){
         const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
         console.log(deleteFace)
+        if(deleteFace.data.statusCode == 200){
+          setLoading(false)
+          setTitle('')
+        }
+        else{
+          setLoading(false);
+          setTitle("");
+        }
       }
     }
     catch(erorr){
@@ -29,9 +51,9 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any) {
     <Modal
       title="Delete Account"
       open={open}
-      onCancel={()=>setOpen(false)}
+      onCancel={()=>setOpenD(false)}
       footer={[
-        <Button key="cancel" onClick={()=>setOpen(false)}>
+        <Button key="cancel" onClick={()=>setOpenD(false)}>
           Cancel
         </Button>,
         <Button

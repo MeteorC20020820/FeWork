@@ -276,7 +276,7 @@ export default function Employee() {
       </div>
 
       {Edit(modalEdit, setModalEdit, dataEm, handelReset, setSuccess, setMessage)}
-      {Delete(modalDelete, setModalDelete, dataEm, handelReset,setSuccess, setMessage)}
+      <Delete open={modalDelete} setOpen={setModalDelete} dataEm={dataEm} handelReset={handelReset} setSuccess={setMessage} setMessage={setMessage}/>
       {Create(modalCreate, setModalCreate, handelReset,setSuccess, setMessage)}
       {Account(modalAccount, setModalAccount, dataEm, setSuccess,setFailed, setMessage)}
       {Salary(modalSalary, setModalSalary, dataEm)}

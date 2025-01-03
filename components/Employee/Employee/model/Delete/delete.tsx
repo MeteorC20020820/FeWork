@@ -2,10 +2,21 @@ import axios from "axios";
 import styles from "./delete.module.css";
 import { Modal, Button } from "antd";
 import { useEffect, useState } from "react";
+import Loading from "@/components/Employee/Alert/Loading/loading";
 const apiAi = process.env.NEXT_PUBLIC_API_AI
-export default function Delete(open: boolean, setOpen: Function, dataEm: any, handelReset:Function, setSuccess:Function, setMessage:Function) {
+interface DeleteEmProp {
+  open:boolean,
+  setOpen:Function,
+  dataEm:any,
+  handelReset:Function,
+  setSuccess:Function,
+  setMessage:Function
+}
+export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, setMessage}:DeleteEmProp) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
+  const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState<any>(null)
   useEffect(() => {
     if (dataEm?.id) {
       const ApiGetAccount = async () => {
@@ -38,6 +49,9 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any, ha
     //   const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
     //   console.log(deleteFace)
     // }
+    setLoading(true)
+    setTitle("Processing employee deletion, please wait...");
+    setOpen(false)
     try {
       const res = await axios.delete(
         `http://localhost:7295/api/Employee/${dataEm?.id}`,
@@ -47,13 +61,15 @@ export default function Delete(open: boolean, setOpen: Function, dataEm: any, ha
           },
         }
       );
-      console.log(res.data);
-      if (res.data.statusCode == 200) {
+      console.log(res)
+      if (res.status == 200) {
         if(accUser !== null){
           const formData = new FormData();
           formData.append("face_id", accUser.face_id);
           const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
-          if(deleteFace.status == 200){
+          if(deleteFace.data.statusCode == 200){
+            setLoading(false)
+            setTitle('')
             setSuccess(true)
             setMessage('Delete employee and employee account successfully!')
           }

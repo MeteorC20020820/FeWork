@@ -4,25 +4,32 @@ import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import Delete from "./Delete/delete";
 import Loading from "@/components/Employee/Alert/Loading/loading";
-const ai = process.env.NEXT_PUBLIC_API_AI
-export default function Account(open: boolean, setOpen: Function, dataEm: any, setSuccess:Function, setFailed:Function, setMessage:Function) {
+const ai = process.env.NEXT_PUBLIC_API_AI;
+export default function Account(
+  open: boolean,
+  setOpen: Function,
+  dataEm: any,
+  setSuccess: Function,
+  setFailed: Function,
+  setMessage: Function
+) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-  const [avatar, setAvatar] = useState<any>(null)
-  const [face, setFace] = useState<any>(null)
+  const [avatar, setAvatar] = useState<any>(null);
+  const [face, setFace] = useState<any>(null);
   const [imgFaceChange, setImgFaceChange] = useState<File | null>(null);
-  const [changeFace, setChangeFace] = useState(false)
+  const [changeFace, setChangeFace] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
-  const [modalDelete, setModalDelete] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [title, setTitle] = useState<any>(null)
+  const [modalDelete, setModalDelete] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState<any>(null);
   const [newAccount, setNewAccount] = useState({
     email: "",
     password: "",
     avatarFile: null as File | null,
     faceFile: null as File | null,
-    faceId:"",
+    faceId: "",
     status: 1,
     employeeId: dataEm?.id || "",
     roleId: 3,
@@ -33,7 +40,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
       setNewAccount((prev) => ({ ...prev, employeeId: dataEm.id }));
     }
   }, [dataEm]);
-  
+
   // Fetch existing account
   useEffect(() => {
     const ApiGetAccount = async () => {
@@ -56,7 +63,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
         setAccUser(null);
       }
     };
-    ApiGetAccount()
+    ApiGetAccount();
   }, [dataEm]);
 
   // API to upload image and return its URL
@@ -107,21 +114,20 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
     if (!newAccount.faceFile) return null;
     const formData = new FormData();
     formData.append("file", newAccount.faceFile);
-    setLoading(true)
-    setTitle('Creating an account for the employee, please wait...')
+    setLoading(true);
+    setTitle("Creating an account for the employee, please wait...");
     try {
       const avatarUrl = await apiChangeImage(newAccount.avatarFile);
       const faceUrl = await apiChangeImage(newAccount.faceFile);
-      const res2 = await axios.post(`${ai}enroll`,formData);
-      if(res2.data.statusCode == 200){
-        
+      const res2 = await axios.post(`${ai}enroll`, formData);
+      if (res2.data.statusCode == 200) {
       }
-      if(res2.data.statusCode == 400){
-        setLoading(false)
-        setTitle('')
-        setOpen(false)
-        setFailed(true)
-        setMessage(`${res2.data.message}`)
+      if (res2.data.statusCode == 400) {
+        setLoading(false);
+        setTitle("");
+        setOpen(false);
+        setFailed(true);
+        setMessage(`${res2.data.message}`);
       }
       const payload = {
         email: newAccount.email,
@@ -133,8 +139,8 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
         employeeId: newAccount.employeeId,
         roleId: newAccount.roleId,
       };
-      console.log(payload)
-      if(res2.data.statusCode == 200){
+      console.log(payload);
+      if (res2.data.statusCode == 200) {
         const res = await axios.post(
           `http://localhost:7295/api/Account`,
           payload,
@@ -146,11 +152,11 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
           }
         );
         if (res.status === 200) {
-          setLoading(false)
-          setTitle('')
-          setOpen(false)
-          setSuccess(true)
-          setMessage('Employee account created successfully')
+          setLoading(false);
+          setTitle("");
+          setOpen(false);
+          setSuccess(true);
+          setMessage("Employee account created successfully");
           // handelReset()
           setIsCreateModalOpen(false);
           setNewAccount({
@@ -158,7 +164,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
             password: "",
             avatarFile: null,
             faceFile: null,
-            faceId:'',
+            faceId: "",
             status: 1,
             employeeId: dataEm?.id || "",
             roleId: 3,
@@ -166,11 +172,11 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
         }
       }
     } catch (error) {
-      setLoading(false)
-        setTitle('')
-        setOpen(false)
-        setFailed(true)
-        setMessage("Failed to create employee account")
+      setLoading(false);
+      setTitle("");
+      setOpen(false);
+      setFailed(true);
+      setMessage("Failed to create employee account");
     }
   };
   const role = (e: any) => {
@@ -180,21 +186,21 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
     return "Unknown";
   };
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const file = e.target.files?.[0];
-      if (file) {
-        setImgFaceChange(file);
-        setPreview(URL.createObjectURL(file));
-      }
-    };
-  const updateFace = async() =>{
-    if(!imgFaceChange) return;
+    const file = e.target.files?.[0];
+    if (file) {
+      setImgFaceChange(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+  const updateFace = async () => {
+    if (!imgFaceChange) return;
     const formData = new FormData();
     formData.append("file", imgFaceChange);
     formData.append("face_id", accUser?.face_id);
     const fd = new FormData();
-    fd.append("file", imgFaceChange)
-    setLoading(true)
-    setTitle('Updating face. Please wait...')
+    fd.append("file", imgFaceChange);
+    setLoading(true);
+    setTitle("Updating face. Please wait...");
     const resimg = await axios.post(
       "http://localhost:7295/api/FileUpload/upload",
       formData,
@@ -205,15 +211,15 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
         },
       }
     );
-    try{
-      const res = await axios.put(`${ai}update`,formData)
+    try {
+      const res = await axios.put(`${ai}update`, formData);
       console.log(res.data.data.face_id);
-      if(res.data.statusCode == 200){
+      if (res.data.statusCode == 200) {
         const resFace = await axios.put(
           `http://localhost:7295/api/Account/UpdateFaceId?accountId=${accUser?.id}`,
           {
             face_id: res.data.data.face_id,
-            faceUrl: resimg.data.url
+            faceUrl: resimg.data.url,
           },
           {
             headers: {
@@ -222,27 +228,25 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
             },
           }
         );
-        if(resFace.status ==200){
-          setLoading(false)
-          setTitle('')
-          setSuccess(true)
-          setOpen(false)
-          setMessage('Update face employee successfully!')
+        if (resFace.status == 200) {
+          setLoading(false);
+          setTitle("");
+          setSuccess(true);
+          setOpen(false);
+          setMessage("Update face employee successfully!");
+        } else {
+          setOpen(false);
+          setTitle("");
+          setLoading(false);
+          setFailed(true);
+          setMessage("Update face employee failed!");
         }
-        else{
-          setOpen(false)
-          setTitle('')
-          setLoading(false)
-          setFailed(true)
-          setMessage('Update face employee failed!')
-        }
-        console.log(resFace)
+        console.log(resFace);
       }
+    } catch (error) {
+      console.log(error);
     }
-    catch(error){
-      console.log(error)
-    }
-  }
+  };
   return (
     <>
       {/* Modal to view or create account */}
@@ -278,7 +282,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
                 </button>
                 <button
                   className={styles.buttondelete}
-                  onClick={() =>setModalDelete(true)}
+                  onClick={() => setModalDelete(true)}
                 >
                   Delete Account
                 </button>
@@ -301,7 +305,7 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
                       />
                     </div>
                   )}
-                  <div style={{display:'flex', gap:'15px'}}>
+                  <div style={{ display: "flex", gap: "15px" }}>
                     <button
                       className={styles.button}
                       onClick={() => updateFace()}
@@ -320,7 +324,9 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
             </div>
           ) : (
             <div className={styles.noAccount}>
-              <p className={styles.titleNoAcc}>No account found for this employee.</p>
+              <p className={styles.titleNoAcc}>
+                No account found for this employee.
+              </p>
               <button
                 className={`${styles.button} ${styles.create}`}
                 onClick={() => setIsCreateModalOpen(true)}
@@ -396,8 +402,15 @@ export default function Account(open: boolean, setOpen: Function, dataEm: any, s
           </div>
         </div>
       </Modal>
-      {Loading(loading,title)}
-      {Delete(modalDelete, setModalDelete, accUser)}
+      {Loading(loading, title)}
+      <Delete
+        open={modalDelete}
+        setOpenD={setModalDelete}
+        setOpenAcc={setOpen}
+        dataEm={accUser}
+        setLoading={setLoading}
+        setTitle={setTitle}
+      />
     </>
   );
 }
