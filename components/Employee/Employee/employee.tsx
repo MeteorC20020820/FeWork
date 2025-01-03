@@ -160,10 +160,6 @@ export default function Employee() {
               item?.id,
               token
             );
-
-            console.log(
-              `Employee ID: ${item?.id}, Email: ${email}, Avatar: ${avatar}`
-            );
             return {
               ...item,
               birthday: new Date(item.birthday).toLocaleDateString("en-GB"),
@@ -198,7 +194,6 @@ export default function Employee() {
     if(gender == 0) return "Female"
     return "Male"
   }
-  console.log(success)
   return (
     <div className={styles.bodyEmployee}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -276,9 +271,10 @@ export default function Employee() {
       </div>
 
       {Edit(modalEdit, setModalEdit, dataEm, handelReset, setSuccess, setMessage)}
-      <Delete open={modalDelete} setOpen={setModalDelete} dataEm={dataEm} handelReset={handelReset} setSuccess={setMessage} setMessage={setMessage}/>
+      {/* <Delete open={modalDelete} setOpen={setModalDelete} dataEm={dataEm} handelReset={handelReset} setSuccess={setMessage} setMessage={setMessage}/> */}
+      {Delete(modalDelete, setModalDelete,dataEm, handelReset, setSuccess, setMessage)}
       {Create(modalCreate, setModalCreate, handelReset,setSuccess, setMessage)}
-      {Account(modalAccount, setModalAccount, dataEm, setSuccess,setFailed, setMessage)}
+      {Account(modalAccount, setModalAccount, dataEm, setSuccess,setFailed, setMessage, handelReset)}
       {Salary(modalSalary, setModalSalary, dataEm)}
       {ModalWorkshedule(modalWorkshedule, setModalWorkshedule, dataEm)}
       <Success success ={success} setSuccess={setSuccess} message={message}/>

@@ -22,7 +22,7 @@
     border: 3px solid rgb(62, 62, 62);
     background-color: rgb(95, 255, 95);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    animation: slideInFromRight 0.5s ease-out, fadeOutToLeft 2.5s ease-in forwards;
+    animation: slideInFromRight 0.5s ease-out, fadeOutToLeft 4s ease-in forwards;
     pointer-events: auto; 
   }
   

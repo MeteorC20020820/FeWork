@@ -11,7 +11,8 @@ export default function Account(
   dataEm: any,
   setSuccess: Function,
   setFailed: Function,
-  setMessage: Function
+  setMessage: Function,
+  handelReset:Function
 ) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
@@ -120,8 +121,7 @@ export default function Account(
       const avatarUrl = await apiChangeImage(newAccount.avatarFile);
       const faceUrl = await apiChangeImage(newAccount.faceFile);
       const res2 = await axios.post(`${ai}enroll`, formData);
-      if (res2.data.statusCode == 200) {
-      }
+      
       if (res2.data.statusCode == 400) {
         setLoading(false);
         setTitle("");
@@ -159,6 +159,8 @@ export default function Account(
           setMessage("Employee account created successfully");
           // handelReset()
           setIsCreateModalOpen(false);
+          handelReset()
+          setPreview(null)
           setNewAccount({
             email: "",
             password: "",
@@ -189,6 +191,12 @@ export default function Account(
     const file = e.target.files?.[0];
     if (file) {
       setImgFaceChange(file);
+      setPreview(URL.createObjectURL(file));
+    }
+  };
+  const handleImageChange2 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
       setPreview(URL.createObjectURL(file));
     }
   };
@@ -234,6 +242,10 @@ export default function Account(
           setSuccess(true);
           setOpen(false);
           setMessage("Update face employee successfully!");
+          setChangeFace(false)
+          handelReset()
+          setPreview(null)
+          setImgFaceChange(null)
         } else {
           setOpen(false);
           setTitle("");
@@ -376,13 +388,13 @@ export default function Account(
               type="file"
               accept="image/*"
               onChange={(e) =>
-                setNewAccount({
+                {setNewAccount({
                   ...newAccount,
                   faceFile: e.target.files?.[0] || null,
-                })
+                }), handleImageChange2(e)}
               }
             />
-            {face && <img src={face} alt="" className={styles.imageA} />}
+            {preview && <img src={preview} alt="" className={styles.imageA} />}
           </div>
           <div className={styles.selectContainer}>
             <label>Role</label>
@@ -403,14 +415,18 @@ export default function Account(
         </div>
       </Modal>
       {Loading(loading, title)}
-      <Delete
+      {/* <Delete
         open={modalDelete}
         setOpenD={setModalDelete}
         setOpenAcc={setOpen}
         dataEm={accUser}
         setLoading={setLoading}
         setTitle={setTitle}
-      />
+        setSuccess={setSuccess}
+        setMessage = {setMessage}
+        handelReset ={handelReset}
+      /> */}
+      {Delete(modalDelete, setModalDelete, setOpen, accUser, setLoading, setTitle, setSuccess, setMessage, handelReset)}
     </>
   );
 }

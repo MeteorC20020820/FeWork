@@ -14,7 +14,7 @@ export default function Note({ note, setNote, message }: SuccessProps) {
     if (note) {
       const timer = setTimeout(() => {
         setNote(false); // Đóng modal sau 3 giây
-      }, 10000);
+      }, 8000);
 
       return () => clearTimeout(timer); // Xóa timer khi component bị unmount
     }

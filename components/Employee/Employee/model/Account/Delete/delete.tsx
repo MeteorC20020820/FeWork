@@ -9,9 +9,23 @@ interface DeleteProp {
   setOpenAcc:Function
   dataEm:any,
   setLoading:Function,
-  setTitle:Function
+  setTitle:Function,
+  setSuccess:Function,
+  setMessage:Function,
+  handelReset:Function
 }
-export default function Delete({open, setOpenD,setOpenAcc,dataEm, setLoading, setTitle}:DeleteProp) {
+export default function Delete(
+  open:boolean,
+  setOpenD:Function,
+  setOpenAcc:Function,
+  dataEm:any,
+  setLoading:Function,
+  setTitle:Function,
+  setSuccess:Function,
+  setMessage:Function,
+  handelReset:Function
+
+) {
   const token = localStorage?.getItem("authToken");
   console.log(dataEm)
   const deleteAcc = async() =>{
@@ -34,8 +48,12 @@ export default function Delete({open, setOpenD,setOpenAcc,dataEm, setLoading, se
         const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
         console.log(deleteFace)
         if(deleteFace.data.statusCode == 200){
+
           setLoading(false)
           setTitle('')
+          setSuccess(true)
+          setMessage('Delete account successfully!')
+          handelReset()
         }
         else{
           setLoading(false);

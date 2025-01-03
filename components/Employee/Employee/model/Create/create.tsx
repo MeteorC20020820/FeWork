@@ -113,6 +113,7 @@ export default function Create(open: boolean, setOpen: Function, handelReset:Fun
         setMessage('Create employee successfully!')
         handelReset()
         setOpen(false)
+        setChangeDep(null)
       } else {
         setError("Failed to update employee.");
       }

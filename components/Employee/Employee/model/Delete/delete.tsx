@@ -12,7 +12,7 @@ interface DeleteEmProp {
   setSuccess:Function,
   setMessage:Function
 }
-export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, setMessage}:DeleteEmProp) {
+export default function Delete(open:boolean, setOpen:Function, dataEm:any, handelReset:Function, setSuccess:Function, setMessage:Function) {
   const token = localStorage?.getItem("authToken");
   const [accUser, setAccUser] = useState<any>(null);
   const [loading, setLoading] = useState(false)
@@ -49,9 +49,6 @@ export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, 
     //   const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
     //   console.log(deleteFace)
     // }
-    setLoading(true)
-    setTitle("Processing employee deletion, please wait...");
-    setOpen(false)
     try {
       const res = await axios.delete(
         `http://localhost:7295/api/Employee/${dataEm?.id}`,
@@ -64,6 +61,9 @@ export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, 
       console.log(res)
       if (res.status == 200) {
         if(accUser !== null){
+          setLoading(true)
+          setTitle("Processing employee deletion, please wait...");
+          setOpen(false)
           const formData = new FormData();
           formData.append("face_id", accUser.face_id);
           const deleteFace = await axios.delete(`${apiAi}delete`,{data:formData})
@@ -71,6 +71,7 @@ export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, 
             setLoading(false)
             setTitle('')
             setSuccess(true)
+            handelReset()
             setMessage('Delete employee and employee account successfully!')
           }
           console.log(deleteFace)
@@ -78,9 +79,9 @@ export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, 
         else{
           setSuccess(true)
           setMessage('Delete employee successfully!')
+          handelReset()
+          setOpen(false)
         }
-        handelReset()
-        setOpen(false)
       }
       console.log(res);
     } catch (error) {
@@ -88,7 +89,8 @@ export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, 
     }
   };
   return (
-    <Modal
+    <>
+      <Modal
       title="Delete Employee"
       open={open}
       onCancel={()=>setOpen(false)}
@@ -108,6 +110,8 @@ export default function Delete({open, setOpen, dataEm, handelReset, setSuccess, 
     >
       <p>Are you sure you want to delete employee: {dataEm?.fullName}?</p>
     </Modal>
+    {Loading(loading, title)}
+    </>
     // <Modal
     //   open={open}
     //   onCancel={() => setOpen(false)}
