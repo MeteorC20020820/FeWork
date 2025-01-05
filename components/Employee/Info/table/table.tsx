@@ -202,6 +202,12 @@ export default function App ({user}:any) {
       dataIndex: "deduction",
       key: "deduction",
       align: "center",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Total",

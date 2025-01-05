@@ -228,7 +228,7 @@ export default function Employee() {
                 <p
                   style={{
                     marginLeft: "15px",
-                    fontSize: "23px",
+                    fontSize: "20px",
                     color: "white",
                   }}
                 >

@@ -115,18 +115,19 @@ export default function TimeKeeping() {
             }
           );
           console.log(checkIn);
-          if (checkIn.status == 200) {
+          if (checkIn.data.statusCode == 200) {
             setLoading(false);
             setTitle("");
             setIsCameraActive(false);
             setSuccess(true);
             setMessage("Attendance marked successfully!");
           }
-        } else {
-          setLoading(false);
-          setTitle("");
-          setFailed(true);
-          setMessage("Attendance marking failed!");
+          else {
+            setLoading(false);
+            setTitle("");
+            setFailed(true);
+            setMessage(`Attendance marking failed: ${checkIn.data.message}`);
+          }
         }
       } else if (res.data.statusCode == 400) {
         setLoading(false);

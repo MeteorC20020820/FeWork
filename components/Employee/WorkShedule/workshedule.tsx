@@ -23,7 +23,10 @@ const events = [
     checkOut:'',
   },
 ];
+const today = new Date()
+const daytd = String(today.getDate())
 export default function Workshedule(){
+console.log(daytd)
 const [user, setUser] = useState<any>({});
 const token = localStorage?.getItem("authToken");
 const [idAcc, setIDAcc] = useState<any>(null)
@@ -34,7 +37,6 @@ const [title, setTitle] = useState<any> (null)
 const [message, setMessage] = useState<any>(null)
 const [success, setSuccess] = useState(false)
 const [failed, setFailed] = useState(false)
-console.log(user)
 const [idCheckIn, setIdCheckIn] = useState<any>(null)
 useEffect(() =>{
   const ApiGetAccID = async() =>{
@@ -68,10 +70,10 @@ useEffect(() => {
       );
       // Kiểm tra nếu res.data.data là mảng
       if (Array.isArray(res.data.data)) {
-        const formattedData = res.data.data.map((item:any) => {
+        const formattedData = res.data.data.map((item: any) => {
           const checkInDate = new Date(item.checkIn);
-          const checkOutDate = new Date(item.checkOut);
-
+          const checkOutDate = item.checkOut ? new Date(item.checkOut) : "";
+        
           return {
             id: item.id,
             name: item.status === "present" ? "Attendance" : "Absent",
@@ -79,23 +81,26 @@ useEffect(() => {
               hour: "2-digit",
               minute: "2-digit",
             }),
-            timeEnd: checkOutDate.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
+            timeEnd: checkOutDate
+              ? new Date(checkOutDate).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : "...", // Nếu không có checkOut thì trả về chuỗi rỗng
             day: checkInDate.getDate(),
             month: checkInDate.toLocaleString("default", { month: "long" }),
             year: checkInDate.getFullYear(),
-            note: ` Late: ${
-              item.late === 1 ? "Yes" : "No"
-            }`,
-            checkIn:`Check-In: ${checkInDate.toLocaleTimeString()}`,
-            checkOut:` Check-Out: ${checkOutDate.toLocaleTimeString()}`,
+            note: `Late: ${item.late === 1 ? "Yes" : "No"}`,
+            checkIn: `Check-In: ${checkInDate.toLocaleTimeString()}`,
+            checkOut: checkOutDate
+              ? `Check-Out: ${new Date(checkOutDate).toLocaleTimeString()}`
+              : "Check-Out: ...", // Thêm thông báo nếu không có checkOut
             late: item.late,
             status: item.status,
-            face_id:item.account.face_id,
+            face_id: item.account.face_id,
           };
         });
+        
 
         setData(formattedData);
       } else {
@@ -193,6 +198,7 @@ for (let i = startingDay - 1; i >= 0; i--) {
 }
 
 for (let i = 1; i <= daysInMonth; i++) {
+
   const eventsForDay = Array.isArray(data)
     ? data.filter(
         (event) =>
@@ -202,11 +208,14 @@ for (let i = 1; i <= daysInMonth; i++) {
             selectedMonth
       )
     : [];
-
   let status = "hoàn thành"; // Mặc định là hoàn thành
-  if (eventsForDay.some((event) => event.late === 1)) {
+  if (eventsForDay.some((event) => (event.late === 1 && event.status === 1))) {
     status = "muộn";
-  } else if (eventsForDay.some((event) => event.status === 0)) {
+  }
+  if (eventsForDay.some((event) => (event.status === 0 && event.day !== parseInt(daytd)))) {
+    status = "chưa hoàn thành";
+  } 
+  else if (eventsForDay.some((event) => event.status === 0)) {
     status = "đang làm việc";
   }
   else if(eventsForDay.some((event) => event.status === 2)){
@@ -312,13 +321,19 @@ const apiUrlImage = async() => {
           }
         );
         if (checkIn.data.statusCode == 200) {
-          window.location.reload()
-          alert("Check out success");
+          setLoading(false);
+          setTitle("");
+          setIsCameraActive(false);
+          setSuccess(true);
+          setMessage("Attendance marked successfully!");
         }
       }
     }
     else if(res.data.statusCode == 400){
-      alert(res.data.message)
+      setLoading(false);
+        setTitle("");
+        setFailed(true);
+        setMessage(`${res.data.message}`);
     }
     console.log(res)
   } catch (error) {
@@ -480,13 +495,15 @@ useEffect(() => {
                         <div className={styles.eventList}>
                           <div className={styles.eventStatus}>
                             {dayObj.status === "muộn"
-                              ? "Muộn"
+                              ? "Late"
                               : dayObj.status === "đang làm việc"
-                              ? "Đang làm việc"
+                              ? "Working"
                               : dayObj.status === "hoàn thành"
-                              ? "Hoàn thành"
+                              ? "Finish "
                               : dayObj.status === "xin nghỉ"
-                              ? "Xin Nghỉ"
+                              ? "Off"
+                              :dayObj.status == "chưa hoàn thành"
+                              ? "Incomplete"
                               : "Không có sự kiện"}
                           </div>
                         </div>
@@ -528,18 +545,13 @@ useEffect(() => {
                               }}
                             >
                               {event.status === 0 &&
-                              !checkedOutEvents.includes(event.id) ? (
+                              !checkedOutEvents.includes(event.id)&& event.day == parseInt(daytd)  ? (
                                 <button
                                   className={styles.checkOutButton}
                                   onClick={() => {handleCheckOut(event.id), setIdCheckIn(event.id)}}
                                 >
                                   Check Out
                                 </button>
-                              ) : event.status === 0 &&
-                                checkedOutEvents.includes(event.id) ? (
-                                <p className={styles.checkedOutMessage}>
-                                  Checked Out
-                                </p>
                               ) : null}
                               {isCameraActive && (
                                 <div className={styles.modal}>

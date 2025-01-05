@@ -196,7 +196,7 @@ export default function Info() {
         </div>
         <div style={{ padding: "20px 50px" }}>
           <div className={styles.cardInfo}>
-            <p className={styles.titleInfo}>Infomation Employee</p>
+            <p className={styles.titleInfo}>Information Employee</p>
             <div className={styles.profileCard}>
               {/* Phần bên trái */}
               <div
@@ -259,6 +259,43 @@ export default function Info() {
                   <div>
                     <div className={styles.title}>Change Password</div>
                     <div className={styles.details}>
+                      <div className={styles.detailRowx} >
+                        <label className={styles.detailLabel}>
+                          Old Password:
+                        </label>
+                        <div className={styles.passwordInputContainer}>
+                          <input
+                            type={
+                              showPasswords.oldPassword ? "text" : "password"
+                            }
+                            className={styles.detailInput}
+                            value={passwords.oldPassword}
+                            onChange={(e) =>
+                              setPasswords({
+                                ...passwords,
+                                oldPassword: e.target.value,
+                              })
+                            }
+                          />
+                          <span
+                            className={styles.passwordToggle}
+                            onClick={() =>
+                              setShowPasswords({
+                                ...showPasswords,
+                                oldPassword: !showPasswords.oldPassword,
+                              })
+                            }
+                          >
+                            {showPasswords.oldPassword ? (
+                              <EyeOutlined style={{ color: "black" }} />
+                            ) : (
+                              <EyeInvisibleOutlined
+                                style={{ color: "black" }}
+                              />
+                            )}
+                          </span>
+                        </div>
+                      </div>
                       <div className={styles.detailRow}>
                         <label className={styles.detailLabel}>
                           New Password:
@@ -326,43 +363,6 @@ export default function Info() {
                             }
                           >
                             {showPasswords.confirmPassword ? (
-                              <EyeOutlined style={{ color: "black" }} />
-                            ) : (
-                              <EyeInvisibleOutlined
-                                style={{ color: "black" }}
-                              />
-                            )}
-                          </span>
-                        </div>
-                      </div>
-                      <div className={styles.detailRow}>
-                        <label className={styles.detailLabel}>
-                          Old Password:
-                        </label>
-                        <div className={styles.passwordInputContainer}>
-                          <input
-                            type={
-                              showPasswords.oldPassword ? "text" : "password"
-                            }
-                            className={styles.detailInput}
-                            value={passwords.oldPassword}
-                            onChange={(e) =>
-                              setPasswords({
-                                ...passwords,
-                                oldPassword: e.target.value,
-                              })
-                            }
-                          />
-                          <span
-                            className={styles.passwordToggle}
-                            onClick={() =>
-                              setShowPasswords({
-                                ...showPasswords,
-                                oldPassword: !showPasswords.oldPassword,
-                              })
-                            }
-                          >
-                            {showPasswords.oldPassword ? (
                               <EyeOutlined style={{ color: "black" }} />
                             ) : (
                               <EyeInvisibleOutlined
