@@ -4,6 +4,9 @@ import { useState, useRef, useEffect } from "react";
 import styles from './workshedule.module.css'
 import { IconNextMonth, IconPrevMonth } from "@/components/icon/icon";
 import axios from "axios";
+import Loading from "../Alert/Loading/loading";
+import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
 const apiAi = process.env.NEXT_PUBLIC_API_AI;
 const events = [
   {
@@ -26,6 +29,11 @@ const token = localStorage?.getItem("authToken");
 const [idAcc, setIDAcc] = useState<any>(null)
 const [acc, setAcc] = useState<any>(null)
 const [data, setData] = useState<any>({})
+const [loading, setLoading] = useState(false)
+const [title, setTitle] = useState<any> (null)
+const [message, setMessage] = useState<any>(null)
+const [success, setSuccess] = useState(false)
+const [failed, setFailed] = useState(false)
 console.log(user)
 const [idCheckIn, setIdCheckIn] = useState<any>(null)
 useEffect(() =>{
@@ -287,6 +295,8 @@ useEffect(() => {
     setStream(null);
   };
 const apiUrlImage = async() => {
+  setLoading(true)
+  setTitle("Detecting face, please wait...");
   if (!imageFile) return;
   const formData = new FormData();
   formData.append("file", imageFile);

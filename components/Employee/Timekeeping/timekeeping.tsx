@@ -4,6 +4,9 @@ import SideBar from "../SideBar/sideBar";
 import React, { useState, useRef, useEffect } from "react";
 import { Timekeeping } from "@/components/icon/icon";
 import axios from "axios";
+import Loading from "../Alert/Loading/loading";
+import Success from "../Alert/Success/success";
+import Failed from "../Alert/Failed/failed";
 const apiAi = process.env.NEXT_PUBLIC_API_AI;
 export default function TimeKeeping() {
   const [user, setUser] = useState<any>({});
@@ -15,23 +18,30 @@ export default function TimeKeeping() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
-  const [acc, setAcc] = useState<any>(null)
-  useEffect(()=>{
-    const apiGetAcc = async() =>{
-      try{
-        const res = await axios.get(`http://localhost:7295/api/Account/GetAccountByEmployeeId/${user?.id}`,{
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setAcc(res.data.data)
+  const [loading, setLoading] = useState(false);
+  const [title, setTitle] = useState<any>(null);
+  const [acc, setAcc] = useState<any>(null);
+  const [success, setSuccess] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [message, setMessage] = useState<any>(null);
+  useEffect(() => {
+    const apiGetAcc = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:7295/api/Account/GetAccountByEmployeeId/${user?.id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setAcc(res.data.data);
+      } catch (error) {
+        console.log(error);
       }
-      catch(error){
-        console.log(error)
-      }
-    }
-    apiGetAcc()
-  },[user])
+    };
+    apiGetAcc();
+  }, [user]);
   // Khi isCameraActive thay đổi, nếu true và stream tồn tại, gán vào videoRef
   useEffect(() => {
     if (isCameraActive && videoRef.current && stream) {
@@ -75,43 +85,59 @@ export default function TimeKeeping() {
   };
 
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState<any>(null)
+  const [imageUrl, setImageUrl] = useState<any>(null);
   useEffect(() => {
     if (imageFile) {
       apiUrlImage();
     }
   }, [imageFile]);
-  console.log(acc)
-  const apiUrlImage = async() =>{
-    if(!imageFile) return;
+  console.log(acc);
+  const apiUrlImage = async () => {
+    setLoading(true);
+    setTitle("Detecting face, please wait...");
+    if (!imageFile) return;
     const formData = new FormData();
-    formData.append("file", imageFile)
+    formData.append("file", imageFile);
     try {
-      const res = await axios.post(`${apiAi}check-in`,formData);
-      console.log(res)
-      if(res.data.statusCode == 200){
-        console.log(res.data.data.face_id)
-        console.log(acc.face_id)
-        if(res.data.data.face_id === acc.face_id){
-          const checkIn = await axios.post(`http://localhost:7295/api/Attendance/check-in`,{},{
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          console.log(checkIn)
-          if(checkIn.status == 200){
-            alert("Check in success")
-            window.location.reload()
+      const res = await axios.post(`${apiAi}check-in`, formData);
+      console.log(res);
+      if (res.data.statusCode == 200) {
+        console.log(res.data.data.face_id);
+        console.log(acc.face_id);
+        if (res.data.data.face_id === acc.face_id) {
+          const checkIn = await axios.post(
+            `http://localhost:7295/api/Attendance/check-in`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log(checkIn);
+          if (checkIn.status == 200) {
+            setLoading(false);
+            setTitle("");
+            setIsCameraActive(false);
+            setSuccess(true);
+            setMessage("Attendance marked successfully!");
           }
+        } else {
+          setLoading(false);
+          setTitle("");
+          setFailed(true);
+          setMessage("Attendance marking failed!");
         }
-        else{
-          alert("Checkin failed")
-        }
+      } else if (res.data.statusCode == 400) {
+        setLoading(false);
+        setTitle("");
+        setFailed(true);
+        setMessage(`${res.data.message}`);
       }
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   const handleCapture = () => {
     if (videoRef.current && canvasRef.current) {
@@ -149,7 +175,6 @@ export default function TimeKeeping() {
     apiUrlImage();
   };
 
-
   const handleOkClick = () => {
     if (previewImage) {
       alert("Image has been submitted!");
@@ -157,7 +182,13 @@ export default function TimeKeeping() {
     }
   };
   const notes = [
-    { id: 1, title: "Note:", content: "Do not wear a mask, do not wear glasses, and look directly at the camera when checking in.", date: "" },
+    {
+      id: 1,
+      title: "Note:",
+      content:
+        "Do not wear a mask, do not wear glasses, and look directly at the camera when checking in.",
+      date: "",
+    },
   ];
   return (
     <div className={styles.bodyTimekeep}>
@@ -179,7 +210,7 @@ export default function TimeKeeping() {
               /> */}
             </div>
 
-            {!isCameraActive && !previewImage && (
+            {!isCameraActive && (
               <div className={styles.uploadContainer}>
                 <button
                   className={styles.uploadButton}
@@ -220,7 +251,9 @@ export default function TimeKeeping() {
           </div>
         </div>
       )}
-
+      {Loading(loading, title)}
+      <Success success={success} setSuccess={setSuccess} message={message} />
+      <Failed failed={failed} setFailed={setFailed} message={message} />
       <canvas ref={canvasRef} className={styles.hiddenCanvas}></canvas>
     </div>
   );

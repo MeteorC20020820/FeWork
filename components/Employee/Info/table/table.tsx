@@ -190,6 +190,12 @@ export default function App ({user}:any) {
       dataIndex: "bonus",
       key: "bonus",
       align: "center",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Deduction",
@@ -202,6 +208,12 @@ export default function App ({user}:any) {
       dataIndex: "total",
       key: "total",
       align: "center",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Month",

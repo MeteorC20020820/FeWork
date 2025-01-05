@@ -79,7 +79,7 @@ export default function Info() {
 
     try {
       const res = await axios.post(
-        `http://localhost:7295/api/Account/change-password/${acc.id}`,
+        `http://localhost:7295/api/Account/change-password/`,
         {
           "oldPassword": passwords.oldPassword,
           "newPassword": passwords.newPassword,

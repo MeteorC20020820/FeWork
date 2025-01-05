@@ -175,11 +175,23 @@ export default function Salary(open: boolean, setOpen: Function, dataEm: any) {
       title: "BaseSalary",
       dataIndex: "baseSalary",
       key: "baseSalary",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Bonus",
       dataIndex: "bonus",
       key: "bonus",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Deduction",
@@ -190,6 +202,12 @@ export default function Salary(open: boolean, setOpen: Function, dataEm: any) {
       title: "Total",
       dataIndex: "total",
       key: "total",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Month",

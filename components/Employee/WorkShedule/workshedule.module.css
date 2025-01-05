@@ -332,7 +332,9 @@
 .currentMonthDay.đang-làm-việc {
   background-color: #f3f65a; /* Màu cam nhạt */
 }
-
+.currentMonthDay.xin-nghỉ {
+  background-color: #5ac7f6; /* Màu cam nhạt */
+}
 .otherMonthDay {
   background-color: #f5f5f5;
   color: #aaa;
