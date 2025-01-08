@@ -57,64 +57,66 @@ useEffect(() =>{
   }
   ApiGetAccID()
 },[user])
-useEffect(() => {
-  const ApiGetAttendance = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:7295/api/Attendance/${idAcc}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      // Kiểm tra nếu res.data.data là mảng
-      if (Array.isArray(res.data.data)) {
-        const formattedData = res.data.data.map((item: any) => {
-          const checkInDate = new Date(item.checkIn);
-          const checkOutDate = item.checkOut ? new Date(item.checkOut) : "";
-        
-          return {
-            id: item.id,
-            name: item.status === "present" ? "Attendance" : "Absent",
-            timeStart: checkInDate.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            }),
-            timeEnd: checkOutDate
-              ? new Date(checkOutDate).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
-              : "...", // Nếu không có checkOut thì trả về chuỗi rỗng
-            day: checkInDate.getDate(),
-            month: checkInDate.toLocaleString("default", { month: "long" }),
-            year: checkInDate.getFullYear(),
-            note: `Late: ${item.late === 1 ? "Yes" : "No"}`,
-            checkIn: `Check-In: ${checkInDate.toLocaleTimeString()}`,
-            checkOut: checkOutDate
-              ? `Check-Out: ${new Date(checkOutDate).toLocaleTimeString()}`
-              : "Check-Out: ...", // Thêm thông báo nếu không có checkOut
-            late: item.late,
-            status: item.status,
-            face_id: item.account.face_id,
-          };
-        });
-        
-
-        setData(formattedData);
-      } else {
-        console.error("Data received from API is not an array:", res.data.data);
+const ApiGetAttendance = async () => {
+  try {
+    const res = await axios.get(
+      `http://localhost:7295/api/Attendance/${idAcc}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    );
+    // Kiểm tra nếu res.data.data là mảng
+    if (Array.isArray(res.data.data)) {
+      const formattedData = res.data.data.map((item: any) => {
+        const checkInDate = new Date(item.checkIn);
+        const checkOutDate = item.checkOut ? new Date(item.checkOut) : "";
+      
+        return {
+          id: item.id,
+          name: item.status === "present" ? "Attendance" : "Absent",
+          timeStart: checkInDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          timeEnd: checkOutDate
+            ? new Date(checkOutDate).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })
+            : "...", // Nếu không có checkOut thì trả về chuỗi rỗng
+          day: checkInDate.getDate(),
+          month: checkInDate.toLocaleString("default", { month: "long" }),
+          year: checkInDate.getFullYear(),
+          note: `Late: ${item.late === 1 ? "Yes" : "No"}`,
+          checkIn: `Check-In: ${checkInDate.toLocaleTimeString()}`,
+          checkOut: checkOutDate
+            ? `Check-Out: ${new Date(checkOutDate).toLocaleTimeString()}`
+            : "Check-Out: ...", // Thêm thông báo nếu không có checkOut
+          late: item.late,
+          status: item.status,
+          face_id: item.account.face_id,
+        };
+      });
+      
 
+      setData(formattedData);
+    } else {
+      console.error("Data received from API is not an array:", res.data.data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+useEffect(() => {
   if (idAcc) {
     ApiGetAttendance();
   }
 }, [idAcc]);
+const reset =() =>{
+  ApiGetAttendance()
+}
 const [userRoleP, setUserRoleP] = useState<any>(null);
 const [currentDate, setCurrentDate] = useState(new Date());
 const [selectedMonth, setSelectedMonth] = useState<number>(
@@ -305,7 +307,7 @@ useEffect(() => {
   };
 const apiUrlImage = async() => {
   setLoading(true)
-  setTitle("Detecting face, please wait...");
+    setTitle("Detecting face, please wait...");
   if (!imageFile) return;
   const formData = new FormData();
   formData.append("file", imageFile);
@@ -321,6 +323,7 @@ const apiUrlImage = async() => {
           }
         );
         if (checkIn.data.statusCode == 200) {
+          reset()
           setLoading(false);
           setTitle("");
           setIsCameraActive(false);
@@ -350,6 +353,7 @@ useEffect(() => {
   }, [isCameraActive, stream]);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const handleCapture = () => {
+    
     if (videoRef.current && canvasRef.current) {
       const context = canvasRef.current.getContext("2d");
       if (context) {
@@ -584,6 +588,9 @@ useEffect(() => {
             </div>
             </div>
         </div>
+        {Loading(loading, title)}
+        <Success success={success} setSuccess={setSuccess} message={message}/>
+        <Failed failed={failed} setFailed={setFailed} message={message}/>
       </div>
     );
 }

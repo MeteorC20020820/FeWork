@@ -170,3 +170,25 @@
   color: black;
   font-weight: 600;
 }
+.passwordInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordInputContainer input {
+  flex: 1;
+  padding-right: 40px;
+}
+
+.eyeIcon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+.eyeIcon:hover {
+  color: #000;
+}

@@ -122,7 +122,7 @@ export default function Onleave() {
   const getStatusLabel = (status: number) => {
     switch (status) {
       case 0:
-        return "Pending approval";
+        return "Pending";
       case 1:
         return "Approved";
       case 2:

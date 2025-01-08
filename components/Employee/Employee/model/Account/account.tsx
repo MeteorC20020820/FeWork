@@ -4,6 +4,7 @@ import { Modal, Input, Select } from "antd";
 import { useEffect, useState } from "react";
 import Delete from "./Delete/delete";
 import Loading from "@/components/Employee/Alert/Loading/loading";
+import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 const ai = process.env.NEXT_PUBLIC_API_AI;
 export default function Account(
   open: boolean,
@@ -182,11 +183,11 @@ export default function Account(
     }
   };
   const role = (e: any) => {
-    if (e === 1) return "Manager";
-    if (e === 2) return "Admin";
     if (e === 3) return "User Employee";
     return "Unknown";
   };
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -372,15 +373,24 @@ export default function Account(
           </div>
           <div className={styles.inputField}>
             <label>Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              value={newAccount.password}
-              onChange={(e) =>
-                setNewAccount({ ...newAccount, password: e.target.value })
-              }
-            />
+            <div className={styles.passwordInputContainer}>
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={newAccount.password}
+                onChange={(e) =>
+                  setNewAccount({ ...newAccount, password: e.target.value })
+                }
+              />
+              <span
+                className={styles.eyeIcon}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+              </span>
+            </div>
           </div>
+
           <div className={styles.fileInputContainer}>
             <label htmlFor="faceFile">Face Image</label>
             <input
@@ -407,8 +417,6 @@ export default function Account(
                 })
               }
             >
-              <option value={1}>Manager</option>
-              <option value={2}>Admin</option>
               <option value={3}>User Employee</option>
             </select>
           </div>

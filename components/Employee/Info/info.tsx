@@ -185,7 +185,12 @@ export default function Info() {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
-
+  const formatB =(text:any) =>{
+    return text?.toLocaleString("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    });
+  }
   return (
     <div style={{ display: "flex", backgroundColor: "#e2e1e1" }}>
       <SideBar setUser={setUser} setUserRoleP={setUserRoleP} />
@@ -414,7 +419,7 @@ export default function Info() {
                           Base Salary:
                         </label>
                         <span className={styles.detailText}>
-                          {user.baseSalary}
+                          {formatB(user.baseSalary)}
                         </span>
                       </div>
                       <div className={styles.detailRow}>

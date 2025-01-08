@@ -197,6 +197,12 @@ export default function Salary(open: boolean, setOpen: Function, dataEm: any) {
       title: "Deduction",
       dataIndex: "deduction",
       key: "deduction",
+      render: (text: number) => {
+        return text.toLocaleString("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        });
+      },
     },
     {
       title: "Total",
